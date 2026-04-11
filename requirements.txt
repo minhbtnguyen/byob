@@ -1,0 +1,36 @@
+# Data processing & EDA
+numpy
+pandas
+scipy
+scikit-learn
+
+# Gradient boosted trees
+xgboost
+lightgbm
+
+# Geospatial
+geopandas
+shapely
+pyproj
+
+# Visualization
+matplotlib
+seaborn
+plotly
+
+# Dashboard
+streamlit
+
+# LLM agents
+openai
+anthropic
+langchain
+langchain-openai
+langchain-anthropic
+
+# Utilities
+tqdm
+python-dotenv
+pyyaml
+jupyterlab
+ipykernel
