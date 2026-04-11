@@ -2,8 +2,8 @@
 features.py
 Feature engineering for Geolife GPS trajectories.
 
-Produces a flat DataFrame with one row per labeled 60s window:
-  columns = [user, window_start, window_end, mode, <8 heuristic features>]
+Produces a flat DataFrame with one row per labeled 30s window:
+  columns = [user, window_start, window_end, mode, <9 heuristic features>]
 
 Usage:
     from features import build_feature_dataset
@@ -17,9 +17,9 @@ import pandas as pd
 
 # ── Constants ─────────────────────────────────────────────────────────────────
 
-WINDOW_SEC      = 60    # window length in seconds
-STRIDE_SEC      = 30    # stride between window starts
-MIN_POINTS      = 10    # minimum GPS points per window to be usable
+WINDOW_SEC      = 30    # window length in seconds (30s fits more label intervals than 60s)
+STRIDE_SEC      = 15    # stride between window starts (50% overlap)
+MIN_POINTS      = 5     # minimum GPS points per window to be usable
 SPEED_LIMIT_KMH = 250   # points above this are GPS anomalies → discard window
 MIN_COVERAGE_PCT = 5    # skip users whose label coverage is below this %
 
@@ -173,49 +173,60 @@ def label_coverage_pct(user_dir: Path, traj: pd.DataFrame) -> float:
     return 100 * labeled_sec / total_sec if total_sec > 0 else 0.0
 
 
-def process_user(user_dir: Path) -> list[dict]:
+def process_user(user_dir: Path) -> tuple[list[dict], str]:
     """
-    Slide windows over a user's trajectory and extract labeled feature rows.
+    Slide windows over labeled intervals only (not the full recording span).
+    Uses numpy searchsorted for O(log n) window slicing instead of full scans.
 
-    Returns a list of dicts, one per valid labeled window.
+    Returns (rows, skip_reason) — skip_reason is non-empty if user was skipped.
     """
     traj = load_trajectory(user_dir)
     if traj.empty:
-        return []
-
-    if label_coverage_pct(user_dir, traj) < MIN_COVERAGE_PCT:
-        return []
+        return [], "no trajectory"
 
     labels = parse_labels(user_dir)
     if labels.empty:
-        return []
+        return [], "no labels"
 
-    window_delta = pd.Timedelta(seconds=WINDOW_SEC)
-    stride_delta = pd.Timedelta(seconds=STRIDE_SEC)
-    t_end_global = traj["datetime"].iloc[-1]
+    if label_coverage_pct(user_dir, traj) < MIN_COVERAGE_PCT:
+        return [], f"coverage <{MIN_COVERAGE_PCT}%"
 
+    # Pre-compute unix timestamps as numpy array for fast searchsorted
+    ts = traj["datetime"].values.astype("datetime64[s]").astype(np.int64)
+
+    window_sec = WINDOW_SEC
+    stride_sec = STRIDE_SEC
     rows = []
-    t = traj["datetime"].iloc[0]
 
-    while t + window_delta <= t_end_global:
-        w_end  = t + window_delta
-        window = traj[(traj["datetime"] >= t) & (traj["datetime"] < w_end)]
-        mode   = assign_label(t, w_end, labels)
+    for _, label_row in labels.iterrows():
+        t = label_row["start"]
+        label_end = label_row["end"]
 
-        if mode is not None:
-            feats = extract_features(window)
-            if feats is not None:
-                rows.append({
-                    "user":         user_dir.name,
-                    "window_start": t,
-                    "window_end":   w_end,
-                    "mode":         mode,
-                    **feats,
-                })
+        while t + pd.Timedelta(seconds=window_sec) <= label_end:
+            w_end = t + pd.Timedelta(seconds=window_sec)
 
-        t += stride_delta
+            # O(log n) slice using searchsorted on unix timestamps
+            t_int     = int(t.timestamp())
+            w_end_int = int(w_end.timestamp())
+            lo = np.searchsorted(ts, t_int,     side="left")
+            hi = np.searchsorted(ts, w_end_int, side="left")
+            window = traj.iloc[lo:hi]
 
-    return rows
+            mode = assign_label(t, w_end, labels)
+            if mode is not None:
+                feats = extract_features(window)
+                if feats is not None:
+                    rows.append({
+                        "user":         user_dir.name,
+                        "window_start": t,
+                        "window_end":   w_end,
+                        "mode":         mode,
+                        **feats,
+                    })
+
+            t += pd.Timedelta(seconds=stride_sec)
+
+    return rows, ""
 
 
 # ── Main entry point ──────────────────────────────────────────────────────────
@@ -254,18 +265,29 @@ def build_feature_dataset(
             print(f"Loaded {len(df):,} windows")
         return df
 
-    # Build from scratch
+    # Build from scratch — process users in parallel
+    from multiprocessing import Pool, cpu_count
+
     labeled_users = sorted([
         d for d in data_dir.iterdir()
         if d.is_dir() and (d / "labels.txt").exists()
     ])
 
+    n_workers = max(1, cpu_count() - 1)
+    if verbose:
+        print(f"Processing {len(labeled_users)} users with {n_workers} workers...")
+
+    with Pool(n_workers) as pool:
+        results = pool.map(process_user, labeled_users)
+
     all_rows = []
-    for user_dir in labeled_users:
-        rows = process_user(user_dir)
+    for user_dir, (rows, skip_reason) in zip(labeled_users, results):
         all_rows.extend(rows)
         if verbose:
-            print(f"  {user_dir.name}: {len(rows):>5} windows")
+            if skip_reason:
+                print(f"  {user_dir.name}: skipped ({skip_reason})")
+            else:
+                print(f"  {user_dir.name}: {len(rows):>5} windows")
 
     if not all_rows:
         return pd.DataFrame()
