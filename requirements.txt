@@ -1,3 +1,6 @@
+# Data download
+kagglehub
+
 # Data processing & EDA
 numpy
 pandas

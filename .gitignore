@@ -46,6 +46,23 @@ __pycache__/
 *.pyc
 *.pyo
 
+# Data — raw and processed Geolife files are large and not versioned
+data/raw/
+data/processed/
+
+# Model artifacts
+models/*.pkl
+models/*.joblib
+models/*.json
+
+# Generated reports
+reports/
+
+# Jupyter checkpoints
+.ipynb_checkpoints/
+**/.ipynb_checkpoints/
+
+
 # AI assistant files
 AGENTS.md
 CLAUDE.md
