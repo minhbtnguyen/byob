@@ -17,14 +17,16 @@ import pandas as pd
 
 # ── Constants ─────────────────────────────────────────────────────────────────
 
-WINDOW_SEC      = 30    # window length in seconds (30s fits more label intervals than 60s)
-STRIDE_SEC      = 15    # stride between window starts (50% overlap)
-MIN_POINTS      = 5     # minimum GPS points per window to be usable
-SPEED_LIMIT_KMH = 250   # points above this are GPS anomalies → discard window
-MIN_COVERAGE_PCT = 5    # skip users whose label coverage is below this %
+WINDOW_SEC       = 30    # window length in seconds
+STRIDE_SEC       = 15    # stride between window starts (50% overlap)
+MIN_POINTS       = 5     # minimum GPS points per window to be usable
+SPEED_LIMIT_KMH  = 250   # points above this are GPS anomalies → discard window
+MIN_WINDOWS_USER = 50    # skip users with fewer than this many labeled windows
+MAX_WINDOWS_USER = 5000  # cap per user to prevent heavy users dominating
 
-TARGET_MODES = {"walk", "bike", "bus", "car", "subway", "taxi"}
-MODE_MERGE   = {"taxi": "car", "run": "walk"}  # merge rare/similar modes into core set
+# Core 4 modes — taxi merged into car, subway/boat/airplane dropped (too rare)
+TARGET_MODES = {"walk", "bike", "bus", "car"}
+MODE_MERGE   = {"taxi": "car", "run": "walk", "subway": None, "boat": None, "airplane": None}
 
 # ── Parsers ───────────────────────────────────────────────────────────────────
 
@@ -44,8 +46,10 @@ def parse_labels(user_dir: Path) -> pd.DataFrame:
     )
     df["start"] = pd.to_datetime(df["start"])
     df["end"]   = pd.to_datetime(df["end"])
-    df["mode"]  = df["mode"].str.lower().str.strip().replace(MODE_MERGE)
-    return df[df["mode"].isin(TARGET_MODES)].reset_index(drop=True)
+    df["mode"] = df["mode"].str.lower().str.strip().replace(MODE_MERGE)
+    # Drop rows where mode mapped to None (subway, boat, airplane)
+    df = df[df["mode"].notna() & df["mode"].isin(TARGET_MODES)]
+    return df.reset_index(drop=True)
 
 
 # ── Geometry helpers ──────────────────────────────────────────────────────────
@@ -94,8 +98,10 @@ def extract_features(window: pd.DataFrame) -> Optional[dict]:
     with np.errstate(divide="ignore", invalid="ignore"):
         speed_kmh = np.where(dt_s > 0, (dist_m / dt_s) * 3.6, 0.0)
 
-    # Discard window if any GPS anomaly detected
+    # Discard window if any GPS anomaly or large internal time gap
     if np.any(speed_kmh > SPEED_LIMIT_KMH):
+        return None
+    if np.any(dt_s > 15):  # gap >15s in a 30s window = unreliable features
         return None
 
     # Acceleration (Δspeed / Δtime, km/h per second)
@@ -163,16 +169,6 @@ def load_trajectory(user_dir: Path) -> pd.DataFrame:
     return traj.sort_values("datetime").reset_index(drop=True)
 
 
-def label_coverage_pct(user_dir: Path, traj: pd.DataFrame) -> float:
-    """% of the user's total recording time span covered by mode labels."""
-    if traj.empty:
-        return 0.0
-    labels      = parse_labels(user_dir)
-    labeled_sec = (labels["end"] - labels["start"]).dt.total_seconds().sum()
-    total_sec   = (traj["datetime"].max() - traj["datetime"].min()).total_seconds()
-    return 100 * labeled_sec / total_sec if total_sec > 0 else 0.0
-
-
 def process_user(user_dir: Path) -> tuple[list[dict], str]:
     """
     Slide windows over labeled intervals only (not the full recording span).
@@ -186,10 +182,7 @@ def process_user(user_dir: Path) -> tuple[list[dict], str]:
 
     labels = parse_labels(user_dir)
     if labels.empty:
-        return [], "no labels"
-
-    if label_coverage_pct(user_dir, traj) < MIN_COVERAGE_PCT:
-        return [], f"coverage <{MIN_COVERAGE_PCT}%"
+        return [], "no labels in target modes"
 
     # Pre-compute unix timestamps as numpy array for fast searchsorted
     ts = traj["datetime"].values.astype("datetime64[s]").astype(np.int64)
@@ -199,10 +192,16 @@ def process_user(user_dir: Path) -> tuple[list[dict], str]:
     rows = []
 
     for _, label_row in labels.iterrows():
+        if len(rows) >= MAX_WINDOWS_USER:
+            break
+
         t = label_row["start"]
         label_end = label_row["end"]
 
         while t + pd.Timedelta(seconds=window_sec) <= label_end:
+            if len(rows) >= MAX_WINDOWS_USER:
+                break
+
             w_end = t + pd.Timedelta(seconds=window_sec)
 
             # O(log n) slice using searchsorted on unix timestamps
@@ -225,6 +224,9 @@ def process_user(user_dir: Path) -> tuple[list[dict], str]:
                     })
 
             t += pd.Timedelta(seconds=stride_sec)
+
+    if len(rows) < MIN_WINDOWS_USER:
+        return [], f"only {len(rows)} windows (<{MIN_WINDOWS_USER} min)"
 
     return rows, ""
 
@@ -265,29 +267,23 @@ def build_feature_dataset(
             print(f"Loaded {len(df):,} windows")
         return df
 
-    # Build from scratch — process users in parallel
-    from multiprocessing import Pool, cpu_count
+    # Build from scratch — sequential with progress bar
+    from tqdm import tqdm
 
     labeled_users = sorted([
         d for d in data_dir.iterdir()
         if d.is_dir() and (d / "labels.txt").exists()
     ])
 
-    n_workers = max(1, cpu_count() - 1)
-    if verbose:
-        print(f"Processing {len(labeled_users)} users with {n_workers} workers...")
-
-    with Pool(n_workers) as pool:
-        results = pool.map(process_user, labeled_users)
-
     all_rows = []
-    for user_dir, (rows, skip_reason) in zip(labeled_users, results):
+    for user_dir in tqdm(labeled_users, desc="Processing users"):
+        rows, skip_reason = process_user(user_dir)
         all_rows.extend(rows)
         if verbose:
             if skip_reason:
-                print(f"  {user_dir.name}: skipped ({skip_reason})")
+                tqdm.write(f"  {user_dir.name}: skipped ({skip_reason})")
             else:
-                print(f"  {user_dir.name}: {len(rows):>5} windows")
+                tqdm.write(f"  {user_dir.name}: {len(rows):>5} windows")
 
     if not all_rows:
         return pd.DataFrame()
