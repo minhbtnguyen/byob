@@ -211,17 +211,17 @@ def process_user(user_dir: Path) -> tuple[list[dict], str]:
             hi = np.searchsorted(ts, w_end_int, side="left")
             window = traj.iloc[lo:hi]
 
-            mode = assign_label(t, w_end, labels)
-            if mode is not None:
-                feats = extract_features(window)
-                if feats is not None:
-                    rows.append({
-                        "user":         user_dir.name,
-                        "window_start": t,
-                        "window_end":   w_end,
-                        "mode":         mode,
-                        **feats,
-                    })
+            # Mode is known — we're sliding within this label interval already
+            mode = label_row["mode"]
+            feats = extract_features(window)
+            if feats is not None:
+                rows.append({
+                    "user":         user_dir.name,
+                    "window_start": t,
+                    "window_end":   w_end,
+                    "mode":         mode,
+                    **feats,
+                })
 
             t += pd.Timedelta(seconds=stride_sec)
 
