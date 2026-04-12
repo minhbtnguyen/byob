@@ -3,7 +3,7 @@ from pathlib import Path
 
 import streamlit as st
 
-from dashboard_utils import hypothesis
+from dashboard_utils import data_analysis, hypothesis, references
 from dashboard_utils.theme import apply_theme
 
 st.set_page_config(
@@ -51,7 +51,7 @@ with tab1:
     hypothesis.render()
 
 with tab2:
-    st.header("Data & Analysis")
+    data_analysis.render()
 
 with tab3:
     st.header("Modeling")
@@ -66,4 +66,4 @@ with tab6:
     st.header("Potential Products")
 
 with tab7:
-    st.header("References")
+    references.render()

@@ -23,7 +23,7 @@ seaborn
 plotly
 
 # Dashboard
-streamlit
+streamlit==1.50.0
 
 # LLM agents
 openai
