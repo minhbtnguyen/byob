@@ -575,7 +575,6 @@ def _render_emissions(data_root: str) -> None:
         )
 
 
-
 # -- Main render ---------------------------------------------------------------
 
 
