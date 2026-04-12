@@ -93,10 +93,10 @@ Run the first cell of `eda/analysis.ipynb` - it downloads the Geolife dataset vi
 The `reports/` and `models/` directories are pre-populated. You only need to rerun notebooks if you want to regenerate results from scratch:
 
 ```
-eda/analysis.ipynb           → EDA (no outputs saved, read-only)
-eda/modeling.ipynb           → builds features.parquet + lgbm_mode_classifier.pkl
-eda/agentic_evaluation.ipynb → builds user_reports.json + eval_results.json
-eda/agentic_simulation.ipynb → builds sim_strength_*.json (costs ~$0.08 in API calls)
+eda/analysis.ipynb          : EDA (no outputs saved, read-only)
+eda/modeling.ipynb          : builds features.parquet + lgbm_mode_classifier.pkl
+eda/agentic_evaluation.ipynb: builds user_reports.json + eval_results.json
+eda/agentic_simulation.ipynb: builds sim_strength_*.json (costs ~$0.08 in API calls)
 ```
 
 ### 5. Launch the dashboard
@@ -135,7 +135,7 @@ Open `http://localhost:8501`.
 | Hypothesis | Result |
 |---|---|
 | H2 - Mode classification | CV macro-F1 = **0.553 ± 0.037** across 5 folds (subject-independent) |
-| H3 - Emissions attribution | Car = 24% of distance but 52% of CO₂. Sub-3km car → bike saves a measurable share of per-user emissions |
+| H3 - Emissions attribution | Car = 24% of distance but 52% of CO₂. Sub-3km car: bike saves a measurable share of per-user emissions |
 | H4 - Agentic evaluation | Judge+Critic loop (κ) vs. single-prompt baseline - see **Agentic Evaluation** tab |
 | H5 - Behaviour simulation | Car usage and CO₂ dropped at every nudge level; leaderboard level produced the biggest shift |
 
@@ -147,4 +147,4 @@ Open `http://localhost:8501`.
 |---|---|
 | **Commute Copilot** | On-device trip classification + weekly Claude-generated carbon report, fact-checked by Judge+Critic |
 | **Carbon Ring** | A new Apple Health ring that rewards low-carbon travel with points for carbon offsets or Watch features |
-| **Apple Green Impact** | Privately aggregated user footprints → stronger Apple ESG score → broader investor base |
+| **Apple Green Impact** | Privately aggregated user footprints: stronger Apple ESG score: broader investor base |
