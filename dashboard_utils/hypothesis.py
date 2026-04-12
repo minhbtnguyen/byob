@@ -4,41 +4,49 @@ import streamlit as st
 def render() -> None:
     st.markdown("### Primary Hypothesis")
     st.info(
-        "**H1:** Personal mobility carbon footprints can be reliably estimated from raw GPS traces alone - "
-        "without IMU or user input - by combining heuristic feature engineering, gradient-boosted mode "
-        "classification, and a Judge+Critic LLM agent applied at the evaluation boundary of the pipeline. "
-        "The agentic layer measurably improves output factual reliability over a single-prompt baseline, "
-        "while the deterministic ML core remains unchanged."
+        "**H1:** Using only GPS data - no extra sensors, no user input - we can classify how people "
+        "commute, estimate their carbon footprint, and generate a personalised sustainability report "
+        "verified by an AI agent pipeline. Layered on top, a simulation of agentic commuters shows "
+        "that Apple ESG nudges can measurably shift behaviour, reduce emissions, and improve health - "
+        "forming an end-to-end system from raw GPS to human behaviour change."
     )
 
     st.markdown("### Sub-Hypotheses")
 
-    with st.expander("H2: Classification"):
+    with st.expander("H2: Commute Mode Predictor"):
         st.markdown(
-            "Heuristic GPS features + GBDT classify {walk, bike, bus, car} at >75% macro-F1 "
-            "under subject-independent CV."
+            "Using only GPS data - no phone sensors, no user input - we can train a model to tell apart "
+            "walking, biking, taking the bus, and driving."
         )
-        st.caption("Metric: Macro-F1 on held-out users")
+        st.caption("Analysis is in **Commute Mode Predictor** tab.")
 
-    with st.expander("H3: Emissions"):
+    with st.expander("H3: Emissions Attribution"):
         st.markdown(
-            "Car contributes disproportionate CO₂ relative to distance travelled, "
-            "and a mode-shift counterfactual (car to bus) yields a quantifiable reduction."
+            "Cars produce far more CO₂ than their share of trips would suggest. "
+            "Swapping short car trips (under 3 km) to bike would eliminate a measurable chunk of each user's carbon footprint."
         )
-        st.caption(
-            "Metric: Car CO₂ share vs. distance share; kg CO₂ saved if car to bus"
-        )
+        st.caption("Analysis is in **EDA** tab.")
 
-    with st.expander("H4: Agent Evaluation"):
+    with st.expander("H4: Agentic Evaluation"):
         st.markdown(
-            "A Judge+Critic LLM eval loop agrees with human ratings more than a single-prompt judge baseline, "
-            "measured on ~20–30 hand-labeled report segments."
+            "Running a 3-step pipeline - Judge to Critic to Revised Judge - produces fact-check verdicts "
+            "that match human labels more closely than a simple single-prompt judge, "
+            "measured on 28 claims hand-labeled across 6 user reports using Cohen's κ."
         )
-        st.caption("Metric: Cohen's κ vs. human labels")
+        st.caption("Analysis is in **Agentic Evaluation vs Human Evaluation** tab.")
 
-    with st.expander("H5: Human Psychology Simulation"):
+    with st.expander("H5: Human Behaviour Simulation"):
         st.markdown(
-            "A generative-agent simulation of 10–20 LLM personas under a biking incentive produces "
-            "directionally meaningful mode-share shifts versus a control. "
+            "Simulating 15 agentic commuters over 7 days shows that stronger Apple ESG nudges "
+            "(quiet route suggestion to leaderboard to real-time Watch alert) progressively reduce "
+            "car usage, lower CO2 emissions, and improve population health and mood - "
+            "with the effect growing at each feature level."
         )
-        st.caption("Metric: Simulated mode-share delta")
+        st.caption("Analysis is in **Agentic Behaviour Simulation** tab.")
+
+    with st.expander("Extra: Potential Apple Products"):
+        st.markdown(
+            "Based on the above analyses, we propose 3 hypothetical Apple ESG features - "
+            "Green Commute Score, Carbon Leaderboard, and Social Nudges - that could synergistically "
+            "nudge users towards more sustainable mobility choices. These are detailed in the final section."
+        )

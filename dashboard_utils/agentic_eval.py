@@ -201,13 +201,13 @@ def _render_kappa(labels_df: pd.DataFrame) -> None:
         st.plotly_chart(fig2, use_container_width=True)
 
     if k_loop > k_baseline:
-        with st.expander("H3 Result", expanded=True):
+        with st.expander("H4 Result", expanded=True):
             st.write(
                 f"H3 supported — Judge+Critic loop (κ={k_loop:.3f}) agrees with human labels "
                 f"more than the single-prompt baseline (κ={k_baseline:.3f})."
             )
     else:
-        with st.expander("H3 Result", expanded=True):
+        with st.expander("H4 Result", expanded=True):
             st.write(
                 f"H3 not supported — loop (κ={k_loop:.3f}) does not improve over baseline "
                 f"(κ={k_baseline:.3f}). Both results are reported regardless."
