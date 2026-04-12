@@ -587,10 +587,10 @@ def render() -> None:
             "Microsoft Research Asia · Apr 2007 - Aug 2012 · "
             "GPS points every 1-5 s · 30+ cities, mostly Beijing."
         )
-        st.markdown("**Users:** 182")
-        st.markdown("**Trajectories:** 17,621")
-        st.markdown("**Distance:** 1.29M km")
-        st.markdown("**Duration:** 50,176 hrs")
+        st.markdown("**Number of Users:** 182")
+        st.markdown("**Number of Trajectories:** 17,621")
+        st.markdown("**Total Distance:** 1.29M km")
+        st.markdown("**Total Duration:** 50,176 hrs")
 
     if not _DATASET_ROOT.exists():
         st.warning("Dataset not found. Run the kagglehub download cell first.")

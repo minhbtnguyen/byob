@@ -26,10 +26,8 @@ plotly
 streamlit==1.50.0
 
 # LLM agents
-openai
 anthropic
 langchain
-langchain-openai
 langchain-anthropic
 
 # Utilities
