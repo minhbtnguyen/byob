@@ -108,7 +108,7 @@ def _load_explainer(_model):
 
 
 def render() -> None:
-    st.markdown("### Interactive Mode Predictor")
+    st.markdown("### Commute Mode Predictor")
     st.sidebar.info(
         "Adjust the sliders to describe a 30-second GPS window and see the predicted transport mode."
     )
