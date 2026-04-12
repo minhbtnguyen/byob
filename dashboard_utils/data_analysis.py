@@ -491,6 +491,17 @@ def _render_emissions(data_root: str) -> None:
     with st.spinner("Computing emissions — may take a minute on first run..."):
         em_df = _compute_emissions(data_root)
 
+    car_em = em_df[em_df["mode"] == "car"].copy()
+    sub3_em = car_em[car_em["dist_km"] < 3]
+    saved_kg = float(sub3_em["co2_g"].sum() / 1000)
+    total_kg = float(car_em["co2_g"].sum() / 1000)
+    pct_saved = 100 * saved_kg / total_kg if total_kg else 0
+
+    c1, c2, c3 = st.columns(3)
+    c1.metric("Total car CO\u2082", f"{total_kg:.1f} kg")
+    c2.metric("Savings if sub-3 km \u2192 bike", f"{saved_kg:.1f} kg")
+    c3.metric("% of car emissions saved", f"{pct_saved:.1f}%")
+
     mode_co2 = (
         em_df.groupby("mode")["co2_g"]
         .sum()
@@ -563,16 +574,6 @@ def _render_emissions(data_root: str) -> None:
             "Coach — a small behavior change in this group yields outsized aggregate impact."
         )
 
-    car_em = em_df[em_df["mode"] == "car"].copy()
-    sub3_em = car_em[car_em["dist_km"] < 3]
-    saved_kg = float(sub3_em["co2_g"].sum() / 1000)
-    total_kg = float(car_em["co2_g"].sum() / 1000)
-    pct_saved = 100 * saved_kg / total_kg if total_kg else 0
-
-    c1, c2, c3 = st.columns(3)
-    c1.metric("Total car CO\u2082", f"{total_kg:.1f} kg")
-    c2.metric("Savings if sub-3 km \u2192 bike", f"{saved_kg:.1f} kg")
-    c3.metric("% of car emissions saved", f"{pct_saved:.1f}%")
 
 
 # -- Main render ---------------------------------------------------------------
