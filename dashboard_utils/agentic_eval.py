@@ -20,97 +20,81 @@ def _load_data():
 
 
 def _render_pipeline() -> None:
-    st.sidebar.markdown("**Experiment Design & Steps**")
+    st.sidebar.markdown("**How it works**")
 
     with st.sidebar.expander("1. Report Generation"):
         st.markdown(
-            "**User selection:** from the held-out test fold, keep only users with ≥ 2 distinct "
-            "predicted transport modes — single-mode users produce uninformative reports.\n\n"
-            "**Aggregation:** per-user stats computed from classified windows: "
-            "`mode_km`, `mode_co2_kg`, `total_co2_kg`, `car_pct_of_co2`.\n\n"
-            "**Prompt (1 Claude call per user):**\n"
+            "Aggregate each user's km and CO₂ by mode, then call Claude once to write a short report.\n\n"
+            "**Prompt:**\n"
             "```\n"
-            "You are a sustainability analyst writing a personal mobility report.\n"
-            "Rules:\n"
+            "You are a sustainability analyst writing a personal\n"
+            "mobility report. Rules:\n"
             "  1. Write exactly 4-6 sentences.\n"
-            "  2. Every number must come directly from the data below —\n"
-            "     do not round, estimate, or invent figures.\n"
+            "  2. Every number must come directly from the data\n"
+            "     below - do not round, estimate, or invent figures.\n"
             "  3. End with one concrete, actionable recommendation.\n\n"
-            "User mobility data: {mode_km, mode_co2_kg, total_co2_kg, car_pct_of_co2}\n"
-            "```\n"
-            "**Output:** report text → saved alongside raw stats for evaluation."
+            "User mobility data:\n"
+            "{mode_km, mode_co2_kg, total_co2_kg, car_pct_of_co2}\n"
+            "```"
         )
 
     with st.sidebar.expander("2. Judge + Critic + Verdict"):
         st.markdown(
-            "Three sequential Claude calls per user.\n\n"
-            "**Judge (call 1) — initial fact-check:**\n"
+            "Three Claude calls check each report for factual accuracy:\n\n"
+            "**Judge (call 1):**\n"
             "```\n"
             "You are a fact-checker for sustainability reports.\n"
-            "Given the raw data and the report, identify each numeric claim\n"
-            "and label it: correct / incorrect / unverifiable.\n"
-            "Cite the specific data value that supports or contradicts each claim.\n\n"
+            "Given the raw data and the report, identify each\n"
+            "numeric claim and label it:\n"
+            "correct / incorrect / unverifiable.\n"
+            "Cite the specific data value that supports or\n"
+            "contradicts each claim.\n\n"
             "Raw data: {stats}    Report: {report}\n"
             "```\n\n"
-            "**Critic (call 2) — review the Judge:**\n"
+            "**Critic (call 2):**\n"
             "```\n"
             "You are reviewing a fact-checker's assessment.\n"
-            "Identify any claims accepted too easily, verdicts that lack\n"
-            "clear data support, or any missed claims.\n\n"
+            "Identify any claims accepted too easily, verdicts\n"
+            "that lack clear data support, or any missed claims.\n\n"
             "Fact-checker assessment: {judge_output}\n"
             "```\n\n"
-            "**Revised Judge (call 3) — final verdict:**\n"
+            "**Revised Judge (call 3):**\n"
             "```\n"
             "You previously assessed a sustainability report.\n"
-            "A critic has flagged issues. Revise your verdicts where\n"
-            "the critic raises valid points.\n\n"
+            "A critic has flagged issues. Revise your verdicts\n"
+            "where the critic raises valid points.\n\n"
             "Raw data: {stats}    Report: {report}\n"
             "Critic flags: {critic_flags}\n"
-            "```\n"
-            "**Output:** final per-claim verdicts → `judge_final` in `eval_results.json`\n\n"
-            "**Total calls — loop:** 4 per user (1 report + 3 judge/critic/revised)  \n"
+            "```\n\n"
+            "4 Claude calls total per user (1 report + 3 evaluation)."
         )
 
     with st.sidebar.expander("3. Baseline"):
         st.markdown(
-            "Single-prompt judge with no Critic pass — used as the comparison baseline.\n\n"
-            "**Prompt (1 Claude call per user):**\n"
+            "A single Claude call — no Critic review. Used as the comparison point.\n\n"
+            "**Prompt:**\n"
             "```\n"
             "Given the data and the report, is each numeric claim\n"
             "correct, incorrect, or unverifiable?\n"
             "List each claim with its verdict.\n\n"
             "Data: {stats}    Report: {report}\n"
-            "```\n"
-            "**Output:** per-claim verdicts → `baseline_judge` in `eval_results.json`\n\n"
-            "**Total calls — baseline:** 2 per user (1 report + 1 judge)  \n"
+            "```"
         )
 
     with st.sidebar.expander("4. Human Evaluation"):
         st.markdown(
-            "After the notebook runs, a CSV template is auto-generated with:\n"
-            "- one row per verifiable claim extracted from each report\n"
-            "- `source_data` showing the full stats for that user\n"
-            "- `baseline_label` and `loop_label` pre-filled from the LLM outputs\n\n"
-            "**Human task:** fill in only `human_label` for each claim:  \n"
-            "`correct` / `incorrect` / `unverifiable`\n\n"
-            "Labeling criteria:\n"
-            "- **correct** — every number in the sentence matches `source_data` exactly\n"
-            "- **incorrect** — a number is wrong or a comparison is false\n"
-            "- **unverifiable** — the claim cannot be confirmed or denied from the data alone "
-            "(e.g. inferences about feasibility or future behaviour)"
+            "Each numeric claim from the reports is hand-labeled as:\n"
+            "- **correct** - the number exactly matches the source data\n"
+            "- **incorrect** - the number is wrong or the comparison is false\n"
+            "- **unverifiable** - cannot be confirmed from the data alone\n\n"
+            "These human labels are the ground truth for measuring LLM accuracy."
         )
 
     with st.sidebar.expander("5. Benchmark"):
         st.markdown(
-            "**Cohen's κ** measures agreement between two raters beyond what chance would produce.\n\n"
-            "κ = 1.0 → perfect agreement  \n"
-            "κ = 0.0 → agreement at chance level  \n"
-            "κ < 0.0 → worse than chance\n\n"
-            "Two κ values are computed:\n"
-            "- **κ_baseline** — single-prompt judge vs human labels\n"
-            "- **κ_loop** — Judge+Critic loop vs human labels\n\n"
-            "**H3 is supported if κ_loop > κ_baseline.** Both values are reported "
-            "regardless of direction."
+            "**Cohen's κ** measures how much two raters agree beyond chance.\n\n"
+            "κ = 1.0: perfect agreement · κ = 0.0: chance level · κ < 0: worse than chance\n\n"
+            "H4 is supported if the loop's κ is higher than the baseline's κ."
         )
 
 
@@ -143,7 +127,7 @@ def _render_kappa(labels_df: pd.DataFrame) -> None:
     col_left, col_right = st.columns(2)
 
     with col_left:
-        st.markdown("**Cohen's κ — Baseline vs Loop**")
+        st.markdown("**Cohen's κ - Baseline vs Loop**")
         fig = go.Figure(
             go.Bar(
                 x=["Baseline (single-prompt)", "Loop (Judge+Critic)"],
@@ -201,15 +185,15 @@ def _render_kappa(labels_df: pd.DataFrame) -> None:
         st.plotly_chart(fig2, use_container_width=True)
 
     if k_loop > k_baseline:
-        with st.expander("H4 Result", expanded=True):
+        with st.expander("Analysis", expanded=True):
             st.write(
-                f"H3 supported — Judge+Critic loop (κ={k_loop:.3f}) agrees with human labels "
+                f"Judge+Critic loop (κ={k_loop:.3f}) agrees with human labels "
                 f"more than the single-prompt baseline (κ={k_baseline:.3f})."
             )
     else:
         with st.expander("H4 Result", expanded=True):
             st.write(
-                f"H3 not supported — loop (κ={k_loop:.3f}) does not improve over baseline "
+                f"Loop (κ={k_loop:.3f}) does not improve over baseline "
                 f"(κ={k_baseline:.3f}). Both results are reported regardless."
             )
 
@@ -342,7 +326,7 @@ def _render_example(eval_results: dict, labels_df: pd.DataFrame) -> None:
 
     with col_a:
         st.markdown("**Baseline judge**")
-        verdict = claim_row.get("baseline_label", "—")
+        verdict = claim_row.get("baseline_label", "-")
         color = {
             "correct": "#d4edda",
             "incorrect": "#f8d7da",
@@ -358,7 +342,7 @@ def _render_example(eval_results: dict, labels_df: pd.DataFrame) -> None:
 
     with col_b:
         st.markdown("**Judge + Critic + Verdict**")
-        verdict = claim_row.get("loop_label", "—")
+        verdict = claim_row.get("loop_label", "-")
         color = {
             "correct": "#d4edda",
             "incorrect": "#f8d7da",
@@ -369,22 +353,22 @@ def _render_example(eval_results: dict, labels_df: pd.DataFrame) -> None:
             f"font-weight:600; text-align:center; margin-bottom:0.8rem'>{verdict}</div>",
             unsafe_allow_html=True,
         )
-        with st.expander("Judge — initial"):
+        with st.expander("Judge - initial"):
             st.markdown(_extract_claim_section(data["judge_initial"], claim_number))
-        with st.expander("Critic — flags"):
+        with st.expander("Critic - flags"):
             st.markdown(
                 _extract_claim_section(
                     data["critic"],
                     claim_number,
-                    silent_msg="*This claim was not flagged by the Critic — initial verdict stands.*",
+                    silent_msg="*This claim was not flagged by the Critic - initial verdict stands.*",
                 )
             )
-        with st.expander("Judge — final verdict"):
+        with st.expander("Judge - final verdict"):
             st.markdown(
                 _extract_claim_section(
                     data["judge_final"],
                     claim_number,
-                    silent_msg="*This claim was not revised — verdict unchanged from initial Judge pass.*",
+                    silent_msg="*This claim was not revised - verdict unchanged from initial Judge pass.*",
                 )
             )
 
