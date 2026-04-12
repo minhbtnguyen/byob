@@ -3,7 +3,7 @@ from pathlib import Path
 
 import streamlit as st
 
-from dashboard_utils import data_analysis, hypothesis, references
+from dashboard_utils import data_analysis, hypothesis, modeling, references
 from dashboard_utils.theme import apply_theme
 
 st.set_page_config(
@@ -53,7 +53,7 @@ page = st.sidebar.selectbox(
 if page == "Exploratory Data Analysis (EDA)":
     data_analysis.render()
 elif page == "Modeling":
-    st.header("Modeling")
+    modeling.render()
 elif page == "Agentic Rating":
     st.header("Agentic Rating")
 elif page == "Agentic Simulation":
