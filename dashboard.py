@@ -5,6 +5,7 @@ import streamlit as st
 
 from dashboard_utils import (
     agentic_eval,
+    agentic_simulation,
     data_analysis,
     hypothesis,
     modeling,
@@ -13,7 +14,7 @@ from dashboard_utils import (
 from dashboard_utils.theme import apply_theme
 
 st.set_page_config(
-    page_title="BYOS: Bring Your Own Sustainability",
+    page_title="BYOB: Bring Your Own Bike",
     page_icon="🍎",
     layout="wide",
 )
@@ -29,7 +30,7 @@ st.markdown(
     f"""
 <div style="text-align:center; padding-top: 2rem;">
   <img src="data:image/png;base64,{_favicon_b64}" width="22" style="margin-bottom:1.2rem;" />
-  <h1 style="font-size:2.8rem; font-weight:700; letter-spacing:-0.03em; color:#1d1d1f; margin-bottom:0.2rem;">BYOS: Bring Your Own Sustainability</h1>
+  <h1 style="font-size:2.8rem; font-weight:700; letter-spacing:-0.03em; color:#1d1d1f; margin-bottom:0.2rem;">BYOB: Bring Your Own Bike</h1>
   <p style="font-size:1.2rem; font-weight:400; color:#6e6e73; margin-top:0;">An Agentic Mobility Pipeline for Personal Carbon Insights</p>
 </div>
 <hr style="border:none; border-top:1px solid #e0e0e5; margin:2rem 0;">
@@ -38,7 +39,9 @@ st.markdown(
 )
 
 with st.sidebar.container(border=True):
-    st.markdown("**Developer:** [Minh Nguyen](https://minhbtnguyen.com/)")
+    st.markdown(
+        "**Researched & Engineered by** [Minh Nguyen](https://minhbtnguyen.com/)"
+    )
     st.markdown("**Apple Coding Assessment: 04/13/2026**")
 
 page = st.sidebar.selectbox(
@@ -65,7 +68,7 @@ elif page == "Commute Mode Predictor":
 elif page == "Agentic Evaluation vs Human Evaluation":
     agentic_eval.render()
 elif page == "Human Psychology via Agentic Simulation":
-    st.header("Human Psychology via Agentic Simulation")
+    agentic_simulation.render()
 elif page == "Proposed Apple Products":
     st.header("Proposed Apple Products")
 elif page == "References":
