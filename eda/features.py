@@ -17,22 +17,31 @@ import pandas as pd
 
 # ── Constants ─────────────────────────────────────────────────────────────────
 
-WINDOW_SEC       = 30    # window length in seconds
-STRIDE_SEC       = 15    # stride between window starts (50% overlap)
-MIN_POINTS       = 5     # minimum GPS points per window to be usable
-SPEED_LIMIT_KMH  = 250   # points above this are GPS anomalies → discard window
-MIN_WINDOWS_USER = 50    # skip users with fewer than this many labeled windows
+WINDOW_SEC = 30  # window length in seconds
+STRIDE_SEC = 15  # stride between window starts (50% overlap)
+MIN_POINTS = 5  # minimum GPS points per window to be usable
+SPEED_LIMIT_KMH = 250  # points above this are GPS anomalies → discard window
+MIN_WINDOWS_USER = 50  # skip users with fewer than this many labeled windows
 MAX_WINDOWS_USER = 5000  # cap per user to prevent heavy users dominating
 
 # Core 4 modes — taxi merged into car, subway/boat/airplane dropped (too rare)
 TARGET_MODES = {"walk", "bike", "bus", "car"}
-MODE_MERGE   = {"taxi": "car", "run": "walk", "subway": None, "boat": None, "airplane": None}
+MODE_MERGE = {
+    "taxi": "car",
+    "run": "walk",
+    "subway": None,
+    "boat": None,
+    "airplane": None,
+}
 
 # ── Parsers ───────────────────────────────────────────────────────────────────
 
+
 def parse_plt(filepath: Path) -> pd.DataFrame:
     df = pd.read_csv(
-        filepath, skiprows=6, header=None,
+        filepath,
+        skiprows=6,
+        header=None,
         names=["lat", "lon", "_zero", "altitude", "days", "date", "time"],
     )
     df["datetime"] = pd.to_datetime(df["date"] + " " + df["time"])
@@ -41,11 +50,14 @@ def parse_plt(filepath: Path) -> pd.DataFrame:
 
 def parse_labels(user_dir: Path) -> pd.DataFrame:
     df = pd.read_csv(
-        user_dir / "labels.txt", sep="\t", skiprows=1, header=None,
+        user_dir / "labels.txt",
+        sep="\t",
+        skiprows=1,
+        header=None,
         names=["start", "end", "mode"],
     )
     df["start"] = pd.to_datetime(df["start"])
-    df["end"]   = pd.to_datetime(df["end"])
+    df["end"] = pd.to_datetime(df["end"])
     df["mode"] = df["mode"].str.lower().str.strip().replace(MODE_MERGE)
     # Drop rows where mode mapped to None (subway, boat, airplane)
     df = df[df["mode"].notna() & df["mode"].isin(TARGET_MODES)]
@@ -54,26 +66,30 @@ def parse_labels(user_dir: Path) -> pd.DataFrame:
 
 # ── Geometry helpers ──────────────────────────────────────────────────────────
 
+
 def haversine_m(lat1, lon1, lat2, lon2) -> np.ndarray:
     """Vectorised haversine distance in metres between consecutive point pairs."""
     R = 6_371_000
     phi1, phi2 = np.radians(lat1), np.radians(lat2)
-    a = (np.sin(np.radians(lat2 - lat1) / 2) ** 2
-         + np.cos(phi1) * np.cos(phi2) * np.sin(np.radians(lon2 - lon1) / 2) ** 2)
+    a = (
+        np.sin(np.radians(lat2 - lat1) / 2) ** 2
+        + np.cos(phi1) * np.cos(phi2) * np.sin(np.radians(lon2 - lon1) / 2) ** 2
+    )
     return 2 * R * np.arcsin(np.sqrt(np.clip(a, 0, 1)))
 
 
 def compute_bearing(lat1, lon1, lat2, lon2) -> np.ndarray:
     """Compass bearing in degrees [0, 360) between consecutive point pairs."""
-    dlon   = np.radians(lon2 - lon1)
-    lat1r  = np.radians(lat1)
-    lat2r  = np.radians(lat2)
+    dlon = np.radians(lon2 - lon1)
+    lat1r = np.radians(lat1)
+    lat2r = np.radians(lat2)
     x = np.sin(dlon) * np.cos(lat2r)
     y = np.cos(lat1r) * np.sin(lat2r) - np.sin(lat1r) * np.cos(lat2r) * np.cos(dlon)
     return np.degrees(np.arctan2(x, y)) % 360
 
 
 # ── Per-window feature extraction ─────────────────────────────────────────────
+
 
 def extract_features(window: pd.DataFrame) -> Optional[dict]:
     """
@@ -84,15 +100,15 @@ def extract_features(window: pd.DataFrame) -> Optional[dict]:
     if len(window) < MIN_POINTS:
         return None
 
-    lats  = window["lat"].values
-    lons  = window["lon"].values
+    lats = window["lat"].values
+    lons = window["lon"].values
     times = window["datetime"].values.astype("datetime64[s]").astype(np.float64)
 
     # Distances and time deltas between consecutive points
     dist_m = np.zeros(len(window))
-    dt_s   = np.zeros(len(window))
+    dt_s = np.zeros(len(window))
     dist_m[1:] = haversine_m(lats[:-1], lons[:-1], lats[1:], lons[1:])
-    dt_s[1:]   = np.diff(times)
+    dt_s[1:] = np.diff(times)
 
     # Speed (km/h) — guard against zero dt
     with np.errstate(divide="ignore", invalid="ignore"):
@@ -114,31 +130,32 @@ def extract_features(window: pd.DataFrame) -> Optional[dict]:
 
     # Bearing variance (direction change — high for walk/bus, low for subway)
     if len(lats) > 2:
-        bearings     = compute_bearing(lats[:-1], lons[:-1], lats[1:], lons[1:])
-        bearing_var  = float(np.var(bearings))
+        bearings = compute_bearing(lats[:-1], lons[:-1], lats[1:], lons[1:])
+        bearing_var = float(np.var(bearings))
     else:
-        bearing_var  = 0.0
+        bearing_var = 0.0
 
     return {
-        "speed_mean":        float(np.mean(speed_kmh)),
-        "speed_max":         float(np.max(speed_kmh)),
-        "speed_std":         float(np.std(speed_kmh)),
-        "accel_mean":        float(np.mean(np.abs(accel))),
-        "accel_std":         float(np.std(accel)),
-        "jerk_mean":         float(np.mean(np.abs(jerk))),
-        "stop_ratio":        float(np.mean(speed_kmh < 1.0)),
-        "bearing_variance":  bearing_var,
-        "distance_total_m":  float(np.sum(dist_m)),
+        "speed_mean": float(np.mean(speed_kmh)),
+        "speed_max": float(np.max(speed_kmh)),
+        "speed_std": float(np.std(speed_kmh)),
+        "accel_mean": float(np.mean(np.abs(accel))),
+        "accel_std": float(np.std(accel)),
+        "jerk_mean": float(np.mean(np.abs(jerk))),
+        "stop_ratio": float(np.mean(speed_kmh < 1.0)),
+        "bearing_variance": bearing_var,
+        "distance_total_m": float(np.sum(dist_m)),
     }
 
 
 # ── Label assignment ──────────────────────────────────────────────────────────
 
+
 def assign_label(
     window_start: pd.Timestamp,
-    window_end:   pd.Timestamp,
-    labels:       pd.DataFrame,
-    min_overlap:  float = 0.5,
+    window_end: pd.Timestamp,
+    labels: pd.DataFrame,
+    min_overlap: float = 0.5,
 ) -> Optional[str]:
     """
     Return the mode label with the most overlap with this window,
@@ -149,8 +166,8 @@ def assign_label(
 
     # Compute overlap duration with each label interval
     overlap_start = labels["start"].clip(lower=window_start)
-    overlap_end   = labels["end"].clip(upper=window_end)
-    overlap_sec   = (overlap_end - overlap_start).dt.total_seconds().clip(lower=0)
+    overlap_end = labels["end"].clip(upper=window_end)
+    overlap_sec = (overlap_end - overlap_start).dt.total_seconds().clip(lower=0)
 
     best_idx = overlap_sec.idxmax()
     if overlap_sec[best_idx] / window_dur >= min_overlap:
@@ -159,6 +176,7 @@ def assign_label(
 
 
 # ── Per-user processing ───────────────────────────────────────────────────────
+
 
 def load_trajectory(user_dir: Path) -> pd.DataFrame:
     """Load and merge all .plt files for a user into one time-sorted DataFrame."""
@@ -205,9 +223,9 @@ def process_user(user_dir: Path) -> tuple[list[dict], str]:
             w_end = t + pd.Timedelta(seconds=window_sec)
 
             # O(log n) slice using searchsorted on unix timestamps
-            t_int     = int(t.timestamp())
+            t_int = int(t.timestamp())
             w_end_int = int(w_end.timestamp())
-            lo = np.searchsorted(ts, t_int,     side="left")
+            lo = np.searchsorted(ts, t_int, side="left")
             hi = np.searchsorted(ts, w_end_int, side="left")
             window = traj.iloc[lo:hi]
 
@@ -215,13 +233,15 @@ def process_user(user_dir: Path) -> tuple[list[dict], str]:
             mode = label_row["mode"]
             feats = extract_features(window)
             if feats is not None:
-                rows.append({
-                    "user":         user_dir.name,
-                    "window_start": t,
-                    "window_end":   w_end,
-                    "mode":         mode,
-                    **feats,
-                })
+                rows.append(
+                    {
+                        "user": user_dir.name,
+                        "window_start": t,
+                        "window_end": w_end,
+                        "mode": mode,
+                        **feats,
+                    }
+                )
 
             t += pd.Timedelta(seconds=stride_sec)
 
@@ -234,7 +254,9 @@ def process_user(user_dir: Path) -> tuple[list[dict], str]:
 # ── Main entry point ──────────────────────────────────────────────────────────
 
 # Default cache location relative to this file
-_DEFAULT_CACHE = Path(__file__).parent.parent / "data" / "processed" / "features.parquet"
+_DEFAULT_CACHE = (
+    Path(__file__).parent.parent / "data" / "processed" / "features.parquet"
+)
 
 
 def build_feature_dataset(
@@ -270,10 +292,9 @@ def build_feature_dataset(
     # Build from scratch — sequential with progress bar
     from tqdm import tqdm
 
-    labeled_users = sorted([
-        d for d in data_dir.iterdir()
-        if d.is_dir() and (d / "labels.txt").exists()
-    ])
+    labeled_users = sorted(
+        [d for d in data_dir.iterdir() if d.is_dir() and (d / "labels.txt").exists()]
+    )
 
     all_rows = []
     for user_dir in tqdm(labeled_users, desc="Processing users"):

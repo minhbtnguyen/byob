@@ -13,10 +13,13 @@ st.set_page_config(
 
 apply_theme()
 
-_favicon_path = Path(__file__).parent / "dashboard_utils" / "images" / "apple_favicon.png"
+_favicon_path = (
+    Path(__file__).parent / "dashboard_utils" / "images" / "apple_favicon.png"
+)
 _favicon_b64 = base64.b64encode(_favicon_path.read_bytes()).decode()
 
-st.markdown(f"""
+st.markdown(
+    f"""
 <nav class="byos-navbar">
   <img src="data:image/png;base64,{_favicon_b64}" width="22" />
 </nav>
@@ -27,4 +30,6 @@ st.markdown(f"""
   </div>
   <hr style="border:none; border-top:1px solid #e0e0e5; margin:2rem 0;">
 </div>
-""", unsafe_allow_html=True)
+""",
+    unsafe_allow_html=True,
+)

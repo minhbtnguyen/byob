@@ -2,7 +2,8 @@ import streamlit as st
 
 
 def apply_theme() -> None:
-    st.markdown("""
+    st.markdown(
+        """
 <style>
   /* ── Fonts ── */
   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
@@ -140,4 +141,6 @@ def apply_theme() -> None:
     margin-top: 72px;
   }
 </style>
-""", unsafe_allow_html=True)
+""",
+        unsafe_allow_html=True,
+    )
