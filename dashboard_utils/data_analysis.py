@@ -404,38 +404,28 @@ def _render_speed_profiles(data_root: str) -> None:
         )
         fig.layout.annotations[i].text = f"{mode}  (n={len(data):,})  med={med:.1f}"
     fig.update_layout(
-        title="Speed Distribution by Transport Mode",
         height=500,
         margin=dict(t=60, b=40),
     )
     fig.update_xaxes(title_text="Speed (km/h)")
+    st.markdown("### Speed Distribution by Transport Mode")
     st.plotly_chart(fig, use_container_width=True)
 
-    st.markdown("---")
-
-    stop_rows = []
-    for mode in _TARGET_MODES:
-        speeds = sbm.get(mode, [])
-        if speeds:
-            arr = np.array(speeds)
-            stop_rows.append(
-                {"mode": mode, "pct_stopped": float((arr < 1.0).mean() * 100)}
-            )
-    stop_df = pd.DataFrame(stop_rows).sort_values("pct_stopped", ascending=False)
-    fig2 = go.Figure(
-        go.Bar(
-            x=stop_df["mode"].tolist(),
-            y=stop_df["pct_stopped"].tolist(),
-            marker_color="#ff6b35",
+    with st.expander("Analysis", expanded=True):
+        st.write(
+            "We expect clearly separated medians: walk ~5 km/h, bike ~12 km/h, bus/car ~25–40 km/h, "
+            "subway ~35–50 km/h. The hard classification problems are:"
         )
-    )
-    fig2.update_layout(
-        title="Stop Density by Mode (% points at speed < 1 km/h)",
-        yaxis_title="% stopped",
-        height=300,
-        margin=dict(t=40, b=40),
-    )
-    st.plotly_chart(fig2, use_container_width=True)
+        st.markdown(
+            "- **Bus vs car**: similar speed ranges with substantial overlap — stop density and "
+            "bearing variance will be the separating features\n"
+            "- **Subway vs car/bus**: similar speeds but subway has no traffic-light stops — "
+            "stop density helps here\n"
+            "- **Taxi vs car**: nearly identical — likely not separable from speed alone"
+        )
+        st.write(
+            "If walk and car distributions overlap significantly, it indicates label noise in the dataset."
+        )
 
 
 def _render_temporal(data_root: str) -> None:
@@ -656,8 +646,13 @@ def render() -> None:
     _root_str = str(_DATASET_ROOT)
 
     # -- Raw trajectory viewer -------------------------------------------------
-    tab1, tab2, tab3 = st.tabs(
-        ["Raw Trajectory Viewer", "User Analysis", "Commute Mode Analysis"]
+    tab1, tab2, tab3, tab4 = st.tabs(
+        [
+            "Raw Trajectory Viewer",
+            "User Analysis",
+            "Commute Mode Analysis",
+            "Motion Analysis",
+        ]
     )
 
     with tab1:
@@ -669,8 +664,8 @@ def render() -> None:
     with tab3:
         _render_mode_distribution(_root_str)
 
-    # with st.expander("⚡ 3. Speed & Motion Profiles by Mode"):
-    #     _render_speed_profiles(_root_str)
+    with tab4:
+        _render_speed_profiles(_root_str)
 
     # with st.expander("🕐 4. Temporal Patterns — Time of Day & Short Car Trips"):
     #     _render_temporal(_root_str)
