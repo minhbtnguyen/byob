@@ -3,6 +3,7 @@ from pathlib import Path
 
 import streamlit as st
 
+from dashboard_utils import hypothesis
 from dashboard_utils.theme import apply_theme
 
 st.set_page_config(
@@ -33,3 +34,36 @@ st.markdown(
 """,
     unsafe_allow_html=True,
 )
+
+tab1, tab2, tab3, tab4, tab5, tab6, tab7 = st.tabs(
+    [
+        "Hypothesis",
+        "Data & Analysis",
+        "Modeling",
+        "Agentic Rating",
+        "Agentic Simulation",
+        "Potential Products",
+        "References",
+    ]
+)
+
+with tab1:
+    hypothesis.render()
+
+with tab2:
+    st.header("Data & Analysis")
+
+with tab3:
+    st.header("Modeling")
+
+with tab4:
+    st.header("Agentic Rating")
+
+with tab5:
+    st.header("Agentic Simulation")
+
+with tab6:
+    st.header("Potential Products")
+
+with tab7:
+    st.header("References")

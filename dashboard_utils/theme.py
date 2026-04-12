@@ -140,6 +140,47 @@ def apply_theme() -> None:
   .byos-page-content {
     margin-top: 72px;
   }
+
+  /* ── Tabs ── */
+  .stTabs [data-baseweb="tab-list"] {
+    gap: 0;
+    border-bottom: 1px solid #e0e0e5;
+    background: transparent;
+  }
+
+  .stTabs [data-baseweb="tab"] {
+    font-family: 'Inter', -apple-system, sans-serif;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #6e6e73;
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid transparent;
+    padding: 0.6rem 1.2rem;
+    margin-bottom: -1px;
+    letter-spacing: -0.01em;
+    transition: color 0.15s ease;
+  }
+
+  .stTabs [data-baseweb="tab"]:hover {
+    color: #1d1d1f;
+    background: transparent;
+  }
+
+  .stTabs [aria-selected="true"] {
+    color: #1d1d1f !important;
+    border-bottom: 2px solid #1d1d1f !important;
+    background: transparent !important;
+  }
+
+  .stTabs [data-baseweb="tab-highlight"] {
+    display: none;
+  }
+
+  .stTabs [data-baseweb="tab-panel"] {
+    padding-top: 1.5rem;
+    background: transparent;
+  }
 </style>
 """,
         unsafe_allow_html=True,
