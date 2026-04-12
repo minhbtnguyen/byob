@@ -84,6 +84,12 @@ def apply_theme() -> None:
     border-right: 1px solid #e0e0e5;
   }
 
+  /* ── Hide sidebar collapse/expand buttons ── */
+  [data-testid="stSidebarCollapseButton"],
+  [data-testid="stSidebarCollapsedControl"] {
+    display: none !important;
+  }
+
   /* ── Buttons ── */
   .stButton > button {
     background-color: #0071e3;
