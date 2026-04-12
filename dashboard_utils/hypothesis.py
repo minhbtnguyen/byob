@@ -46,12 +46,6 @@ def render() -> None:
 
     with st.expander("Extra: Potential Apple Products"):
         st.markdown(
-            "Based on the analyses above, we propose three Apple features that put this pipeline into a real product:\n\n"
-            "- **Commute Copilot** - classifies your trips, estimates your carbon footprint on-device, "
-            "and delivers a weekly Claude-generated report with fact-checked numbers\n"
-            "- **Carbon Ring** - a new ring in Apple Health that rewards low-carbon travel with points "
-            "redeemable for carbon offsets or Watch features, backed by the behaviour simulation results\n"
-            "- **Apple Green Impact** - aggregates user footprints privately to give Apple a "
-            "user-behaviour ESG metric, strengthening its sustainability story and ESG rating\n\n"
-            "Details are in the **Proposed Apple Products** tab."
+            "Based on the analyses above, we propose three Apple features that put this pipeline into real products\n\n"
         )
+        st.caption("Analysis is in **Proposed Apple Products** tab.")

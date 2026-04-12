@@ -1,38 +1,30 @@
 # Data download
-kagglehub
+kagglehub==0.3.13
 
-# Data processing & EDA
-numpy
-pandas
-scipy
-scikit-learn
+# Data processing
+numpy==1.24.4
+pandas==2.0.3
+scipy==1.11.4
+scikit-learn==1.3.2
 
 # Gradient boosted trees
-xgboost
-lightgbm
-shap
-
-# Geospatial
-geopandas
-shapely
-pyproj
+lightgbm==4.1.0
+shap==0.44.0
 
 # Visualization
-matplotlib
-seaborn
-plotly
+matplotlib==3.8.2
+seaborn==0.13.0
+plotly==5.18.0
 
 # Dashboard
-streamlit==1.50.0
+streamlit==1.35.0
 
 # LLM agents
-anthropic
-langchain
-langchain-anthropic
+anthropic==0.39.0
 
 # Utilities
-tqdm
-python-dotenv
-pyyaml
-jupyterlab
-ipykernel
+tqdm==4.66.4
+python-dotenv==1.0.1
+pyyaml==6.0.1
+jupyterlab==4.0.10
+ipykernel==6.27.1
