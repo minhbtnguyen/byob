@@ -51,7 +51,7 @@ page = st.sidebar.selectbox(
         "Exploratory Data Analysis (EDA)",
         "Commute Mode Predictor",
         "Agentic Evaluation vs Human Evaluation",
-        "Human Psychology via Agentic Simulation",
+        "Agentic Behaviour Simulation",
         "Proposed Apple Products",
         "References",
     ],
@@ -67,7 +67,7 @@ elif page == "Commute Mode Predictor":
     modeling.render()
 elif page == "Agentic Evaluation vs Human Evaluation":
     agentic_eval.render()
-elif page == "Human Psychology via Agentic Simulation":
+elif page == "Agentic Behaviour Simulation":
     agentic_simulation.render()
 elif page == "Proposed Apple Products":
     st.header("Proposed Apple Products")
