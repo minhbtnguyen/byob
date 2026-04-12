@@ -612,29 +612,18 @@ def _render_map():
 
 
 def render() -> None:
-    st.markdown(
-        "### Dataset [Microsoft Geolife GPS Trajectories](https://www.kaggle.com/datasets/arashnic/microsoft-geolife-gps-trajectory-dataset/data)"
-    )
-
-    col1, col2, col3, col4 = st.columns(4)
-    col1.metric("Users", "182")
-    col2.metric("Trajectories", "17,621")
-    col3.metric("Total Distance", "1.29M km")
-    col4.metric("Total Duration", "50,176 hrs")
-
-    st.markdown(
-        "Collected by Microsoft Research Asia from **April 2007 to August 2012**. "
-        "Each trajectory is a sequence of time-stamped GPS points (latitude, longitude, altitude). "
-        "91.5% of trajectories are logged at high density - every 1-5 seconds or every 5-10 meters."
-    )
-
-    st.markdown(
-        "The dataset captures a broad range of outdoor movements: daily commutes, shopping, sightseeing, "
-        "hiking, and cycling. Data spans 30+ cities in China plus some in the USA and Europe, "
-        "though the majority originates from **Beijing**."
-    )
-
-    st.markdown("---")
+    with st.sidebar.container(border=True):
+        st.markdown(
+            "[Microsoft Geolife GPS Trajectories Dataset](https://www.kaggle.com/datasets/arashnic/microsoft-geolife-gps-trajectory-dataset/data)"
+        )
+        st.caption(
+            "Microsoft Research Asia · Apr 2007 - Aug 2012 · "
+            "GPS points every 1-5 s · 30+ cities, mostly Beijing."
+        )
+        st.markdown("**Users** 182")
+        st.markdown("**Trajectories** 17,621")
+        st.markdown("**Distance** 1.29M km")
+        st.markdown("**Duration** 50,176 hrs")
 
     if not _DATASET_ROOT.exists():
         st.warning("Dataset not found. Run the kagglehub download cell first.")
