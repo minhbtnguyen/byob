@@ -138,27 +138,7 @@ def apply_theme() -> None:
     padding-top: 0 !important;
   }
 
-  /* ── Custom navbar ── */
-  .byos-navbar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 999;
-    height: 52px;
-    background: rgba(245,245,247,0.85);
-    backdrop-filter: saturate(180%) blur(20px);
-    -webkit-backdrop-filter: saturate(180%) blur(20px);
-    border-bottom: 1px solid rgba(0,0,0,0.08);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
 
-  /* ── Push page content below fixed navbar ── */
-  .byos-page-content {
-    margin-top: 72px;
-  }
 
   /* ── Tabs ── */
   .stTabs [data-baseweb="tab-list"] {
