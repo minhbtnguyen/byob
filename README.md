@@ -109,6 +109,50 @@ The dashboard runs at `http://localhost:8501`.
 
 ---
 
+## Docker + AWS Deployment
+
+### Build and run locally
+
+```bash
+# Build
+docker build -t geolife-dashboard .
+
+# Run (pass your API key as an env var — never bake it into the image)
+docker run -p 8501:8501 -e ANTHROPIC_API_KEY=your_key_here geolife-dashboard
+```
+
+Open `http://localhost:8501`.
+
+### Deploy to AWS App Runner
+
+App Runner is the simplest AWS option — no servers to manage, just push an image.
+
+**1. Push image to ECR**
+
+```bash
+aws ecr create-repository --repository-name geolife-dashboard --region us-east-1
+
+aws ecr get-login-password --region us-east-1 \
+  | docker login --username AWS --password-stdin <account_id>.dkr.ecr.us-east-1.amazonaws.com
+
+docker tag geolife-dashboard:latest <account_id>.dkr.ecr.us-east-1.amazonaws.com/geolife-dashboard:latest
+docker push <account_id>.dkr.ecr.us-east-1.amazonaws.com/geolife-dashboard:latest
+```
+
+**2. Create App Runner service**
+
+In the AWS Console → App Runner → Create service:
+- Source: ECR image you just pushed
+- Port: `8501`
+- Environment variable: `ANTHROPIC_API_KEY = your_key_here`
+- Instance: 1 vCPU / 2 GB RAM is sufficient
+
+App Runner gives you a public HTTPS URL automatically.
+
+> **Note:** The EDA tab requires the Geolife dataset (`~/.cache/kagglehub/`) which is not bundled in the image. It will show a "dataset not found" warning. All other tabs (Mode Predictor, Agentic Evaluation, Behaviour Simulation, Products) work fully from the pre-built outputs in `reports/` and `models/`.
+
+---
+
 ## Results Summary
 
 | Hypothesis | Result |
