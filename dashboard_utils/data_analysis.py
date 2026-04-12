@@ -86,20 +86,6 @@ def _haversine_m(lat1, lon1, lat2, lon2):
 
 
 @st.cache_data(show_spinner=False, persist="disk")
-def _compute_sampling_gaps(data_root: str) -> np.ndarray:
-    root = Path(data_root)
-    gaps = []
-    for user_dir in sorted(root.iterdir()):
-        if not user_dir.is_dir():
-            continue
-        for f in sorted((user_dir / "Trajectory").glob("*.plt"))[:5]:
-            df = _parse_plt_full(f)
-            dt = df["datetime"].diff().dt.total_seconds().dropna()
-            gaps.extend(dt[(dt > 0) & (dt < 300)].tolist())
-    return np.array(gaps)
-
-
-@st.cache_data(show_spinner=False, persist="disk")
 def _compute_label_coverage(data_root: str) -> pd.DataFrame:
     root = Path(data_root)
     labeled = [
@@ -122,32 +108,6 @@ def _compute_label_coverage(data_root: str) -> pd.DataFrame:
             }
         )
     return pd.DataFrame(rows).sort_values("pct_labeled")
-
-
-@st.cache_data(show_spinner=False, persist="disk")
-def _compute_speed_anomalies(data_root: str) -> pd.DataFrame:
-    root = Path(data_root)
-    rows = []
-    for user_dir in sorted(root.iterdir()):
-        if not user_dir.is_dir():
-            continue
-        for f in sorted((user_dir / "Trajectory").glob("*.plt"))[:10]:
-            df = _parse_plt_full(f).reset_index(drop=True)
-            if len(df) < 2:
-                continue
-            dist = _haversine_m(
-                df["lat"].values[:-1],
-                df["lon"].values[:-1],
-                df["lat"].values[1:],
-                df["lon"].values[1:],
-            )
-            dt_s = df["datetime"].diff().dt.total_seconds().values[1:]
-            with np.errstate(divide="ignore", invalid="ignore"):
-                speed_kmh = np.where(dt_s > 0, (dist / dt_s) * 3.6, 0)
-            n = int((speed_kmh > 250).sum())
-            if n:
-                rows.append({"user": user_dir.name, "file": f.name, "anomalies": n})
-    return pd.DataFrame(rows)
 
 
 @st.cache_data(show_spinner=False, persist="disk")
@@ -221,6 +181,60 @@ def _compute_emissions(data_root: str) -> pd.DataFrame:
 
 
 # -- Section renderers ---------------------------------------------------------
+
+
+def _render_map():
+    st.markdown("#### Raw Trajectory Viewer")
+    users = sorted([p.name for p in _DATASET_ROOT.iterdir() if p.is_dir()])
+    sel_col1, sel_col2 = st.columns(2)
+    with sel_col1:
+        selected_user = st.selectbox("Select user", users, index=0)
+    plt_files = sorted((_DATASET_ROOT / selected_user / "Trajectory").glob("*.plt"))
+    if not plt_files:
+        st.warning("No trajectory files found for this user.")
+    else:
+        with sel_col2:
+            selected_file = st.selectbox(
+                "Select trajectory", [f.name for f in plt_files], index=0
+            )
+        df = _load_plt(_DATASET_ROOT / selected_user / "Trajectory" / selected_file)
+        col_map, col_table = st.columns([3, 2])
+        with col_map:
+            fig = go.Figure(
+                go.Scattermap(
+                    lat=df["lat"].tolist(),
+                    lon=df["lon"].tolist(),
+                    mode="lines+markers",
+                    line=dict(width=3, color="#0071e3"),
+                    marker=dict(size=4, color="#0071e3"),
+                    hovertext=df["datetime"].astype(str).tolist(),
+                )
+            )
+            fig.update_layout(
+                map=dict(
+                    style="open-street-map",
+                    center=dict(
+                        lat=float(df["lat"].mean()), lon=float(df["lon"].mean())
+                    ),
+                    zoom=13,
+                ),
+                margin=dict(l=0, r=0, t=0, b=0),
+                height=420,
+                showlegend=False,
+            )
+            st.plotly_chart(fig, config={"displayModeBar": False})
+        with col_table:
+            st.dataframe(
+                df.head(50).rename(
+                    columns={
+                        "datetime": "Datetime",
+                        "lat": "Latitude",
+                        "lon": "Longitude",
+                        "altitude_ft": "Altitude (ft)",
+                    }
+                ),
+                height=420,
+            )
 
 
 def _render_health(data_root: str) -> None:
@@ -431,7 +445,6 @@ def _render_speed_profiles(data_root: str) -> None:
 def _render_temporal(data_root: str) -> None:
     with st.spinner("Loading labels..."):
         all_labels = _load_all_labels(data_root)
-        sbm = _compute_speed_by_mode(data_root)
 
     al = all_labels.copy()
     al["hour"] = al["start"].dt.hour
@@ -453,51 +466,25 @@ def _render_temporal(data_root: str) -> None:
             )
         )
     fig.update_layout(
-        title="Trip Start Time by Mode",
         xaxis_title="Hour of day",
         yaxis_title="Trip count",
         xaxis=dict(tickmode="linear", dtick=2),
         height=350,
-        margin=dict(t=40, b=40),
+        margin=dict(t=20, b=40),
     )
+    st.markdown("### Trip Start Time by Mode")
     st.plotly_chart(fig, use_container_width=True)
 
-    st.markdown("---")
-
-    car_speeds = sbm.get("car", [])
-    car_med_kmh = float(np.median(car_speeds)) if car_speeds else 30.0
-    car_trips = al[al["mode"] == "car"].copy()
-    car_trips["est_dist_km"] = (car_trips["duration_min"] / 60) * car_med_kmh
-    sub3 = car_trips[car_trips["est_dist_km"] < 3]
-    pct = 100 * len(sub3) / len(car_trips) if len(car_trips) else 0
-
-    fig2 = go.Figure(
-        go.Histogram(
-            x=car_trips["est_dist_km"].clip(upper=50).tolist(),
-            nbinsx=40,
-            marker_color="#0071e3",
-            marker_line_color="white",
-            marker_line_width=0.5,
+    with st.expander("Analysis", expanded=True):
+        st.write(
+            "We expect morning (8–9am) and evening (5–7pm) peaks for car, bus, and subway — typical "
+            "commute patterns. Walk and bike are likely more distributed throughout the day. A flat "
+            "temporal distribution across all modes would suggest the Geolife users were not typical "
+            "commuters, which is plausible — many were university researchers. If commute peaks are "
+            "visible, this strengthens the counterfactual story: the highest-emissions car trips are "
+            "concentrated in predictable windows, making them ideal targets for behavior-change "
+            "recommendations."
         )
-    )
-    fig2.add_vline(
-        x=3,
-        line_dash="dash",
-        line_color="red",
-        annotation_text=f"3 km ({pct:.1f}% of trips)",
-    )
-    fig2.update_layout(
-        title="Car Trip Distance Distribution",
-        xaxis_title="Estimated trip distance (km)",
-        yaxis_title="Trip count",
-        height=300,
-        margin=dict(t=40, b=40),
-    )
-    st.plotly_chart(fig2, use_container_width=True)
-    st.caption(
-        f"Car trips under 3 km: **{len(sub3):,} / {len(car_trips):,}** "
-        f"({pct:.1f}%) — potentially bike-replaceable"
-    )
 
 
 def _render_emissions(data_root: str) -> None:
@@ -521,40 +508,60 @@ def _render_emissions(data_root: str) -> None:
     )
     user_co2["co2_kg"] = user_co2["co2_g"] / 1000
 
-    col_a, col_b = st.columns(2)
-    with col_a:
-        fig = go.Figure(
-            go.Bar(
-                y=mode_co2["mode"].tolist(),
-                x=mode_co2["co2_kg"].tolist(),
-                orientation="h",
-                marker_color="#ff6b35",
-            )
+    fig = go.Figure(
+        go.Bar(
+            y=mode_co2["mode"].tolist(),
+            x=mode_co2["co2_kg"].tolist(),
+            orientation="h",
+            marker_color="#ff6b35",
         )
-        fig.update_layout(
-            title="Total CO\u2082 by Mode (all users)",
-            xaxis_title="Total CO\u2082 (kg)",
-            height=300,
-            margin=dict(t=40, b=40),
+    )
+    fig.update_layout(
+        xaxis_title="Total CO\u2082 (kg)",
+        height=300,
+        margin=dict(t=20, b=40),
+    )
+    st.markdown("### Total CO\u2082 by Mode (all users)")
+    st.plotly_chart(fig, use_container_width=True)
+    with st.expander("Analysis", expanded=True):
+        st.write(
+            "Car will dominate total CO\u2082 despite not necessarily having the most trips — its "
+            "emission factor is 2\u20134\u00d7 higher than bus/subway per km. The counterfactual saving "
+            "percentage is the number to watch. If replacing sub-3 km car trips saves >20% of total "
+            "car emissions, the Green Commute Coach pitch is very strong. If it's <5%, the intervention "
+            "is marginal and the product story needs reframing toward longer-trip alternatives "
+            "(e.g. car-to-bus substitution)."
         )
-        st.plotly_chart(fig, use_container_width=True)
+        st.write(
+            "**Important caveat:** Distance here is estimated from duration \u00d7 median speed, not "
+            "computed from GPS coordinates. These numbers are directionally correct but not precise. "
+            "The full pipeline will compute actual haversine distances along each trajectory."
+        )
 
-    with col_b:
-        fig2 = go.Figure(
-            go.Bar(
-                y=user_co2["user"].tolist(),
-                x=user_co2["co2_kg"].tolist(),
-                orientation="h",
-                marker_color="#0071e3",
-            )
+    st.divider()
+
+    fig2 = go.Figure(
+        go.Bar(
+            y=user_co2["user"].tolist(),
+            x=user_co2["co2_kg"].tolist(),
+            orientation="h",
+            marker_color="#0071e3",
         )
-        fig2.update_layout(
-            title="Per-User CO\u2082 Footprint (top 20)",
-            xaxis_title="Total CO\u2082 (kg)",
-            height=300,
-            margin=dict(t=40, b=40),
+    )
+    fig2.update_layout(
+        xaxis_title="Total CO\u2082 (kg)",
+        height=300,
+        margin=dict(t=20, b=40),
+    )
+    st.markdown("### Per-User CO\u2082 Footprint (top 20)")
+    st.plotly_chart(fig2, use_container_width=True)
+    with st.expander("Analysis", expanded=True):
+        st.write(
+            "The per-user chart will show high variance: a few heavy car users will account for a "
+            "disproportionate share of total emissions, which is the classic Pareto pattern seen in "
+            "real mobility data. These high-emitters are the primary targets for the Green Commute "
+            "Coach — a small behavior change in this group yields outsized aggregate impact."
         )
-        st.plotly_chart(fig2, use_container_width=True)
 
     car_em = em_df[em_df["mode"] == "car"].copy()
     sub3_em = car_em[car_em["dist_km"] < 3]
@@ -569,60 +576,6 @@ def _render_emissions(data_root: str) -> None:
 
 
 # -- Main render ---------------------------------------------------------------
-
-
-def _render_map():
-    st.markdown("#### Raw Trajectory Viewer")
-    users = sorted([p.name for p in _DATASET_ROOT.iterdir() if p.is_dir()])
-    sel_col1, sel_col2 = st.columns(2)
-    with sel_col1:
-        selected_user = st.selectbox("Select user", users, index=0)
-    plt_files = sorted((_DATASET_ROOT / selected_user / "Trajectory").glob("*.plt"))
-    if not plt_files:
-        st.warning("No trajectory files found for this user.")
-    else:
-        with sel_col2:
-            selected_file = st.selectbox(
-                "Select trajectory", [f.name for f in plt_files], index=0
-            )
-        df = _load_plt(_DATASET_ROOT / selected_user / "Trajectory" / selected_file)
-        col_map, col_table = st.columns([3, 2])
-        with col_map:
-            fig = go.Figure(
-                go.Scattermap(
-                    lat=df["lat"].tolist(),
-                    lon=df["lon"].tolist(),
-                    mode="lines+markers",
-                    line=dict(width=3, color="#0071e3"),
-                    marker=dict(size=4, color="#0071e3"),
-                    hovertext=df["datetime"].astype(str).tolist(),
-                )
-            )
-            fig.update_layout(
-                map=dict(
-                    style="open-street-map",
-                    center=dict(
-                        lat=float(df["lat"].mean()), lon=float(df["lon"].mean())
-                    ),
-                    zoom=13,
-                ),
-                margin=dict(l=0, r=0, t=0, b=0),
-                height=420,
-                showlegend=False,
-            )
-            st.plotly_chart(fig, config={"displayModeBar": False})
-        with col_table:
-            st.dataframe(
-                df.head(50).rename(
-                    columns={
-                        "datetime": "Datetime",
-                        "lat": "Latitude",
-                        "lon": "Longitude",
-                        "altitude_ft": "Altitude (ft)",
-                    }
-                ),
-                height=420,
-            )
 
 
 def render() -> None:
@@ -646,12 +599,14 @@ def render() -> None:
     _root_str = str(_DATASET_ROOT)
 
     # -- Raw trajectory viewer -------------------------------------------------
-    tab1, tab2, tab3, tab4 = st.tabs(
+    tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs(
         [
             "Raw Trajectory Viewer",
             "User Analysis",
             "Commute Mode Analysis",
             "Motion Analysis",
+            "Temporal Analysis",
+            "Emission Review",
         ]
     )
 
@@ -667,8 +622,8 @@ def render() -> None:
     with tab4:
         _render_speed_profiles(_root_str)
 
-    # with st.expander("🕐 4. Temporal Patterns — Time of Day & Short Car Trips"):
-    #     _render_temporal(_root_str)
+    with tab5:
+        _render_temporal(_root_str)
 
-    # with st.expander("🌿 5. Emissions Preview — CO₂ by Mode & Counterfactual Savings"):
-    #     _render_emissions(_root_str)
+    with tab6:
+        _render_emissions(_root_str)
