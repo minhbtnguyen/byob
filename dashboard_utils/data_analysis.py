@@ -255,11 +255,10 @@ def _render_health(data_root: str) -> None:
         ),
     )
 
-    col_chart, col_text = st.columns([3, 1])
-    with col_chart:
-        st.plotly_chart(fig, use_container_width=True)
-    with col_text:
-        st.info(
+    st.plotly_chart(fig, use_container_width=True)
+
+    with st.expander("Analysis", expanded=True):
+        st.write(
             "Label coverage is typically low in this dataset — many users labeled only specific "
             "trips rather than their full recording history. Expect median coverage around 10–30%. "
             "Users with very low coverage (<5%) should be excluded from supervised training — "
@@ -284,40 +283,59 @@ def _render_mode_distribution(data_root: str) -> None:
     )
     md["hours"] = md["duration_min"] / 60
 
-    col_a, col_b = st.columns(2)
-    with col_a:
-        fig = go.Figure(
-            go.Bar(
-                y=mc["mode"].tolist(),
-                x=mc["count"].tolist(),
-                orientation="h",
-                marker_color="#0071e3",
-            )
+    fig = go.Figure(
+        go.Bar(
+            y=mc["mode"].tolist(),
+            x=mc["count"].tolist(),
+            orientation="h",
+            marker_color="#0071e3",
         )
-        fig.update_layout(
-            title="Trip Count by Mode",
-            xaxis_title="Segments",
-            height=300,
-            margin=dict(t=40, b=40),
+    )
+    fig.update_layout(
+        xaxis_title="Segments",
+        height=300,
+        margin=dict(t=20, b=40),
+    )
+    st.markdown("### Trip Count by Mode")
+    st.plotly_chart(fig, use_container_width=True)
+    with st.expander("Analysis", expanded=True):
+        st.write(
+            "Walk and bike tend to dominate trip count due to short, frequent trips. "
+            "If we train on trip count, walk and bike are overrepresented relative to their "
+            "real-world impact. Modes with fewer than ~200 trip segments should be considered "
+            "for grouping or dropping — e.g. merge taxi into car, merge all rail into a single "
+            "'rail' class — to avoid producing a classifier that technically learns rare labels "
+            "from only a handful of examples."
         )
-        st.plotly_chart(fig, use_container_width=True)
 
-    with col_b:
-        fig2 = go.Figure(
-            go.Bar(
-                y=md["mode"].tolist(),
-                x=md["hours"].tolist(),
-                orientation="h",
-                marker_color="#ff6b35",
-            )
+    st.divider()
+    fig2 = go.Figure(
+        go.Bar(
+            y=md["mode"].tolist(),
+            x=md["hours"].tolist(),
+            orientation="h",
+            marker_color="#ff6b35",
         )
-        fig2.update_layout(
-            title="Total Duration by Mode",
-            xaxis_title="Hours",
-            height=300,
-            margin=dict(t=40, b=40),
+    )
+    fig2.update_layout(
+        xaxis_title="Hours",
+        height=300,
+        margin=dict(t=20, b=40),
+    )
+    st.markdown("### Total Duration by Mode")
+    st.plotly_chart(fig2, use_container_width=True)
+    with st.expander("Analysis", expanded=True):
+        st.write(
+            "Walk and bike dominate total duration as well as trip count, which is somewhat "
+            "surprising — it means participants in this dataset accumulated thousands of hours "
+            "on foot or by bicycle, not just short frequent trips. This is consistent with the "
+            "Beijing urban context where walking and cycling are primary modes for short-haul "
+            "movement. The implication for modeling is that duration-based weighting does not "
+            "rescue minority classes like subway or taxi; class rebalancing will be needed "
+            "regardless of whether we weight by trip count or total time."
         )
-        st.plotly_chart(fig2, use_container_width=True)
+
+    st.divider()
 
     um = all_labels.groupby("user")["mode"].nunique().reset_index().sort_values("mode")
     fig3 = go.Figure(
@@ -328,19 +346,25 @@ def _render_mode_distribution(data_root: str) -> None:
         )
     )
     fig3.update_layout(
-        title="Mode Diversity per Labeled User",
         xaxis_title="User",
         yaxis_title="Distinct modes",
         height=300,
-        margin=dict(t=40, b=60),
+        margin=dict(t=20, b=60),
         xaxis_tickangle=90,
         xaxis_tickfont_size=7,
     )
+    st.markdown("### Mode Diversity per Labeled User")
     st.plotly_chart(fig3, use_container_width=True)
-    st.caption(
-        f"Median distinct modes per user: **{int(um['mode'].median())}** | "
-        f"Max: **{int(um['mode'].max())}**"
-    )
+    with st.expander("Analysis", expanded=True):
+        st.write(
+            "If most users only have 2–3 distinct modes, subject-independent cross-validation "
+            "becomes tricky — holding out a user leaves a gap in class coverage for that fold. "
+            "Users with only 1 mode contribute nothing to multi-class learning and should be "
+            "excluded from training; they inflate accuracy on their dominant class without "
+            "teaching the model anything about the others. Users with 4+ modes are the most "
+            "valuable training examples and should be weighted more heavily when constructing "
+            "train/validation splits."
+        )
 
 
 def _render_speed_profiles(data_root: str) -> None:
@@ -620,10 +644,10 @@ def render() -> None:
             "Microsoft Research Asia · Apr 2007 - Aug 2012 · "
             "GPS points every 1-5 s · 30+ cities, mostly Beijing."
         )
-        st.markdown("**Users** 182")
-        st.markdown("**Trajectories** 17,621")
-        st.markdown("**Distance** 1.29M km")
-        st.markdown("**Duration** 50,176 hrs")
+        st.markdown("**Users:** 182")
+        st.markdown("**Trajectories:** 17,621")
+        st.markdown("**Distance:** 1.29M km")
+        st.markdown("**Duration:** 50,176 hrs")
 
     if not _DATASET_ROOT.exists():
         st.warning("Dataset not found. Run the kagglehub download cell first.")
@@ -632,17 +656,18 @@ def render() -> None:
     _root_str = str(_DATASET_ROOT)
 
     # -- Raw trajectory viewer -------------------------------------------------
-    _render_map()
+    tab1, tab2, tab3 = st.tabs(
+        ["Raw Trajectory Viewer", "User Analysis", "Commute Mode Analysis"]
+    )
 
-    st.markdown("---")
-    _render_health(_root_str)
+    with tab1:
+        _render_map()
 
-    st.markdown("---")
-    _render_mode_distribution(_root_str)
+    with tab2:
+        _render_health(_root_str)
 
-    st.markdown("---")
-
-    st.markdown("---")
+    with tab3:
+        _render_mode_distribution(_root_str)
 
     # with st.expander("⚡ 3. Speed & Motion Profiles by Mode"):
     #     _render_speed_profiles(_root_str)

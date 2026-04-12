@@ -38,7 +38,7 @@ with st.sidebar.container(border=True):
 page = st.sidebar.selectbox(
     "",
     [
-        "Hypothesis",
+        # "Hypothesis",
         "Exploratory Data Analysis (EDA)",
         "Modeling",
         "Agentic Rating",
@@ -48,9 +48,9 @@ page = st.sidebar.selectbox(
     ],
 )
 
-if page == "Hypothesis":
-    hypothesis.render()
-elif page == "Exploratory Data Analysis (EDA)":
+# if page == "Hypothesis":
+#     hypothesis.render()
+if page == "Exploratory Data Analysis (EDA)":
     data_analysis.render()
 elif page == "Modeling":
     st.header("Modeling")

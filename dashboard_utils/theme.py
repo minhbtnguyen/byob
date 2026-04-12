@@ -140,6 +140,13 @@ def apply_theme() -> None:
 
 
 
+  /* ── Hide map attribution ── */
+  .maplibregl-ctrl-attrib,
+  .maplibregl-ctrl-bottom-left,
+  .maplibregl-ctrl-bottom-right {
+    display: none !important;
+  }
+
   /* ── Tabs ── */
   .stTabs [data-baseweb="tab-list"] {
     gap: 0;
