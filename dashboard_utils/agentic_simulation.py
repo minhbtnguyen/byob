@@ -385,7 +385,13 @@ def _render_trajectory_analysis(index, base, full, profiles, n_days) -> None:
             f"This is a direct consequence of agents switching to walking and cycling, "
             f"which contribute +2 health points per day vs 0 for car.\n\n"
             f"**Mood.** Positive moods (content + energized) rose from **{pos_base:.0f}%** "
-            f"(no feature) to **{pos_full:.0f}%** (full feature) across all agents and days."
+            f"(no feature) to **{pos_full:.0f}%** (full feature) across all agents and days.\n\n"
+            f"**Note on health vs CO2.** The Apple nudge is more effective at reducing CO2 than "
+            f"improving health scores. When agents switch away from car, they tend to choose transit "
+            f"(+0.5 health pts/day) rather than walking or cycling (+2 pts/day). Baseline agents who "
+            f"were already walking or biking naturally continue accumulating high health scores. "
+            f"A stronger product intervention would nudge short trips specifically toward active "
+            f"transport rather than any sustainable mode."
         )
 
 
