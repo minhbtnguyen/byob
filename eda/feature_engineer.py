@@ -1,9 +1,6 @@
 """
-features.py
 Feature engineering for Geolife GPS trajectories.
-
-Produces a flat DataFrame with one row per labeled 30s window:
-  columns = [user, window_start, window_end, mode, <9 heuristic features>]
+Produces one row per labeled 30s window: [user, window_start, window_end, mode, <9 features>]
 
 Usage:
     from features import build_feature_dataset
@@ -11,7 +8,6 @@ Usage:
 """
 
 from pathlib import Path
-from typing import Optional
 import numpy as np
 import pandas as pd
 
@@ -91,7 +87,7 @@ def compute_bearing(lat1, lon1, lat2, lon2) -> np.ndarray:
 # ── Per-window feature extraction ─────────────────────────────────────────────
 
 
-def extract_features(window: pd.DataFrame) -> Optional[dict]:
+def extract_features(window: pd.DataFrame) -> dict | None:
     """
     Compute heuristic features for a single GPS window.
 
@@ -148,33 +144,6 @@ def extract_features(window: pd.DataFrame) -> Optional[dict]:
     }
 
 
-# ── Label assignment ──────────────────────────────────────────────────────────
-
-
-def assign_label(
-    window_start: pd.Timestamp,
-    window_end: pd.Timestamp,
-    labels: pd.DataFrame,
-    min_overlap: float = 0.5,
-) -> Optional[str]:
-    """
-    Return the mode label with the most overlap with this window,
-    provided that overlap covers at least min_overlap (default 50%) of the window.
-    Returns None if no label meets the threshold.
-    """
-    window_dur = (window_end - window_start).total_seconds()
-
-    # Compute overlap duration with each label interval
-    overlap_start = labels["start"].clip(lower=window_start)
-    overlap_end = labels["end"].clip(upper=window_end)
-    overlap_sec = (overlap_end - overlap_start).dt.total_seconds().clip(lower=0)
-
-    best_idx = overlap_sec.idxmax()
-    if overlap_sec[best_idx] / window_dur >= min_overlap:
-        return labels.loc[best_idx, "mode"]
-    return None
-
-
 # ── Per-user processing ───────────────────────────────────────────────────────
 
 
@@ -205,8 +174,6 @@ def process_user(user_dir: Path) -> tuple[list[dict], str]:
     # Pre-compute unix timestamps as numpy array for fast searchsorted
     ts = traj["datetime"].values.astype("datetime64[s]").astype(np.int64)
 
-    window_sec = WINDOW_SEC
-    stride_sec = STRIDE_SEC
     rows = []
 
     for _, label_row in labels.iterrows():
@@ -216,11 +183,11 @@ def process_user(user_dir: Path) -> tuple[list[dict], str]:
         t = label_row["start"]
         label_end = label_row["end"]
 
-        while t + pd.Timedelta(seconds=window_sec) <= label_end:
+        while t + pd.Timedelta(seconds=WINDOW_SEC) <= label_end:
             if len(rows) >= MAX_WINDOWS_USER:
                 break
 
-            w_end = t + pd.Timedelta(seconds=window_sec)
+            w_end = t + pd.Timedelta(seconds=WINDOW_SEC)
 
             # O(log n) slice using searchsorted on unix timestamps
             t_int = int(t.timestamp())
@@ -243,7 +210,7 @@ def process_user(user_dir: Path) -> tuple[list[dict], str]:
                     }
                 )
 
-            t += pd.Timedelta(seconds=stride_sec)
+            t += pd.Timedelta(seconds=STRIDE_SEC)
 
     if len(rows) < MIN_WINDOWS_USER:
         return [], f"only {len(rows)} windows (<{MIN_WINDOWS_USER} min)"
