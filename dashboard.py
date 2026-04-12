@@ -3,7 +3,13 @@ from pathlib import Path
 
 import streamlit as st
 
-from dashboard_utils import data_analysis, hypothesis, modeling, references
+from dashboard_utils import (
+    agentic_eval,
+    data_analysis,
+    hypothesis,
+    modeling,
+    references,
+)
 from dashboard_utils.theme import apply_theme
 
 st.set_page_config(
@@ -57,7 +63,7 @@ elif page == "Exploratory Data Analysis (EDA)":
 elif page == "Commute Mode Predictor":
     modeling.render()
 elif page == "Agentic Evaluation vs Human Evaluation":
-    st.header("Agentic Evaluation vs Human Evaluation")
+    agentic_eval.render()
 elif page == "Human Psychology via Agentic Simulation":
     st.header("Human Psychology via Agentic Simulation")
 elif page == "Proposed Apple Products":
