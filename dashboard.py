@@ -9,6 +9,7 @@ from dashboard_utils import (
     data_analysis,
     hypothesis,
     modeling,
+    products,
     references,
 )
 from dashboard_utils.theme import apply_theme
@@ -70,6 +71,6 @@ elif page == "Agentic Evaluation vs Human Evaluation":
 elif page == "Agentic Behaviour Simulation":
     agentic_simulation.render()
 elif page == "Proposed Apple Products":
-    st.header("Proposed Apple Products")
+    products.render()
 elif page == "References":
     references.render()

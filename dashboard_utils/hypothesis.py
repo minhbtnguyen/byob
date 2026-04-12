@@ -46,7 +46,12 @@ def render() -> None:
 
     with st.expander("Extra: Potential Apple Products"):
         st.markdown(
-            "Based on the above analyses, we propose 3 hypothetical Apple ESG features - "
-            "Green Commute Score, Carbon Leaderboard, and Social Nudges - that could synergistically "
-            "nudge users towards more sustainable mobility choices. These are detailed in the final section."
+            "Based on the analyses above, we propose three Apple features that put this pipeline into a real product:\n\n"
+            "- **Commute Copilot** - classifies your trips, estimates your carbon footprint on-device, "
+            "and delivers a weekly Claude-generated report with fact-checked numbers\n"
+            "- **Carbon Ring** - a new ring in Apple Health that rewards low-carbon travel with points "
+            "redeemable for carbon offsets or Watch features, backed by the behaviour simulation results\n"
+            "- **Apple Green Impact** - aggregates user footprints privately to give Apple a "
+            "user-behaviour ESG metric, strengthening its sustainability story and ESG rating\n\n"
+            "Details are in the **Proposed Apple Products** tab."
         )
