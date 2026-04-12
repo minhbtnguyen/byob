@@ -35,35 +35,34 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-tab1, tab2, tab3, tab4, tab5, tab6, tab7 = st.tabs(
+with st.sidebar.container(border=True):
+    st.markdown("**Developer:** [Minh Nguyen](https://minhbtnguyen.com/)")
+    st.markdown("**Apple Coding Assessment: 04/13/2026**")
+
+page = st.sidebar.selectbox(
+    "",
     [
         "Hypothesis",
-        "Data & Analysis",
+        "EDA",
         "Modeling",
         "Agentic Rating",
         "Agentic Simulation",
         "Potential Products",
         "References",
-    ]
+    ],
 )
 
-with tab1:
+if page == "Hypothesis":
     hypothesis.render()
-
-with tab2:
+elif page == "EDA":
     data_analysis.render()
-
-with tab3:
+elif page == "Modeling":
     st.header("Modeling")
-
-with tab4:
+elif page == "Agentic Rating":
     st.header("Agentic Rating")
-
-with tab5:
+elif page == "Agentic Simulation":
     st.header("Agentic Simulation")
-
-with tab6:
+elif page == "Potential Products":
     st.header("Potential Products")
-
-with tab7:
+elif page == "References":
     references.render()

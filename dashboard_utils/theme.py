@@ -107,10 +107,23 @@ def apply_theme() -> None:
     border-radius: 10px !important;
     border: 1px solid #d2d2d7 !important;
     background: #fff !important;
+    color: #1d1d1f !important;
   }
 
-  /* ── Hide Streamlit default header ── */
+  /* ── Dataframe text ── */
+  [data-testid="stDataFrame"] * {
+    color: #1d1d1f !important;
+  }
+
+  /* ── Make header transparent, keep sidebar toggle visible ── */
   header[data-testid="stHeader"] {
+    background: transparent !important;
+    height: 2.5rem !important;
+  }
+
+  [data-testid="stToolbar"],
+  [data-testid="stDecoration"],
+  [data-testid="stStatusWidget"] {
     display: none !important;
   }
 
@@ -180,6 +193,27 @@ def apply_theme() -> None:
   .stTabs [data-baseweb="tab-panel"] {
     padding-top: 1.5rem;
     background: transparent;
+  }
+
+  /* ── Expanders ── */
+  [data-testid="stExpander"] {
+    background: #ffffff !important;
+    border: 1px solid #e0e0e5 !important;
+    border-radius: 12px !important;
+  }
+
+  [data-testid="stExpander"] summary {
+    background: #ffffff !important;
+    color: #1d1d1f !important;
+  }
+
+  [data-testid="stExpander"] summary:hover {
+    background: #f5f5f7 !important;
+  }
+
+  [data-testid="stExpander"] > div > div {
+    background: #ffffff !important;
+    color: #1d1d1f !important;
   }
 </style>
 """,
