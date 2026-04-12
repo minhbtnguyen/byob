@@ -273,11 +273,7 @@ def _render_health(data_root: str) -> None:
 
     with st.expander("Analysis", expanded=True):
         st.write(
-            "Label coverage is typically low in this dataset — many users labeled only specific "
-            "trips rather than their full recording history. Expect median coverage around 10–30%. "
-            "Users with very low coverage (<5%) should be excluded from supervised training — "
-            "they contribute too few labeled windows to learn reliable patterns and will silently "
-            "degrade the training set."
+            "Most users only labeled specific trips, not their whole recording history - so coverage tends to be low (10-30%). Users under 5% coverage are excluded from training since they don't contribute enough examples to be useful."
         )
 
 
@@ -297,56 +293,44 @@ def _render_mode_distribution(data_root: str) -> None:
     )
     md["hours"] = md["duration_min"] / 60
 
-    fig = go.Figure(
-        go.Bar(
-            y=mc["mode"].tolist(),
-            x=mc["count"].tolist(),
-            orientation="h",
-            marker_color="#0071e3",
-        )
-    )
-    fig.update_layout(
-        xaxis_title="Segments",
-        height=300,
-        margin=dict(t=20, b=40),
-    )
-    st.markdown("### Trip Count by Mode")
-    st.plotly_chart(fig, use_container_width=True)
-    with st.expander("Analysis", expanded=True):
-        st.write(
-            "Walk and bike tend to dominate trip count due to short, frequent trips. "
-            "If we train on trip count, walk and bike are overrepresented relative to their "
-            "real-world impact. Modes with fewer than ~200 trip segments should be considered "
-            "for grouping or dropping — e.g. merge taxi into car, merge all rail into a single "
-            "'rail' class — to avoid producing a classifier that technically learns rare labels "
-            "from only a handful of examples."
-        )
+    col_l, col_r = st.columns(2)
 
-    st.divider()
-    fig2 = go.Figure(
-        go.Bar(
-            y=md["mode"].tolist(),
-            x=md["hours"].tolist(),
-            orientation="h",
-            marker_color="#ff6b35",
+    with col_l:
+        fig = go.Figure(
+            go.Bar(
+                y=mc["mode"].tolist(),
+                x=mc["count"].tolist(),
+                orientation="h",
+                marker_color="#0071e3",
+            )
         )
-    )
-    fig2.update_layout(
-        xaxis_title="Hours",
-        height=300,
-        margin=dict(t=20, b=40),
-    )
-    st.markdown("### Total Duration by Mode")
-    st.plotly_chart(fig2, use_container_width=True)
+        fig.update_layout(
+            xaxis_title="Segments",
+            height=300,
+            margin=dict(t=20, b=40),
+        )
+        st.markdown("### Trip Count by Mode")
+        st.plotly_chart(fig, use_container_width=True)
+
+    with col_r:
+        fig2 = go.Figure(
+            go.Bar(
+                y=md["mode"].tolist(),
+                x=md["hours"].tolist(),
+                orientation="h",
+                marker_color="#ff6b35",
+            )
+        )
+        fig2.update_layout(
+            xaxis_title="Hours",
+            height=300,
+            margin=dict(t=20, b=40),
+        )
+        st.markdown("### Total Duration by Mode")
+        st.plotly_chart(fig2, use_container_width=True)
     with st.expander("Analysis", expanded=True):
         st.write(
-            "Walk and bike dominate total duration as well as trip count, which is somewhat "
-            "surprising — it means participants in this dataset accumulated thousands of hours "
-            "on foot or by bicycle, not just short frequent trips. This is consistent with the "
-            "Beijing urban context where walking and cycling are primary modes for short-haul "
-            "movement. The implication for modeling is that duration-based weighting does not "
-            "rescue minority classes like subway or taxi; class rebalancing will be needed "
-            "regardless of whether we weight by trip count or total time."
+            "Walk and bike dominate trip count (short, frequent trips) while car and bus dominate total hours (longer individual trips). Rare modes like taxi need to be grouped or dropped - too few examples for the model to learn from reliably."
         )
 
     st.divider()
@@ -371,13 +355,7 @@ def _render_mode_distribution(data_root: str) -> None:
     st.plotly_chart(fig3, use_container_width=True)
     with st.expander("Analysis", expanded=True):
         st.write(
-            "If most users only have 2–3 distinct modes, subject-independent cross-validation "
-            "becomes tricky — holding out a user leaves a gap in class coverage for that fold. "
-            "Users with only 1 mode contribute nothing to multi-class learning and should be "
-            "excluded from training; they inflate accuracy on their dominant class without "
-            "teaching the model anything about the others. Users with 4+ modes are the most "
-            "valuable training examples and should be weighted more heavily when constructing "
-            "train/validation splits."
+            "Users with only 1 mode don't help the model learn to distinguish between modes - they just inflate accuracy on one class. Users with 4+ modes are the most valuable. When we hold out a user for testing, we want them to cover enough modes that the test is meaningful."
         )
 
 
@@ -427,18 +405,9 @@ def _render_speed_profiles(data_root: str) -> None:
 
     with st.expander("Analysis", expanded=True):
         st.write(
-            "We expect clearly separated medians: walk ~5 km/h, bike ~12 km/h, bus/car ~25–40 km/h, "
-            "subway ~35–50 km/h. The hard classification problems are:"
-        )
-        st.markdown(
-            "- **Bus vs car**: similar speed ranges with substantial overlap — stop density and "
-            "bearing variance will be the separating features\n"
-            "- **Subway vs car/bus**: similar speeds but subway has no traffic-light stops — "
-            "stop density helps here\n"
-            "- **Taxi vs car**: nearly identical — likely not separable from speed alone"
-        )
-        st.write(
-            "If walk and car distributions overlap significantly, it indicates label noise in the dataset."
+            "Modes separate reasonably well by speed - walk ~5 km/h, bike ~12 km/h, car/bus ~25-40 km/h. The hard cases are:\n"
+            "- **Bus vs car**: similar speeds - stop frequency and direction changes will be the deciding features\n"
+            "- **Taxi vs car**: nearly identical - likely not separable from GPS alone"
         )
 
 
@@ -477,13 +446,7 @@ def _render_temporal(data_root: str) -> None:
 
     with st.expander("Analysis", expanded=True):
         st.write(
-            "We expect morning (8–9am) and evening (5–7pm) peaks for car, bus, and subway — typical "
-            "commute patterns. Walk and bike are likely more distributed throughout the day. A flat "
-            "temporal distribution across all modes would suggest the Geolife users were not typical "
-            "commuters, which is plausible — many were university researchers. If commute peaks are "
-            "visible, this strengthens the counterfactual story: the highest-emissions car trips are "
-            "concentrated in predictable windows, making them ideal targets for behavior-change "
-            "recommendations."
+            "We expect 8-9am and 5-7pm peaks for car, bus, and subway. Walk and bike are likely spread throughout the day. Many Geolife users were university researchers, so the pattern may be flatter than a typical commuter population - that's fine to note as a caveat."
         )
 
 
@@ -519,59 +482,56 @@ def _render_emissions(data_root: str) -> None:
     )
     user_co2["co2_kg"] = user_co2["co2_g"] / 1000
 
-    fig = go.Figure(
-        go.Bar(
-            y=mode_co2["mode"].tolist(),
-            x=mode_co2["co2_kg"].tolist(),
-            orientation="h",
-            marker_color="#ff6b35",
-        )
-    )
-    fig.update_layout(
-        xaxis_title="Total CO\u2082 (kg)",
-        height=300,
-        margin=dict(t=20, b=40),
-    )
-    st.markdown("### Total CO\u2082 by Mode (all users)")
-    st.plotly_chart(fig, use_container_width=True)
-    with st.expander("Analysis", expanded=True):
-        st.write(
-            "Car will dominate total CO\u2082 despite not necessarily having the most trips — its "
-            "emission factor is 2\u20134\u00d7 higher than bus/subway per km. The counterfactual saving "
-            "percentage is the number to watch. If replacing sub-3 km car trips saves >20% of total "
-            "car emissions, the Green Commute Coach pitch is very strong. If it's <5%, the intervention "
-            "is marginal and the product story needs reframing toward longer-trip alternatives "
-            "(e.g. car-to-bus substitution)."
-        )
-        st.write(
-            "**Important caveat:** Distance here is estimated from duration \u00d7 median speed, not "
-            "computed from GPS coordinates. These numbers are directionally correct but not precise. "
-            "The full pipeline will compute actual haversine distances along each trajectory."
-        )
+    col_l, col_r = st.columns(2)
 
-    st.divider()
-
-    fig2 = go.Figure(
-        go.Bar(
-            y=user_co2["user"].tolist(),
-            x=user_co2["co2_kg"].tolist(),
-            orientation="h",
-            marker_color="#0071e3",
+    with col_l:
+        fig = go.Figure(
+            go.Bar(
+                y=mode_co2["mode"].tolist(),
+                x=mode_co2["co2_kg"].tolist(),
+                orientation="h",
+                marker_color="#ff6b35",
+            )
         )
-    )
-    fig2.update_layout(
-        xaxis_title="Total CO\u2082 (kg)",
-        height=300,
-        margin=dict(t=20, b=40),
-    )
-    st.markdown("### Per-User CO\u2082 Footprint (top 20)")
-    st.plotly_chart(fig2, use_container_width=True)
+        fig.update_layout(
+            xaxis_title="Total CO\u2082 (kg)",
+            height=300,
+            margin=dict(t=20, b=40),
+        )
+        st.markdown("### Total CO\u2082 by Mode (all users)")
+        st.plotly_chart(fig, use_container_width=True)
+
+    with col_r:
+        fig2 = go.Figure(
+            go.Bar(
+                y=user_co2["user"].tolist(),
+                x=user_co2["co2_kg"].tolist(),
+                orientation="h",
+                marker_color="#0071e3",
+            )
+        )
+        fig2.update_layout(
+            xaxis_title="Total CO\u2082 (kg)",
+            height=300,
+            margin=dict(t=20, b=40),
+        )
+        st.markdown("### Per-User CO\u2082 Footprint (top 20)")
+        st.plotly_chart(fig2, use_container_width=True)
     with st.expander("Analysis", expanded=True):
-        st.write(
-            "The per-user chart will show high variance: a few heavy car users will account for a "
-            "disproportionate share of total emissions, which is the classic Pareto pattern seen in "
-            "real mobility data. These high-emitters are the primary targets for the Green Commute "
-            "Coach — a small behavior change in this group yields outsized aggregate impact."
+        st.markdown(
+            "Car dominates total CO₂ even without the most trips — its emission factor is 2–4× higher than bus or subway per km. "
+            "A small number of heavy car users typically account for a large share of the total.\n\n"
+            "The counterfactual saving percentage (sub-3km car → bike) is the key number. "
+            "Above 20% savings = strong product story. Below 5% = the pitch needs rethinking.\n\n"
+            "**Note:** Distance is estimated from trip duration × median speed, not from GPS coordinates. "
+            "These numbers are directionally correct but not precise.\n\n"
+            "**Emission factors (EPA/EEA/DEFRA):**\n\n"
+            "| Mode | g CO₂ per km |\n"
+            "|---|---|\n"
+            "| Car / Taxi | 170 |\n"
+            "| Bus | 89 (per passenger) |\n"
+            "| Subway | 41 (per passenger) |\n"
+            "| Bike / Walk | 0 |"
         )
 
 
@@ -606,7 +566,7 @@ def render() -> None:
             "Commute Mode Analysis",
             "Motion Analysis",
             "Temporal Analysis",
-            "Emission Review",
+            "Emission Analysis",
         ]
     )
 
