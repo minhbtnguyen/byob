@@ -11,6 +11,12 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
+ARG KAGGLE_API_TOKEN
+RUN if [ -n "$KAGGLE_API_TOKEN" ]; then \
+      KAGGLE_API_TOKEN=$KAGGLE_API_TOKEN \
+      python -c "import kagglehub; kagglehub.dataset_download('arashnic/microsoft-geolife-gps-trajectory-dataset')"; \
+    fi
+
 EXPOSE 8501
 
 CMD ["streamlit", "run", "dashboard.py", \

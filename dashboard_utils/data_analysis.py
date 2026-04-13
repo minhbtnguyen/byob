@@ -553,7 +553,12 @@ def render() -> None:
         st.markdown("**Total Duration:** 50,176 hrs")
 
     if not _DATASET_ROOT.exists():
-        st.warning("Dataset not found. Run the kagglehub download cell first.")
+        st.info(
+            "The raw Geolife dataset is not available in this hosted environment — "
+            "it lives in a local kagglehub cache and is not bundled with the app. "
+            "All analysis results are pre-computed and available in the other tabs. "
+            "To explore the raw data locally, run the first cell of `eda/analysis.ipynb`."
+        )
         return
 
     _root_str = str(_DATASET_ROOT)

@@ -1,3 +1,8 @@
+[server]
+enableWebsocketCompression = false
+enableCORS = false
+enableXsrfProtection = false
+
 [theme]
 base = "light"
 backgroundColor = "#f5f5f7"
