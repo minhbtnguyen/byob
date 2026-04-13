@@ -127,6 +127,17 @@ def _load_all_labels(data_root: str) -> pd.DataFrame:
 
 
 @st.cache_data(show_spinner=False)
+def _load_speed_histograms() -> dict | None:
+    cache = _EDA_CACHE / "speed_histograms.json"
+    if not cache.exists():
+        return None
+    import json
+
+    with open(cache) as f:
+        return json.load(f)
+
+
+@st.cache_data(show_spinner=False)
 def _compute_speed_by_mode(data_root: str) -> dict:
     cache = _EDA_CACHE / "speed_by_mode.json"
     if cache.exists():
@@ -256,7 +267,7 @@ def _render_map():
 def _render_health(data_root: str) -> None:
     st.markdown("#### Label Coverage per Labeled Users")
 
-    with st.spinner("Computing label coverage..."):
+    with st.spinner("Loading label coverage..."):
         cov_df = _compute_label_coverage(data_root)
 
     median_cov = float(cov_df["pct_labeled"].median())
@@ -376,32 +387,60 @@ def _render_mode_distribution(data_root: str) -> None:
 
 
 def _render_speed_profiles(data_root: str) -> None:
-    with st.spinner("Computing speed profiles — may take a minute on first run..."):
-        sbm = _compute_speed_by_mode(data_root)
+    with st.spinner("Loading speed profiles..."):
+        histograms = _load_speed_histograms()
+        if histograms is None:
+            sbm = _compute_speed_by_mode(data_root)
 
     colors = [_MODE_COLORS[m] for m in _TARGET_MODES]
     fig = make_subplots(rows=2, cols=3, subplot_titles=list(_TARGET_MODES))
     for i, mode in enumerate(_TARGET_MODES):
         r, c = divmod(i, 3)
-        data = np.array(sbm[mode])
-        if len(data) == 0:
-            continue
-        clipped = data[(data >= 0) & (data <= 120)]
-        med = float(np.median(data))
-        fig.add_trace(
-            go.Histogram(
-                x=clipped.tolist(),
-                nbinsx=50,
-                marker_color=colors[i],
-                marker_line_color="white",
-                marker_line_width=0.3,
-                histnorm="probability density",
-                name=mode,
-                showlegend=False,
-            ),
-            row=r + 1,
-            col=c + 1,
-        )
+        if histograms is not None:
+            h = histograms.get(mode, {})
+            if not h:
+                continue
+            bin_edges = h["bin_edges"]
+            counts = h["counts"]
+            med = h["median"]
+            n = h["n"]
+            bin_centers = [
+                (bin_edges[j] + bin_edges[j + 1]) / 2 for j in range(len(counts))
+            ]
+            fig.add_trace(
+                go.Bar(
+                    x=bin_centers,
+                    y=counts,
+                    marker_color=colors[i],
+                    marker_line_color="white",
+                    marker_line_width=0.3,
+                    name=mode,
+                    showlegend=False,
+                ),
+                row=r + 1,
+                col=c + 1,
+            )
+        else:
+            data = np.array(sbm[mode])
+            if len(data) == 0:
+                continue
+            clipped = data[(data >= 0) & (data <= 120)]
+            med = float(np.median(data))
+            n = len(data)
+            fig.add_trace(
+                go.Histogram(
+                    x=clipped.tolist(),
+                    nbinsx=50,
+                    marker_color=colors[i],
+                    marker_line_color="white",
+                    marker_line_width=0.3,
+                    histnorm="probability density",
+                    name=mode,
+                    showlegend=False,
+                ),
+                row=r + 1,
+                col=c + 1,
+            )
         fig.add_vline(
             x=med,
             line_dash="dash",
@@ -410,7 +449,7 @@ def _render_speed_profiles(data_root: str) -> None:
             row=r + 1,
             col=c + 1,
         )
-        fig.layout.annotations[i].text = f"{mode}  (n={len(data):,})  med={med:.1f}"
+        fig.layout.annotations[i].text = f"{mode}  (n={n:,})  med={med:.1f}"
     fig.update_layout(
         height=500,
         margin=dict(t=60, b=40),
@@ -467,7 +506,7 @@ def _render_temporal(data_root: str) -> None:
 
 
 def _render_emissions(data_root: str) -> None:
-    with st.spinner("Computing emissions — may take a minute on first run..."):
+    with st.spinner("Loading emissions..."):
         em_df = _compute_emissions(data_root)
 
     car_em = em_df[em_df["mode"] == "car"].copy()

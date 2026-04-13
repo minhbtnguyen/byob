@@ -187,6 +187,25 @@ def main():
             json.dump(sbm, f)
         print(f"  Saved {sum(len(v) for v in sbm.values()):,} speed samples")
 
+    print("\n[3b/4] Speed histograms (precomputed bins)")
+    if (_OUT / "speed_histograms.json").exists():
+        print("  Skipping — already exists")
+    else:
+        histograms = {}
+        for mode, speeds in sbm.items():
+            arr = np.array(speeds)
+            clipped = arr[(arr >= 0) & (arr <= 120)]
+            counts, bin_edges = np.histogram(clipped, bins=50, density=True)
+            histograms[mode] = {
+                "counts": counts.tolist(),
+                "bin_edges": bin_edges.tolist(),
+                "median": float(np.median(arr)) if len(arr) > 0 else 0.0,
+                "n": int(len(arr)),
+            }
+        with open(_OUT / "speed_histograms.json", "w") as f:
+            json.dump(histograms, f)
+        print(f"  Saved histograms for {len(histograms)} modes")
+
     print("\n[4/4] Emissions")
     if (_OUT / "emissions.parquet").exists():
         print("  Skipping — already exists")
