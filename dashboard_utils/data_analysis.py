@@ -11,6 +11,7 @@ _DATASET_ROOT = (
     / ".cache/kagglehub/datasets/arashnic/microsoft-geolife-gps-trajectory-dataset"
     / "versions/1/Geolife Trajectories 1.3/Data"
 )
+_EDA_CACHE = Path(__file__).parent.parent / "data" / "eda"
 
 _TARGET_MODES = ["walk", "bike", "bus", "car", "subway", "taxi"]
 _EMISSION_FACTORS = {
@@ -85,8 +86,11 @@ def _haversine_m(lat1, lon1, lat2, lon2):
 # -- Cached data loaders -------------------------------------------------------
 
 
-@st.cache_data(show_spinner=False, persist="disk")
+@st.cache_data(show_spinner=False)
 def _compute_label_coverage(data_root: str) -> pd.DataFrame:
+    cache = _EDA_CACHE / "label_coverage.parquet"
+    if cache.exists():
+        return pd.read_parquet(cache)
     root = Path(data_root)
     labeled = [
         u for u in sorted(root.iterdir()) if u.is_dir() and (u / "labels.txt").exists()
@@ -110,8 +114,11 @@ def _compute_label_coverage(data_root: str) -> pd.DataFrame:
     return pd.DataFrame(rows).sort_values("pct_labeled")
 
 
-@st.cache_data(show_spinner=False, persist="disk")
+@st.cache_data(show_spinner=False)
 def _load_all_labels(data_root: str) -> pd.DataFrame:
+    cache = _EDA_CACHE / "all_labels.parquet"
+    if cache.exists():
+        return pd.read_parquet(cache)
     root = Path(data_root)
     labeled = [
         u for u in sorted(root.iterdir()) if u.is_dir() and (u / "labels.txt").exists()
@@ -119,8 +126,14 @@ def _load_all_labels(data_root: str) -> pd.DataFrame:
     return pd.concat([_parse_labels(u) for u in labeled], ignore_index=True)
 
 
-@st.cache_data(show_spinner=False, persist="disk")
+@st.cache_data(show_spinner=False)
 def _compute_speed_by_mode(data_root: str) -> dict:
+    cache = _EDA_CACHE / "speed_by_mode.json"
+    if cache.exists():
+        import json
+
+        with open(cache) as f:
+            return json.load(f)
     root = Path(data_root)
     labeled = [
         u for u in sorted(root.iterdir()) if u.is_dir() and (u / "labels.txt").exists()
@@ -156,8 +169,11 @@ def _compute_speed_by_mode(data_root: str) -> dict:
     return speed_by_mode
 
 
-@st.cache_data(show_spinner=False, persist="disk")
+@st.cache_data(show_spinner=False)
 def _compute_emissions(data_root: str) -> pd.DataFrame:
+    cache = _EDA_CACHE / "emissions.parquet"
+    if cache.exists():
+        return pd.read_parquet(cache)
     speed_by_mode = _compute_speed_by_mode(data_root)
     all_labels = _load_all_labels(data_root)
 
@@ -521,10 +537,6 @@ def _render_emissions(data_root: str) -> None:
         st.markdown(
             "Car dominates total CO₂ even without the most trips — its emission factor is 2–4× higher than bus or subway per km. "
             "A small number of heavy car users typically account for a large share of the total.\n\n"
-            "The counterfactual saving percentage (sub-3km car → bike) is the key number. "
-            "Above 20% savings = strong product story. Below 5% = the pitch needs rethinking.\n\n"
-            "**Note:** Distance is estimated from trip duration × median speed, not from GPS coordinates. "
-            "These numbers are directionally correct but not precise.\n\n"
             "**Emission factors (EPA/EEA/DEFRA):**\n\n"
             "| Mode | g CO₂ per km |\n"
             "|---|---|\n"
@@ -552,43 +564,42 @@ def render() -> None:
         st.markdown("**Total Distance:** 1.29M km")
         st.markdown("**Total Duration:** 50,176 hrs")
 
-    if not _DATASET_ROOT.exists():
+    _has_dataset = _DATASET_ROOT.exists()
+    _has_cache = (_EDA_CACHE / "label_coverage.parquet").exists()
+    _root_str = str(_DATASET_ROOT)
+
+    if not _has_dataset and not _has_cache:
         st.info(
-            "The raw Geolife dataset is not available in this hosted environment — "
-            "it lives in a local kagglehub cache and is not bundled with the app. "
-            "All analysis results are pre-computed and available in the other tabs. "
-            "To explore the raw data locally, run the first cell of `eda/analysis.ipynb`."
+            "No precomputed EDA cache found. Run `python eda/precompute_eda.py` locally "
+            "to generate the cache files, then redeploy."
         )
         return
 
-    _root_str = str(_DATASET_ROOT)
+    tab_labels = [
+        "User Analysis",
+        "Commute Mode Analysis",
+        "Motion Analysis",
+        "Temporal Analysis",
+        "Emission Analysis",
+    ]
+    if _has_dataset:
+        tab_labels = ["Raw Trajectory Viewer"] + tab_labels
 
-    # -- Raw trajectory viewer -------------------------------------------------
-    tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs(
-        [
-            "Raw Trajectory Viewer",
-            "User Analysis",
-            "Commute Mode Analysis",
-            "Motion Analysis",
-            "Temporal Analysis",
-            "Emission Analysis",
-        ]
-    )
+    tabs = st.tabs(tab_labels)
+    offset = 0
 
-    with tab1:
-        _render_map()
+    if _has_dataset:
+        with tabs[0]:
+            _render_map()
+        offset = 1
 
-    with tab2:
+    with tabs[offset]:
         _render_health(_root_str)
-
-    with tab3:
+    with tabs[offset + 1]:
         _render_mode_distribution(_root_str)
-
-    with tab4:
+    with tabs[offset + 2]:
         _render_speed_profiles(_root_str)
-
-    with tab5:
+    with tabs[offset + 3]:
         _render_temporal(_root_str)
-
-    with tab6:
+    with tabs[offset + 4]:
         _render_emissions(_root_str)

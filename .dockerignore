@@ -3,6 +3,5 @@ __pycache__
 *.pyc
 .git
 *.ipynb_checkpoints
-data/processed/
 eda/__pycache__
 dashboard_utils/__pycache__

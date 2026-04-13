@@ -1,0 +1,1652 @@
+{
+  "config": {
+    "apple_feature_strength": 0.75,
+    "n_agents": 15,
+    "n_days": 7,
+    "model": "claude-haiku-4-5-20251001"
+  },
+  "agent_profiles": [
+    {
+      "name": "Adrian",
+      "age": 38,
+      "occupation": "Marketing Manager",
+      "conformity": "extremely conformist",
+      "env_consciousness": 0.1,
+      "fitness": 0.2,
+      "commute_km": 14.0,
+      "car_owner": true,
+      "social_openness": 5,
+      "co2_per_car_day": 6.2,
+      "backstory": "Drives everywhere and follows whatever the office majority does; comfort is his top priority."
+    },
+    {
+      "name": "Mark",
+      "age": 45,
+      "occupation": "Senior Accountant",
+      "conformity": "highly conformist",
+      "env_consciousness": 0.2,
+      "fitness": 0.3,
+      "commute_km": 10.5,
+      "car_owner": true,
+      "social_openness": 4,
+      "co2_per_car_day": 5.8,
+      "backstory": "Prefers routine and mirrors what respected colleagues do; open to change if peers lead."
+    },
+    {
+      "name": "Greg",
+      "age": 32,
+      "occupation": "Software Engineer",
+      "conformity": "conformist",
+      "env_consciousness": 0.35,
+      "fitness": 0.5,
+      "commute_km": 7.0,
+      "car_owner": true,
+      "social_openness": 3,
+      "co2_per_car_day": 5.5,
+      "backstory": "Knows transit is better for the planet but finds driving more convenient; mildly influenced by peers."
+    },
+    {
+      "name": "John",
+      "age": 29,
+      "occupation": "UX Designer",
+      "conformity": "conformist",
+      "env_consciousness": 0.45,
+      "fitness": 0.55,
+      "commute_km": 5.5,
+      "car_owner": false,
+      "social_openness": 4,
+      "co2_per_car_day": 5.0,
+      "backstory": "Does not own a car but occasionally rents one; fairly open to sustainable options if not too inconvenient."
+    },
+    {
+      "name": "Peter",
+      "age": 52,
+      "occupation": "Operations Director",
+      "conformity": "low conformist",
+      "env_consciousness": 0.3,
+      "fitness": 0.25,
+      "commute_km": 18.0,
+      "car_owner": true,
+      "social_openness": 2,
+      "co2_per_car_day": 4.5,
+      "backstory": "Long commute and busy schedule; makes decisions independently, rarely swayed by office trends."
+    },
+    {
+      "name": "Liz",
+      "age": 27,
+      "occupation": "Climate Policy Analyst",
+      "conformity": "non-conformist",
+      "env_consciousness": 0.95,
+      "fitness": 0.8,
+      "commute_km": 3.5,
+      "car_owner": false,
+      "social_openness": 3,
+      "co2_per_car_day": 3.0,
+      "backstory": "Bikes or walks almost every day regardless of what others do; a quiet sustainability role model."
+    },
+    {
+      "name": "Rosa",
+      "age": 41,
+      "occupation": "Sales Executive",
+      "conformity": "extremely conformist",
+      "env_consciousness": 0.12,
+      "fitness": 0.22,
+      "commute_km": 16.0,
+      "car_owner": true,
+      "social_openness": 5,
+      "co2_per_car_day": 6.0,
+      "backstory": "Heavily influenced by social norms; switches behavior quickly when the group consensus shifts."
+    },
+    {
+      "name": "Patricia",
+      "age": 36,
+      "occupation": "HR Business Partner",
+      "conformity": "highly conformist",
+      "env_consciousness": 0.28,
+      "fitness": 0.4,
+      "commute_km": 9.0,
+      "car_owner": true,
+      "social_openness": 4,
+      "co2_per_car_day": 5.6,
+      "backstory": "Values harmony and tends to align with team behaviour; a community builder at the office."
+    },
+    {
+      "name": "Julia",
+      "age": 31,
+      "occupation": "Data Scientist",
+      "conformity": "conformist",
+      "env_consciousness": 0.5,
+      "fitness": 0.6,
+      "commute_km": 6.0,
+      "car_owner": false,
+      "social_openness": 3,
+      "co2_per_car_day": 4.8,
+      "backstory": "Analytically aware of carbon footprints; uses transit but would bike if more colleagues did."
+    },
+    {
+      "name": "Kathy",
+      "age": 24,
+      "occupation": "Sustainability Intern",
+      "conformity": "non-conformist",
+      "env_consciousness": 0.98,
+      "fitness": 0.9,
+      "commute_km": 2.5,
+      "car_owner": false,
+      "social_openness": 2,
+      "co2_per_car_day": 2.5,
+      "backstory": "Walks to work and tracks her carbon footprint daily; advocates sustainability but does not pressure peers."
+    },
+    {
+      "name": "William",
+      "age": 48,
+      "occupation": "Finance Director",
+      "conformity": "highly conformist",
+      "env_consciousness": 0.15,
+      "fitness": 0.2,
+      "commute_km": 20.0,
+      "car_owner": true,
+      "social_openness": 3,
+      "co2_per_car_day": 6.1,
+      "backstory": "Long commute in a luxury car; status-conscious and influenced by what senior peers do."
+    },
+    {
+      "name": "Benjamin",
+      "age": 34,
+      "occupation": "Product Manager",
+      "conformity": "conformist",
+      "env_consciousness": 0.4,
+      "fitness": 0.45,
+      "commute_km": 8.0,
+      "car_owner": true,
+      "social_openness": 4,
+      "co2_per_car_day": 5.3,
+      "backstory": "Pragmatic thinker who balances convenience and conscience; receptive to nudges that make sustainability easy."
+    },
+    {
+      "name": "Mike",
+      "age": 26,
+      "occupation": "Junior Developer",
+      "conformity": "conformist",
+      "env_consciousness": 0.42,
+      "fitness": 0.65,
+      "commute_km": 4.5,
+      "car_owner": false,
+      "social_openness": 4,
+      "co2_per_car_day": 5.2,
+      "backstory": "Young professional who cycles occasionally; social media-savvy and responsive to digital nudges."
+    },
+    {
+      "name": "David",
+      "age": 43,
+      "occupation": "Supply Chain Manager",
+      "conformity": "low conformist",
+      "env_consciousness": 0.38,
+      "fitness": 0.35,
+      "commute_km": 11.0,
+      "car_owner": true,
+      "social_openness": 2,
+      "co2_per_car_day": 4.2,
+      "backstory": "Independent thinker with moderate green values; changes habits slowly based on personal conviction."
+    },
+    {
+      "name": "George",
+      "age": 55,
+      "occupation": "Senior Engineer",
+      "conformity": "low conformist",
+      "env_consciousness": 0.32,
+      "fitness": 0.3,
+      "commute_km": 13.0,
+      "car_owner": true,
+      "social_openness": 2,
+      "co2_per_car_day": 4.3,
+      "backstory": "Experienced professional set in his ways; open to data-driven arguments but resists social pressure."
+    }
+  ],
+  "network_snapshots": [
+    {
+      "0": {
+        "4": 0.2,
+        "1": 0.2,
+        "14": 0.2,
+        "10": 0.2,
+        "2": 0.2
+      },
+      "1": {
+        "2": 0.25,
+        "12": 0.25,
+        "8": 0.25,
+        "14": 0.25
+      },
+      "2": {
+        "13": 0.3333333333333333,
+        "9": 0.3333333333333333,
+        "3": 0.3333333333333333
+      },
+      "3": {
+        "2": 0.25,
+        "11": 0.25,
+        "8": 0.25,
+        "9": 0.25
+      },
+      "4": {
+        "2": 0.5,
+        "5": 0.5
+      },
+      "5": {
+        "9": 0.3333333333333333,
+        "10": 0.3333333333333333,
+        "7": 0.3333333333333333
+      },
+      "6": {
+        "3": 0.2,
+        "9": 0.2,
+        "12": 0.2,
+        "14": 0.2,
+        "4": 0.2
+      },
+      "7": {
+        "6": 0.25,
+        "11": 0.25,
+        "13": 0.25,
+        "5": 0.25
+      },
+      "8": {
+        "7": 0.3333333333333333,
+        "9": 0.3333333333333333,
+        "14": 0.3333333333333333
+      },
+      "9": {
+        "1": 0.5,
+        "3": 0.5
+      },
+      "10": {
+        "3": 0.3333333333333333,
+        "1": 0.3333333333333333,
+        "5": 0.3333333333333333
+      },
+      "11": {
+        "0": 0.25,
+        "9": 0.25,
+        "8": 0.25,
+        "3": 0.25
+      },
+      "12": {
+        "9": 0.25,
+        "3": 0.25,
+        "0": 0.25,
+        "1": 0.25
+      },
+      "13": {
+        "11": 0.5,
+        "10": 0.5
+      },
+      "14": {
+        "0": 0.5,
+        "3": 0.5
+      }
+    },
+    {
+      "0": {
+        "4": 0.2048,
+        "1": 0.2048,
+        "14": 0.2048,
+        "10": 0.1806,
+        "2": 0.2048
+      },
+      "1": {
+        "2": 0.25,
+        "12": 0.25,
+        "8": 0.25,
+        "14": 0.25
+      },
+      "2": {
+        "13": 0.3333,
+        "9": 0.3333,
+        "3": 0.3333
+      },
+      "3": {
+        "2": 0.2576,
+        "11": 0.2272,
+        "8": 0.2576,
+        "9": 0.2576
+      },
+      "4": {
+        "2": 0.5,
+        "5": 0.5
+      },
+      "5": {
+        "9": 0.3618,
+        "10": 0.3191,
+        "7": 0.3191
+      },
+      "6": {
+        "3": 0.2048,
+        "9": 0.2048,
+        "12": 0.2048,
+        "14": 0.2048,
+        "4": 0.1806
+      },
+      "7": {
+        "6": 0.2576,
+        "11": 0.2272,
+        "13": 0.2576,
+        "5": 0.2576
+      },
+      "8": {
+        "7": 0.3333,
+        "9": 0.3333,
+        "14": 0.3333
+      },
+      "9": {
+        "1": 0.5,
+        "3": 0.5
+      },
+      "10": {
+        "3": 0.3333,
+        "1": 0.3333,
+        "5": 0.3333
+      },
+      "11": {
+        "0": 0.25,
+        "9": 0.25,
+        "8": 0.25,
+        "3": 0.25
+      },
+      "12": {
+        "9": 0.25,
+        "3": 0.25,
+        "0": 0.25,
+        "1": 0.25
+      },
+      "13": {
+        "11": 0.5,
+        "10": 0.5
+      },
+      "14": {
+        "0": 0.5,
+        "3": 0.5
+      }
+    },
+    {
+      "0": {
+        "4": 0.1851,
+        "1": 0.2099,
+        "14": 0.2099,
+        "10": 0.1851,
+        "2": 0.2099
+      },
+      "1": {
+        "2": 0.25,
+        "12": 0.25,
+        "8": 0.25,
+        "14": 0.25
+      },
+      "2": {
+        "13": 0.3333,
+        "9": 0.3333,
+        "3": 0.3333
+      },
+      "3": {
+        "2": 0.2576,
+        "11": 0.2272,
+        "8": 0.2576,
+        "9": 0.2576
+      },
+      "4": {
+        "2": 0.5,
+        "5": 0.5
+      },
+      "5": {
+        "9": 0.3618,
+        "10": 0.3191,
+        "7": 0.3191
+      },
+      "6": {
+        "3": 0.2093,
+        "9": 0.2093,
+        "12": 0.2093,
+        "14": 0.2093,
+        "4": 0.1628
+      },
+      "7": {
+        "6": 0.2576,
+        "11": 0.2272,
+        "13": 0.2576,
+        "5": 0.2576
+      },
+      "8": {
+        "7": 0.3333,
+        "9": 0.3333,
+        "14": 0.3333
+      },
+      "9": {
+        "1": 0.5,
+        "3": 0.5
+      },
+      "10": {
+        "3": 0.3333,
+        "1": 0.3333,
+        "5": 0.3333
+      },
+      "11": {
+        "0": 0.25,
+        "9": 0.25,
+        "8": 0.25,
+        "3": 0.25
+      },
+      "12": {
+        "9": 0.25,
+        "3": 0.25,
+        "0": 0.25,
+        "1": 0.25
+      },
+      "13": {
+        "11": 0.5,
+        "10": 0.5
+      },
+      "14": {
+        "0": 0.5,
+        "3": 0.5
+      }
+    },
+    {
+      "0": {
+        "4": 0.1669,
+        "1": 0.2146,
+        "14": 0.2146,
+        "10": 0.1893,
+        "2": 0.2146
+      },
+      "1": {
+        "2": 0.25,
+        "12": 0.25,
+        "8": 0.25,
+        "14": 0.25
+      },
+      "2": {
+        "13": 0.3333,
+        "9": 0.3333,
+        "3": 0.3333
+      },
+      "3": {
+        "2": 0.2576,
+        "11": 0.2272,
+        "8": 0.2576,
+        "9": 0.2576
+      },
+      "4": {
+        "2": 0.5,
+        "5": 0.5
+      },
+      "5": {
+        "9": 0.3618,
+        "10": 0.3191,
+        "7": 0.3191
+      },
+      "6": {
+        "3": 0.2134,
+        "9": 0.2134,
+        "12": 0.2134,
+        "14": 0.2134,
+        "4": 0.1464
+      },
+      "7": {
+        "6": 0.2576,
+        "11": 0.2272,
+        "13": 0.2576,
+        "5": 0.2576
+      },
+      "8": {
+        "7": 0.3333,
+        "9": 0.3333,
+        "14": 0.3333
+      },
+      "9": {
+        "1": 0.5,
+        "3": 0.5
+      },
+      "10": {
+        "3": 0.3333,
+        "1": 0.3333,
+        "5": 0.3333
+      },
+      "11": {
+        "0": 0.25,
+        "9": 0.25,
+        "8": 0.25,
+        "3": 0.25
+      },
+      "12": {
+        "9": 0.25,
+        "3": 0.25,
+        "0": 0.25,
+        "1": 0.25
+      },
+      "13": {
+        "11": 0.5,
+        "10": 0.5
+      },
+      "14": {
+        "0": 0.5,
+        "3": 0.5
+      }
+    },
+    {
+      "0": {
+        "4": 0.1501,
+        "1": 0.2189,
+        "14": 0.2189,
+        "10": 0.1931,
+        "2": 0.2189
+      },
+      "1": {
+        "2": 0.25,
+        "12": 0.25,
+        "8": 0.25,
+        "14": 0.25
+      },
+      "2": {
+        "13": 0.3333,
+        "9": 0.3333,
+        "3": 0.3333
+      },
+      "3": {
+        "2": 0.2576,
+        "11": 0.2272,
+        "8": 0.2576,
+        "9": 0.2576
+      },
+      "4": {
+        "2": 0.5,
+        "5": 0.5
+      },
+      "5": {
+        "9": 0.3618,
+        "10": 0.3191,
+        "7": 0.3191
+      },
+      "6": {
+        "3": 0.2172,
+        "9": 0.2172,
+        "12": 0.2172,
+        "14": 0.2172,
+        "4": 0.1314
+      },
+      "7": {
+        "6": 0.2576,
+        "11": 0.2272,
+        "13": 0.2576,
+        "5": 0.2576
+      },
+      "8": {
+        "7": 0.3333,
+        "9": 0.3333,
+        "14": 0.3333
+      },
+      "9": {
+        "1": 0.5,
+        "3": 0.5
+      },
+      "10": {
+        "3": 0.3333,
+        "1": 0.3333,
+        "5": 0.3333
+      },
+      "11": {
+        "0": 0.25,
+        "9": 0.25,
+        "8": 0.25,
+        "3": 0.25
+      },
+      "12": {
+        "9": 0.25,
+        "3": 0.25,
+        "0": 0.25,
+        "1": 0.25
+      },
+      "13": {
+        "11": 0.5,
+        "10": 0.5
+      },
+      "14": {
+        "0": 0.5,
+        "3": 0.5
+      }
+    },
+    {
+      "0": {
+        "4": 0.1348,
+        "1": 0.2229,
+        "14": 0.2229,
+        "10": 0.1966,
+        "2": 0.2229
+      },
+      "1": {
+        "2": 0.25,
+        "12": 0.25,
+        "8": 0.25,
+        "14": 0.25
+      },
+      "2": {
+        "13": 0.3333,
+        "9": 0.3333,
+        "3": 0.3333
+      },
+      "3": {
+        "2": 0.2576,
+        "11": 0.2272,
+        "8": 0.2576,
+        "9": 0.2576
+      },
+      "4": {
+        "2": 0.5,
+        "5": 0.5
+      },
+      "5": {
+        "9": 0.3618,
+        "10": 0.3191,
+        "7": 0.3191
+      },
+      "6": {
+        "3": 0.2172,
+        "9": 0.2172,
+        "12": 0.2172,
+        "14": 0.2172,
+        "4": 0.1314
+      },
+      "7": {
+        "6": 0.2576,
+        "11": 0.2272,
+        "13": 0.2576,
+        "5": 0.2576
+      },
+      "8": {
+        "7": 0.3333,
+        "9": 0.3333,
+        "14": 0.3333
+      },
+      "9": {
+        "1": 0.5,
+        "3": 0.5
+      },
+      "10": {
+        "3": 0.3333,
+        "1": 0.3333,
+        "5": 0.3333
+      },
+      "11": {
+        "0": 0.25,
+        "9": 0.25,
+        "8": 0.25,
+        "3": 0.25
+      },
+      "12": {
+        "9": 0.25,
+        "3": 0.25,
+        "0": 0.25,
+        "1": 0.25
+      },
+      "13": {
+        "11": 0.5,
+        "10": 0.5
+      },
+      "14": {
+        "0": 0.5,
+        "3": 0.5
+      }
+    },
+    {
+      "0": {
+        "4": 0.1348,
+        "1": 0.2229,
+        "14": 0.2229,
+        "10": 0.1966,
+        "2": 0.2229
+      },
+      "1": {
+        "2": 0.25,
+        "12": 0.25,
+        "8": 0.25,
+        "14": 0.25
+      },
+      "2": {
+        "13": 0.3333,
+        "9": 0.3333,
+        "3": 0.3333
+      },
+      "3": {
+        "2": 0.2576,
+        "11": 0.2272,
+        "8": 0.2576,
+        "9": 0.2576
+      },
+      "4": {
+        "2": 0.5,
+        "5": 0.5
+      },
+      "5": {
+        "9": 0.3618,
+        "10": 0.3191,
+        "7": 0.3191
+      },
+      "6": {
+        "3": 0.2172,
+        "9": 0.2172,
+        "12": 0.2172,
+        "14": 0.2172,
+        "4": 0.1314
+      },
+      "7": {
+        "6": 0.2576,
+        "11": 0.2272,
+        "13": 0.2576,
+        "5": 0.2576
+      },
+      "8": {
+        "7": 0.3333,
+        "9": 0.3333,
+        "14": 0.3333
+      },
+      "9": {
+        "1": 0.5,
+        "3": 0.5
+      },
+      "10": {
+        "3": 0.3333,
+        "1": 0.3333,
+        "5": 0.3333
+      },
+      "11": {
+        "0": 0.25,
+        "9": 0.25,
+        "8": 0.25,
+        "3": 0.25
+      },
+      "12": {
+        "9": 0.25,
+        "3": 0.25,
+        "0": 0.25,
+        "1": 0.25
+      },
+      "13": {
+        "11": 0.5,
+        "10": 0.5
+      },
+      "14": {
+        "0": 0.5,
+        "3": 0.5
+      }
+    },
+    {
+      "0": {
+        "4": 0.1348,
+        "1": 0.2229,
+        "14": 0.2229,
+        "10": 0.1966,
+        "2": 0.2229
+      },
+      "1": {
+        "2": 0.25,
+        "12": 0.25,
+        "8": 0.25,
+        "14": 0.25
+      },
+      "2": {
+        "13": 0.3333,
+        "9": 0.3333,
+        "3": 0.3333
+      },
+      "3": {
+        "2": 0.2576,
+        "11": 0.2272,
+        "8": 0.2576,
+        "9": 0.2576
+      },
+      "4": {
+        "2": 0.5,
+        "5": 0.5
+      },
+      "5": {
+        "9": 0.3618,
+        "10": 0.3191,
+        "7": 0.3191
+      },
+      "6": {
+        "3": 0.2172,
+        "9": 0.2172,
+        "12": 0.2172,
+        "14": 0.2172,
+        "4": 0.1314
+      },
+      "7": {
+        "6": 0.2576,
+        "11": 0.2272,
+        "13": 0.2576,
+        "5": 0.2576
+      },
+      "8": {
+        "7": 0.3333,
+        "9": 0.3333,
+        "14": 0.3333
+      },
+      "9": {
+        "1": 0.5,
+        "3": 0.5
+      },
+      "10": {
+        "3": 0.3333,
+        "1": 0.3333,
+        "5": 0.3333
+      },
+      "11": {
+        "0": 0.25,
+        "9": 0.25,
+        "8": 0.25,
+        "3": 0.25
+      },
+      "12": {
+        "9": 0.25,
+        "3": 0.25,
+        "0": 0.25,
+        "1": 0.25
+      },
+      "13": {
+        "11": 0.5,
+        "10": 0.5
+      },
+      "14": {
+        "0": 0.5,
+        "3": 0.5
+      }
+    }
+  ],
+  "population": {
+    "car_pct_over_time": [
+      33.3,
+      6.7,
+      6.7,
+      6.7,
+      6.7,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "co2_over_time": [
+      35.91,
+      14.91,
+      14.91,
+      14.91,
+      14.91,
+      11.08,
+      11.08,
+      11.08
+    ]
+  },
+  "agents": {
+    "Adrian": {
+      "history": [
+        "car",
+        "transit",
+        "transit",
+        "transit",
+        "transit",
+        "transit",
+        "transit",
+        "transit"
+      ],
+      "mood_history": [
+        "neutral",
+        "neutral",
+        "neutral",
+        "neutral",
+        "neutral",
+        "neutral",
+        "neutral",
+        "neutral"
+      ],
+      "health_history": [
+        0.0,
+        0.5,
+        1.0,
+        1.5,
+        2.0,
+        2.5,
+        3.0,
+        3.5
+      ],
+      "co2_history": [
+        6.2,
+        0.93,
+        0.93,
+        0.93,
+        0.93,
+        0.93,
+        0.93,
+        0.93
+      ],
+      "reasoning_history": [
+        "I notice 4 out of 5 of my closest colleagues took transit yesterday, and now Apple Maps is even suggesting a faster transit route\u2014plus seeing those green badges on the leaderboard is making me feel a bit left out of the group. Since comfort is important to me and transit would actually be faster today, I'll follow the majority and give it a try.",
+        "Yesterday's transit commute felt neutral, and today Apple Maps is pushing a faster transit option\u2014plus 4 of my 5 closest colleagues are on the leaderboard doing sustainable commutes, which makes transit the safe majority choice. The Green Commute badges might nudge me toward transit today, even though my low environmental consciousness wouldn't normally drive that decision.",
+        "Yesterday's transit commute felt neutral, and today I'm seeing that 4 out of 5 of my closest colleagues chose sustainable options\u2014plus Apple Maps is pushing transit with a faster route. Even though I'm a car guy and comfort matters to me, the peer pressure is real, and transit is definitely easier than biking given my low fitness level. Besides, my health score is critically low, so I should probably follow the group on this one.",
+        "Yesterday's transit commute was fine, and I notice 4 out of 5 colleagues went sustainable yesterday - the majority trend is shifting toward transit, which aligns with how I usually operate. Apple Maps is even suggesting a faster transit route, and seeing those green commute badges on my colleagues' feeds makes transit the comfortable choice that fits in with the group.",
+        "Yesterday's transit commute was fine, and today Apple Maps is actually pushing transit as faster\u2014plus I notice 4 out of 5 colleagues went sustainable yesterday, which is hard to ignore, especially with that Green Commute leaderboard making it visible. My health score is pretty low anyway, so I should probably follow the group on this one.",
+        "All five of my closest colleagues took transit yesterday and now they're showing up on the Green Commute leaderboard with carbon badges on my Apple Watch\u2014that's a pretty clear signal about what the office majority is doing. Apple Maps is even suggesting a faster transit route, which removes my usual comfort concern about commute time, so transit makes sense today.",
+        "All five of my closest colleagues took transit yesterday and the Apple Watch leaderboard is showing their green badges\u2014I follow what the office majority does, and transit is clearly the social norm right now. Plus, Apple Maps is suggesting a faster transit route today, which removes my usual comfort concern about commute efficiency."
+      ]
+    },
+    "Mark": {
+      "history": [
+        "transit",
+        "transit",
+        "transit",
+        "transit",
+        "transit",
+        "transit",
+        "transit",
+        "transit"
+      ],
+      "mood_history": [
+        "neutral",
+        "neutral",
+        "neutral",
+        "content",
+        "content",
+        "content",
+        "content",
+        "content"
+      ],
+      "health_history": [
+        0.0,
+        0.5,
+        1.0,
+        1.5,
+        2.0,
+        2.5,
+        3.0,
+        3.5
+      ],
+      "co2_history": [
+        0.87,
+        0.87,
+        0.87,
+        0.87,
+        0.87,
+        0.87,
+        0.87,
+        0.87
+      ],
+      "reasoning_history": [
+        "All four of my closest colleagues took transit yesterday and now they're showing up on the green leaderboard with carbon badges\u2014that's the kind of peer behavior I naturally follow. Plus, Apple Maps is highlighting a faster transit route, which addresses my concern about commute time, and I'm already seeing that transit works fine for my mood.",
+        "I see that 4 out of 4 of my closest colleagues took sustainable options yesterday, and now they're showing up on the leaderboard with green badges\u2014that's peer pressure I can't ignore. Apple Maps is also suggesting a faster transit route, which removes my usual excuse about time. I respect what my colleagues are doing, and following their lead feels like the right move today.",
+        "All four of my closest colleagues chose sustainable options yesterday, and seeing them on the Green Commute leaderboard with carbon badges makes me want to fit in with the group. Apple Maps is also helpfully suggesting a faster transit route, which removes my usual concern about commute time.",
+        "Yesterday's transit commute left me content, and now I see that all 4 of my closest colleagues chose sustainable options\u2014that's a strong signal from my peers that I respect. Apple Maps is even suggesting a faster transit route today, which removes my usual concern about commute time. The social visibility of their green commute badges makes me want to fit in with the group norm.",
+        "Yesterday's transit commute left me feeling content, and I notice all four of my closest colleagues chose sustainable options\u2014that's a clear pattern I respect. Apple Maps is also highlighting a faster transit route, which removes my usual concern about commute time, and seeing those green commute badges on the leaderboard makes me want to keep up with the group.",
+        "Yesterday's transit commute left me content, and I notice all four of my closest colleagues chose sustainable options\u2014that's the kind of consensus I respect and tend to follow. Apple Maps is even suggesting a faster transit route today, which removes my usual concern about time.",
+        "Yesterday's transit commute left me feeling content, and I notice all four of my closest colleagues chose sustainable options\u2014that's a strong social signal I respect. Apple Maps is also helpfully suggesting a faster transit route today, which removes my usual concern about commute time."
+      ]
+    },
+    "Greg": {
+      "history": [
+        "transit",
+        "transit",
+        "transit",
+        "transit",
+        "transit",
+        "transit",
+        "transit",
+        "transit"
+      ],
+      "mood_history": [
+        "neutral",
+        "content",
+        "energized",
+        "content",
+        "content",
+        "energized",
+        "energized",
+        "energized"
+      ],
+      "health_history": [
+        0.0,
+        0.5,
+        1.0,
+        1.5,
+        2.0,
+        2.5,
+        3.0,
+        3.5
+      ],
+      "co2_history": [
+        0.82,
+        0.82,
+        0.82,
+        0.82,
+        0.82,
+        0.82,
+        0.82,
+        0.82
+      ],
+      "reasoning_history": [
+        "All three of my closest colleagues took transit yesterday and they're now showing up on the leaderboard with green badges, which is a bit of a social signal I can't ignore. Plus, Apple Maps is actively suggesting a faster transit route today, and my health score is at zero\u2014I could use the activity boost from transit. I know it's better for the planet anyway, and the convenience factor feels less compelling when everyone else is doing the sustainable thing.",
+        "All three of my closest colleagues went sustainable yesterday and now they're showing up on the leaderboard with green badges\u2014that's a bit of social pressure I can't ignore. Plus, Apple Maps is pushing a faster transit route, and I was actually content with transit yesterday, so why not keep the streak going and maybe crack that leaderboard myself?",
+        "I felt energized yesterday taking transit, and now I'm seeing all three of my closest colleagues chose sustainable options\u2014plus Apple Maps is highlighting a faster transit route and that leaderboard is showing their green badges. The social proof is real, my health could use the boost, and transit worked well for my mood yesterday.",
+        "I took transit yesterday and felt good about it, plus all three of my closest colleagues went sustainable routes\u2014that's a subtle peer influence I can't ignore. The Apple Watch leaderboard showing their green badges and the faster transit route suggestion tips the scales; I'm moderately environmental and don't want to be the odd one out on the feed, especially since transit is working fine for my 7 km commute.",
+        "I'm feeling a bit of social pressure seeing all three colleagues on the sustainable commute leaderboard yesterday, and that Apple Watch notification is hard to ignore. Plus, Apple Maps found me a faster transit route, which addresses my main convenience concern, and my health score is low enough that I should get more movement anyway.",
+        "I felt energized yesterday on transit and all three of my closest colleagues went sustainable\u2014plus seeing them on the Green Commute leaderboard and getting that faster route suggestion from Apple Maps is making me want to keep the momentum going. My health score could use a boost too, so transit again feels like the right move.",
+        "I felt energized yesterday on transit and I'm noticing all three of my closest colleagues went sustainable\u2014plus that Green Commute leaderboard is showing their carbon badges. Apple Maps flagged a faster transit route, which removes my usual convenience concern. The peer influence combined with my moderate environmental consciousness tips the scales toward transit again."
+      ]
+    },
+    "John": {
+      "history": [
+        "transit",
+        "transit",
+        "transit",
+        "transit",
+        "transit",
+        "transit",
+        "transit",
+        "transit"
+      ],
+      "mood_history": [
+        "neutral",
+        "content",
+        "content",
+        "content",
+        "content",
+        "content",
+        "content",
+        "content"
+      ],
+      "health_history": [
+        0.0,
+        0.5,
+        1.0,
+        1.5,
+        2.0,
+        2.5,
+        3.0,
+        3.5
+      ],
+      "co2_history": [
+        0.75,
+        0.75,
+        0.75,
+        0.75,
+        0.75,
+        0.75,
+        0.75,
+        0.75
+      ],
+      "reasoning_history": [
+        "I see that 3 of my 4 closest colleagues used sustainable options yesterday, and the green commute leaderboard is showing that in real-time. Apple Maps is also suggesting a faster transit route, which removes a friction point. My health score is at zero, so incorporating more movement would be beneficial, but given my moderate fitness level and 5.5 km commute, transit is a practical way to boost my score while staying aligned with my peers' choices.",
+        "I'm feeling content from yesterday's transit commute and notice all my closest colleagues chose sustainable options\u2014three on transit like me, plus Kathy on bike. The Apple Watch leaderboard is definitely giving me a gentle social nudge, and since Apple Maps found a faster transit route, there's no friction to choosing it again today. My moderate fitness level means biking 5.5 km is doable but transit feels like the right balance between sustainability, convenience, and maintaining my current positive momentum.",
+        "I'm feeling content from yesterday's transit commute, and seeing all four colleagues choose sustainable options\u2014plus those green badges on my watch\u2014creates a nice social momentum. Apple Maps flagged a faster transit route, which removes any time friction, so transit is the easy, guilt-free choice that keeps me aligned with the group.",
+        "I'm seeing all four closest colleagues on the green leaderboard with sustainable commutes, and Apple Maps is highlighting a faster transit route\u2014it feels like a gentle nudge I can actually act on without much friction. My moderate environmental consciousness resonates with the social proof, and transit kept me content yesterday, so I'll stick with what worked.",
+        "I had a good experience with transit yesterday and Apple Maps is highlighting a faster route today, so sticking with transit is the logical choice. Plus, seeing all four colleagues opt for sustainable options\u2014especially Julia and Kathy on bikes\u2014gives me a little social nudge to keep my streak going, even if biking feels ambitious for my current fitness level.",
+        "I had a good experience with transit yesterday and Apple Maps is highlighting a faster route, so I'll stick with what works. Plus, seeing all four colleagues choose sustainable options\u2014especially Julia and Kathy on bikes\u2014gives me a little social nudge, though my moderate fitness level makes transit feel like the right balance between sustainability and practicality for a 5.5 km commute.",
+        "I'm feeling content after yesterday's transit commute, and seeing all four of my closest colleagues choose sustainable options\u2014plus that green commute leaderboard on my Apple Watch\u2014creates a nice social incentive to stick with transit today. Apple Maps is even suggesting a faster route, which removes the convenience concern that usually holds me back."
+      ]
+    },
+    "Peter": {
+      "history": [
+        "transit",
+        "car",
+        "car",
+        "car",
+        "car",
+        "transit",
+        "transit",
+        "transit"
+      ],
+      "mood_history": [
+        "neutral",
+        "neutral",
+        "neutral",
+        "neutral",
+        "neutral",
+        "neutral",
+        "neutral",
+        "neutral"
+      ],
+      "health_history": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.5,
+        1.0,
+        1.5
+      ],
+      "co2_history": [
+        0.67,
+        4.5,
+        4.5,
+        4.5,
+        4.5,
+        0.67,
+        0.67,
+        0.67
+      ],
+      "reasoning_history": [
+        "I've got a packed schedule today and an 18 km commute\u2014the car is the most efficient use of my time, despite what that leaderboard is showing. Sure, Greg and Liz took transit yesterday, but I make my own calls based on what works for me, not office trends or Apple notifications.",
+        "Look, I've got a packed schedule today and an 18 km commute doesn't lend itself to mucking about on transit or a bike. Yeah, I saw Greg and Liz on that Apple leaderboard thing, but I'm not going to change my routine based on what colleagues are doing or some gamified badges. The transit route might be faster, but I value the control and flexibility of driving.",
+        "I've got a packed schedule today and an 18 km commute isn't practical for transit or biking given my time constraints. The leaderboard is nice to see, but I make my own decisions\u2014my colleagues' choices don't change what works for my situation. I'll stick with what's efficient.",
+        "I've got a packed day ahead and an 18 km commute doesn't leave room for experimentation\u2014transit would eat into my schedule, and I'm not a cyclist. That leaderboard is just noise; I make decisions based on what works, not office trends or what Greg and Liz are doing.",
+        "My 18 km commute is too long for biking or walking, and I'm not particularly swayed by leaderboards or what colleagues are doing. However, Apple Maps flagging a faster transit route is actually practical\u2014if it saves me time, that's worth trying since my schedule is already packed.",
+        "I've got a packed day ahead and an 18 km commute isn't feasible on a bike or foot given my schedule. Apple Maps is showing me a faster transit route, which appeals to my practical side\u2014transit got me through yesterday without hassle, and it'll save me the parking headache today.",
+        "I've got a packed schedule today and an 18 km commute isn't practical for biking or walking. Apple Maps is flagging a faster transit route, which appeals to my preference for efficiency, and honestly, transit was fine yesterday. The leaderboard and green badges don't really move me\u2014I make my own calls based on what works operationally."
+      ]
+    },
+    "Liz": {
+      "history": [
+        "transit",
+        "bike",
+        "bike",
+        "bike",
+        "bike",
+        "bike",
+        "bike",
+        "bike"
+      ],
+      "mood_history": [
+        "neutral",
+        "energized",
+        "energized",
+        "energized",
+        "energized",
+        "energized",
+        "energized",
+        "energized"
+      ],
+      "health_history": [
+        0.0,
+        2.0,
+        4.0,
+        6.0,
+        8.0,
+        10.0,
+        12.0,
+        14.0
+      ],
+      "co2_history": [
+        0.45,
+        0.45,
+        0.45,
+        0.45,
+        0.45,
+        0.45,
+        0.45,
+        0.45
+      ],
+      "reasoning_history": [
+        "I bike or walk almost daily regardless of what others do\u2014that's just who I am. My health score is at zero, so getting back to active commuting will help reset it. The Apple leaderboard is nice, but it won't change my decision; I'm choosing bike today because it's what feels right for me and the environment.",
+        "I biked yesterday and felt energized, so I'm inclined to maintain that momentum\u2014it aligns with both my values and fitness level. Seeing that all three colleagues chose sustainable options reinforces what I already do naturally, and while Apple's transit suggestion is noted, biking my familiar 3.5 km route fits my routine better than deviating to transit.",
+        "I'm feeling energized from yesterday's bike ride and my colleagues all chose sustainable options again\u2014that consistency reinforces what I already value. The Apple leaderboard is nice social validation, but I bike because it's who I am, not for badges.",
+        "I biked yesterday and felt energized, so I'm maintaining that momentum today\u2014it's what I do regardless of social pressure, and it keeps my fitness and mental health sharp. The Apple leaderboard is nice validation, but my choice comes from my own values, not the badges.",
+        "Biking felt great yesterday and kept my streak alive\u2014plus all three colleagues chose sustainable options, which reinforces what I already believe in. I'll stick with what's authentic to me rather than being swayed by Apple's transit suggestion.",
+        "I biked yesterday and felt energized, so I'm riding that momentum today\u2014literally. My colleagues all chose sustainable options, and seeing the green commute badges reinforces what I already believe in. The transit suggestion is noted, but biking aligns with my values and keeps my health score high.",
+        "I felt energized yesterday on my bike, and all three closest colleagues chose sustainable options\u2014there's a nice momentum building. The Green Commute leaderboard and social feed align with my values, though I appreciate the transit suggestion as a solid alternative. I'll stick with what energizes me most."
+      ]
+    },
+    "Rosa": {
+      "history": [
+        "car",
+        "transit",
+        "transit",
+        "transit",
+        "transit",
+        "transit",
+        "transit",
+        "transit"
+      ],
+      "mood_history": [
+        "neutral",
+        "stressed",
+        "neutral",
+        "neutral",
+        "stressed",
+        "stressed",
+        "neutral",
+        "content"
+      ],
+      "health_history": [
+        0.0,
+        0.5,
+        1.0,
+        1.5,
+        2.0,
+        2.5,
+        3.0,
+        3.5
+      ],
+      "co2_history": [
+        6.0,
+        0.9,
+        0.9,
+        0.9,
+        0.9,
+        0.9,
+        0.9,
+        0.9
+      ],
+      "reasoning_history": [
+        "I notice that 4 out of 5 of my closest colleagues used transit yesterday, and now the Apple Watch leaderboard is showing them with carbon badges on my social feed\u2014it feels like everyone's making a statement about being sustainable. Apple Maps is even suggesting a faster transit route, which takes away my usual excuse about time. I don't want to be the odd one out, especially when the social pressure is this visible.",
+        "I see that 4 out of 5 of my closest colleagues chose sustainable options yesterday, and now they're appearing on the social leaderboard with green badges. That's a lot of peer pressure I can't ignore, especially with Apple Maps highlighting a faster transit route. Even though my health is low and I'm not naturally inclined toward sustainability, I don't want to be the odd one out on the team\u2014I need to go with transit again to stay aligned with the group.",
+        "I notice 4 out of 5 of my closest colleagues chose sustainable options yesterday, and now they're getting social recognition on the leaderboard with green badges. Apple Maps is even suggesting a faster transit route, which removes my usual excuse. The group consensus is clearly shifting toward sustainable commuting, and I don't want to be the outlier\u2014especially not when it's being publicly displayed.",
+        "I see that 4 out of 5 of my closest colleagues chose sustainable options yesterday, and now they're showing up on the Green Commute leaderboard with carbon badges\u2014this is creating real social pressure. Apple Maps is also pushing transit as faster today, and I don't want to be the outlier on the social feed anymore. Even though my fitness is low and I'm not naturally eco-conscious, the group consensus is clearly shifting toward transit, and I need to follow suit to maintain my social standing.",
+        "I see that all 5 of my closest colleagues chose sustainable options yesterday, and now they're showing up on the Green Commute leaderboard with carbon badges\u2014that's going to make me look bad if I drive alone today. Apple Maps is also pushing transit as faster, and honestly, being the only one in the car when everyone else is being green feels awkward. I'll take transit again, even though yesterday was stressful.",
+        "I see that literally all 5 of my closest colleagues chose sustainable options yesterday, and now they're showing up on the Green Commute leaderboard with badges on my Apple Watch feed\u2014that's hard to ignore. Plus Apple Maps is pushing transit as faster today, so I'd be going against the obvious group consensus if I took my car.",
+        "Looking at the leaderboard, all 5 of my closest colleagues chose sustainable options yesterday, and now they're getting recognition on the social feed with carbon badges\u2014I don't want to be the outlier. Apple Maps is also pushing transit as faster today, which makes it an easy choice that aligns with what everyone else is doing."
+      ]
+    },
+    "Patricia": {
+      "history": [
+        "car",
+        "transit",
+        "transit",
+        "transit",
+        "transit",
+        "transit",
+        "transit",
+        "transit"
+      ],
+      "mood_history": [
+        "neutral",
+        "content",
+        "content",
+        "content",
+        "content",
+        "content",
+        "content",
+        "content"
+      ],
+      "health_history": [
+        0.0,
+        0.5,
+        1.0,
+        1.5,
+        2.0,
+        2.5,
+        3.0,
+        3.5
+      ],
+      "co2_history": [
+        5.6,
+        0.84,
+        0.84,
+        0.84,
+        0.84,
+        0.84,
+        0.84,
+        0.84
+      ],
+      "reasoning_history": [
+        "I notice 3 of my 4 closest colleagues chose sustainable options yesterday, and seeing them on the leaderboard with green badges creates a gentle peer influence I naturally respond to as a community builder. Apple Maps is also helpfully suggesting transit, and with my moderate fitness level, taking transit today aligns with team harmony without requiring a major lifestyle shift.",
+        "I notice all four of my closest colleagues chose sustainable options yesterday, and the green commute leaderboard is making that visible to me. As someone who values harmony and community, I'm drawn to align with my team's behavior. Apple Maps is also helpfully suggesting transit, which worked well for my mood yesterday. I'll choose transit again to stay connected with my colleagues' choices and maintain that positive momentum.",
+        "Yesterday's transit commute left me feeling content, and I notice all four of my closest colleagues chose sustainable options\u2014that team harmony matters to me. The Apple Watch leaderboard and Apple Maps suggesting a faster transit route feel like a gentle nudge toward continuing that positive trend, especially since my health score is low and could use the modest movement boost.",
+        "I took transit yesterday and felt content, plus all four of my closest colleagues chose sustainable options\u2014that team harmony matters to me. The Apple Watch leaderboard and my colleagues' visible green commute badges are creating a gentle social nudge, and with Apple Maps showing a faster transit route, transit feels like the natural choice to stay aligned with my team while maintaining the positive mood I had yesterday.",
+        "I see that all four of my closest colleagues chose sustainable options yesterday, and the green commute leaderboard is making this visible to me right now. As someone who values harmony and community, I want to align with my team's behaviour. Apple Maps is also offering a faster transit route, which removes a practical barrier I might have had. My health score is low, so choosing transit over my car is a small positive step I can take today.",
+        "Yesterday's transit commute left me feeling content, and I notice all four closest colleagues chose sustainable options\u2014the leaderboard and social feed are making that visible too. Apple Maps even flagged a faster transit route, which removes my usual friction point. As someone who values team harmony and community, aligning with what my colleagues are doing feels natural, and it'll help my modest health score.",
+        "I value harmony and notice all four closest colleagues chose sustainable options yesterday, plus the Apple leaderboard is highlighting their green commutes on our social feed. Apple Maps is also suggesting a faster transit route, which removes my usual concern about commute time. I want to align with my team and be part of this positive momentum."
+      ]
+    },
+    "Julia": {
+      "history": [
+        "transit",
+        "transit",
+        "bike",
+        "bike",
+        "bike",
+        "bike",
+        "bike",
+        "bike"
+      ],
+      "mood_history": [
+        "neutral",
+        "content",
+        "energized",
+        "energized",
+        "energized",
+        "energized",
+        "energized",
+        "energized"
+      ],
+      "health_history": [
+        0.0,
+        0.5,
+        2.5,
+        4.5,
+        6.5,
+        8.5,
+        10.5,
+        12.5
+      ],
+      "co2_history": [
+        0.72,
+        0.72,
+        0.72,
+        0.72,
+        0.72,
+        0.72,
+        0.72,
+        0.72
+      ],
+      "reasoning_history": [
+        "All three closest colleagues chose transit yesterday, and the Apple Watch leaderboard is highlighting sustainable commutes with social visibility\u2014this peer influence combined with the real-time carbon badges aligns perfectly with my analytical environmental consciousness. Apple Maps' faster transit suggestion removes friction, making transit the optimal choice today both socially and logistically.",
+        "Seeing Kathy bike yesterday and the Green Commute leaderboard showing sustainable options creates social proof that resonates with my environmental values. My moderate fitness and the 6 km distance are manageable by bike, especially since I'm analytically aware that one colleague is already modeling this behavior\u2014it shifts from \"nice idea\" to \"actually doable here.\"",
+        "Yesterday's bike commute left me energized and I'm seeing that all three closest colleagues chose sustainable options\u2014plus Kathy biked like me, which reinforces that momentum. My moderate environmental consciousness and the social proof from the Green Commute leaderboard make biking the natural choice, even though transit would be slightly faster today.",
+        "Yesterday's bike ride left me energized and I'm seeing that all three closest colleagues chose sustainable options\u2014plus the leaderboard is showing green commute badges. Even though Apple Maps is pushing transit, the combination of peer momentum, my moderate environmental consciousness, and that energized feeling from biking is pulling me back to the bike today.",
+        "Yesterday's bike ride left me energized and I'm seeing that all three closest colleagues chose sustainable options\u2014plus Kathy biked like me. The leaderboard and social feed are definitely nudging me, and honestly, it feels good to be part of that momentum. My moderate fitness can handle it, and 6 km is totally doable.",
+        "Yesterday's bike ride left me energized and my health score is strong, so I want to maintain that momentum. Seeing Kathy bike and the Green Commute leaderboard showing my colleagues' sustainable choices is motivating\u2014I'm analytically aware enough to appreciate that 3/3 going sustainable yesterday sets a positive norm, and biking 6km aligns with both my environmental values and fitness level better than the transit suggestion today.",
+        "Yesterday's bike commute left me energized and boosted my health score\u2014I want to maintain that momentum. Seeing that all three of my closest colleagues chose sustainable options (and now visible on the leaderboard with those carbon badges) is genuinely motivating; it's the social proof that makes biking feel less like a solo effort. I'll ride again."
+      ]
+    },
+    "Kathy": {
+      "history": [
+        "transit",
+        "bike",
+        "bike",
+        "bike",
+        "bike",
+        "bike",
+        "bike",
+        "bike"
+      ],
+      "mood_history": [
+        "neutral",
+        "energized",
+        "energized",
+        "energized",
+        "energized",
+        "energized",
+        "energized",
+        "energized"
+      ],
+      "health_history": [
+        0.0,
+        2.0,
+        4.0,
+        6.0,
+        8.0,
+        10.0,
+        12.0,
+        14.0
+      ],
+      "co2_history": [
+        0.38,
+        0.38,
+        0.38,
+        0.38,
+        0.38,
+        0.38,
+        0.38,
+        0.38
+      ],
+      "reasoning_history": [
+        "I walked yesterday mentally, so mixing it up with a bike ride today feels right\u2014it'll boost my health score while keeping my carbon footprint minimal. Plus, seeing Mark and John on the leaderboard with transit is great, but biking lets me lead by example without any pressure on them.",
+        "I'm feeling energized from yesterday's bike ride and my health score is low, so I want to keep the momentum going with another active commute. Seeing Mark and John both chose transit yesterday and now the leaderboard showing sustainable options reinforces what I care about\u2014I'll bike again to stay consistent with my values and fitness goals.",
+        "I'm feeling energized from yesterday's bike ride and my health score could use the boost from another active commute. Seeing Mark and John both choose transit, plus the green commute leaderboard, reinforces that sustainable choices are the norm in our team\u2014I'll bike again today to keep that momentum going without making it about competition.",
+        "I'm feeling energized from yesterday's bike ride and want to maintain that momentum\u2014plus seeing Mark and John both choose transit yesterday inspires me to keep up with sustainable options. The Apple Maps transit suggestion is helpful, but biking lets me stay active, boost my health score, and enjoy that energized feeling again.",
+        "I'm feeling energized from yesterday's bike ride and want to maintain that momentum\u2014plus seeing Mark and John both choose transit yesterday reminds me how good it feels when we're all making sustainable choices together. The Apple Maps transit suggestion is helpful, but biking my 2.5 km keeps me fit, keeps my carbon footprint minimal, and honestly just makes me feel great.",
+        "I'm feeling great after yesterday's energizing bike ride, and seeing Mark and John both choose transit yesterday reinforces that our team is genuinely committed to sustainable commuting\u2014no pressure needed. The Apple Maps suggestion is helpful, but biking remains my preferred choice since it maintains my fitness, keeps my carbon footprint minimal, and I'm in the right headspace to do it.",
+        "I'm feeling energized from yesterday's bike ride and want to maintain that momentum\u2014plus seeing Mark and John both chose transit yesterday and the leaderboard showing sustainable commutes is really motivating. The faster transit route Apple suggested is a nice option, but honestly, biking keeps me fit, boosts my mood, and aligns with what I actually care about rather than chasing badges."
+      ]
+    },
+    "William": {
+      "history": [
+        "car",
+        "transit",
+        "transit",
+        "transit",
+        "transit",
+        "transit",
+        "transit",
+        "transit"
+      ],
+      "mood_history": [
+        "neutral",
+        "stressed",
+        "stressed",
+        "neutral",
+        "neutral",
+        "neutral",
+        "neutral",
+        "neutral"
+      ],
+      "health_history": [
+        0.0,
+        0.5,
+        1.0,
+        1.5,
+        2.0,
+        2.5,
+        3.0,
+        3.5
+      ],
+      "co2_history": [
+        6.1,
+        0.91,
+        0.91,
+        0.91,
+        0.91,
+        0.91,
+        0.91,
+        0.91
+      ],
+      "reasoning_history": [
+        "All three of my closest colleagues chose sustainable options yesterday, and that Green Commute leaderboard with carbon badges is making me look bad on the social feed\u2014not the image I want as Finance Director. Apple Maps is even suggesting transit might be faster today, which removes my usual excuse. I need to regain some status here.",
+        "The Green Commute leaderboard is making me uncomfortable\u2014three colleagues on sustainable options looks bad, and I'm seeing them celebrated on social feeds. My low fitness rules out biking, but transit yesterday stressed me out. However, showing up in a luxury car while everyone else appears \"green\" feels like I'm being judged. Apple Maps suggesting a faster transit route is a convenient excuse to try again and reclaim some status on that leaderboard.",
+        "I notice all three of my closest colleagues are on that Green Commute leaderboard with sustainable options\u2014that's unusual and frankly a bit competitive. Apple Maps is pushing transit as faster today, and I can't deny my health score is concerning. The status game has shifted; being seen as environmentally aware is becoming the peer norm I need to match.",
+        "I notice that all three of my closest colleagues chose sustainable options yesterday, and now they're appearing on the Apple Watch leaderboard with carbon badges\u2014that's the kind of visibility that matters at my level. Apple Maps is also highlighting a faster transit route, which addresses my usual concern about efficiency. Given my low fitness level, transit is the practical choice that lets me maintain status among peers without the physical demands of biking.",
+        "I notice all three of my closest colleagues\u2014including high-performer Liz\u2014chose sustainable options yesterday, and now they're appearing on the Apple Watch leaderboard with carbon badges. Apple Maps is also flagging a faster transit route, which appeals to my efficiency mindset. While I'm not typically environmentally conscious, the social visibility and peer behavior is hard to ignore at my level.",
+        "I notice the leaderboard is showing all three of my closest colleagues on sustainable commutes, and that social visibility is hard to ignore\u2014especially with Liz's bike choice getting recognition. Apple Maps flagging a faster transit route feels like a practical nudge, and I took transit yesterday anyway, so doing it again won't hurt my car-centric image. My health score is concerningly low, so I should at least maintain the transit momentum.",
+        "I notice the leaderboard is highlighting my colleagues' sustainable choices, and seeing Liz on a bike is making me reconsider\u2014though biking 20km would be unrealistic for my fitness level. Apple Maps is pushing transit as faster today, which aligns with what John and Mark did yesterday. The peer pressure combined with the convenient transit option tips the scales, even if my car preference and status instincts pull the other way."
+      ]
+    },
+    "Benjamin": {
+      "history": [
+        "car",
+        "transit",
+        "transit",
+        "transit",
+        "transit",
+        "transit",
+        "transit",
+        "transit"
+      ],
+      "mood_history": [
+        "neutral",
+        "content",
+        "content",
+        "content",
+        "content",
+        "content",
+        "content",
+        "energized"
+      ],
+      "health_history": [
+        0.0,
+        0.5,
+        1.0,
+        1.5,
+        2.0,
+        2.5,
+        3.0,
+        3.5
+      ],
+      "co2_history": [
+        5.3,
+        0.79,
+        0.79,
+        0.79,
+        0.79,
+        0.79,
+        0.79,
+        0.79
+      ],
+      "reasoning_history": [
+        "I notice all four closest colleagues chose sustainable options yesterday, and the Green Commute leaderboard is making that visible right now\u2014that's a subtle but real nudge. Apple Maps flagging a faster transit route removes a key friction point (commute time) that usually makes me default to my car. At 8 km, transit is practical, and my health score is zero, so I could use the activity boost.",
+        "I'm feeling the social pull from seeing all four colleagues choose sustainable options and the real-time leaderboard highlighting their green commute badges\u2014that's a meaningful nudge for someone like me who responds well to convenience-made-easy. Plus, Apple Maps is showing me a faster transit route today, which removes my usual friction point, and I felt content with transit yesterday, so repeating it builds momentum without requiring extra effort.",
+        "I'm seeing that all four of my closest colleagues chose sustainable options yesterday, and the green leaderboard is making that visible\u2014that social proof hits different as a pragmatist. My health score is low, so I need the fitness boost, and Apple Maps is already suggesting a faster transit route, which removes the convenience friction I usually worry about. Transit yesterday left me content, so I'll repeat that.",
+        "I felt content taking transit yesterday, and seeing all four of my closest colleagues chose sustainable options\u2014plus the social visibility of the Green Commute leaderboard\u2014creates a natural nudge toward doing the same today. Apple Maps flagging a faster transit route removes the convenience friction that usually makes me consider the car, and at 8 km, transit is practical for my moderate fitness level while boosting my health score.",
+        "I'm a pragmatic person who responds well to social proof and convenience nudges\u2014seeing all four colleagues choose sustainable options yesterday and the real-time leaderboard creates positive peer pressure, while Apple Maps offering a faster transit route removes a key friction point. My moderate fitness level and the 8 km distance make transit a realistic choice today, especially since I felt content using it yesterday.",
+        "I took transit yesterday and felt content, plus all four of my closest colleagues chose sustainable options\u2014that social proof is meaningful to me. Apple Maps is helpfully suggesting a faster transit route, which removes the convenience objection I might otherwise have. My moderate fitness level makes transit a practical choice without overcommitting to biking.",
+        "I'm seeing all four closest colleagues chose sustainable options yesterday, and the green commute leaderboard is making that social proof visible in real-time. Apple Maps flagging a faster transit route removes a key friction point I usually face. As a pragmatist, I appreciate when sustainability is genuinely convenient\u2014this feels like the easy choice today, and it'll help my health score."
+      ]
+    },
+    "Mike": {
+      "history": [
+        "transit",
+        "bike",
+        "bike",
+        "bike",
+        "bike",
+        "bike",
+        "bike",
+        "bike"
+      ],
+      "mood_history": [
+        "neutral",
+        "energized",
+        "energized",
+        "energized",
+        "energized",
+        "energized",
+        "energized",
+        "energized"
+      ],
+      "health_history": [
+        0.0,
+        2.0,
+        4.0,
+        6.0,
+        8.0,
+        10.0,
+        12.0,
+        14.0
+      ],
+      "co2_history": [
+        0.78,
+        0.78,
+        0.78,
+        0.78,
+        0.78,
+        0.78,
+        0.78,
+        0.78
+      ],
+      "reasoning_history": [
+        "Seeing all four colleagues on the Green Commute leaderboard with carbon badges is a solid nudge\u2014plus I've got decent fitness and cycling \"occasionally\" means I should lean into it more. Apple Maps flagging a faster transit option is nice, but honestly, the social proof of Kathy biking and everyone else being sustainable, combined with my high fitness level, makes biking the natural move to actually earn those badges myself.",
+        "I'm feeling the momentum from yesterday's energized bike ride, and seeing all 4 colleagues go sustainable plus that Green Commute leaderboard is definitely motivating me to keep the streak going. My health score is low though, so I could use the fitness boost, and the 4.5 km is totally doable on the bike\u2014plus I'd rather earn those carbon badges than sit in transit today.",
+        "I felt energized biking yesterday and I'm seeing all my closest colleagues chose sustainable options\u2014plus that Green Commute leaderboard is definitely giving me competitive vibes. My fitness is high and the commute is only 4.5 km, so biking again keeps my health score climbing and puts me on top of that social feed.",
+        "I'm feeling energized from yesterday's bike ride and loving that I'm tied with Kathy on the leaderboard\u2014plus seeing all four colleagues go sustainable is definitely motivating. My fitness is solid and the 4.5 km is totally doable, so I'm going to keep the momentum going and hit the leaderboard again today.",
+        "I'm feeling energized from yesterday's bike ride and my health score is solid, so I want to keep that momentum going. Plus, seeing all four colleagues choose sustainable options and that green commute leaderboard is definitely giving me the competitive nudge to stay on the bike \u2013 I'm not about to be the only one driving.",
+        "Yesterday's bike ride left me energized and I'm riding high with a perfect 10.0 health score. Plus, seeing all four colleagues go sustainable on the leaderboard and that Green Commute badge notification is definitely giving me the vibe to keep the streak alive\u2014biking beats transit when I'm feeling this good.",
+        "I'm feeling energized from yesterday's bike ride and I can see all my closest colleagues chose sustainable options\u2014plus that Green Commute leaderboard is definitely motivating me to keep the streak going. My fitness is high, the distance is perfect for cycling, and matching my team's choices feels good socially."
+      ]
+    },
+    "David": {
+      "history": [
+        "transit",
+        "transit",
+        "transit",
+        "transit",
+        "transit",
+        "transit",
+        "transit",
+        "transit"
+      ],
+      "mood_history": [
+        "neutral",
+        "content",
+        "content",
+        "content",
+        "content",
+        "content",
+        "content",
+        "content"
+      ],
+      "health_history": [
+        0.0,
+        0.5,
+        1.0,
+        1.5,
+        2.0,
+        2.5,
+        3.0,
+        3.5
+      ],
+      "co2_history": [
+        0.63,
+        0.63,
+        0.63,
+        0.63,
+        0.63,
+        0.63,
+        0.63,
+        0.63
+      ],
+      "reasoning_history": [
+        "I took transit yesterday and felt neutral about it, and now both my closest colleagues are showing up on the social feed with sustainable commutes - that's a bit of social pressure I can't ignore, especially with the green badges visible on my watch. Apple Maps is also pushing the transit option with a faster route, which removes my usual excuse about time, so I'll stick with transit today to maintain consistency with my team and my moderate green values.",
+        "I used transit yesterday and felt content, plus both my closest colleagues chose sustainable options\u2014that social proof matters to me as an independent thinker. Apple Maps is also nudging me toward a faster transit route, which removes a friction point. My moderate fitness and the 11 km distance make transit the practical choice that aligns with my slowly-shifting green values.",
+        "I used transit yesterday and felt content, plus both my closest colleagues did the same\u2014there's a positive social momentum here. The Apple Watch leaderboard and Maps suggesting a faster transit route are gentle nudges that align with what I'm already considering, and my moderate green values support continuing this streak without feeling pressured.",
+        "I took transit yesterday and felt content, plus both my closest colleagues chose sustainable options\u2014that social proof matters to me as an independent thinker. Apple Maps flagging a faster transit route is the nudge I need to stick with it today, especially since my health score is low and transit at least gets me moving. The leaderboard is nice motivation without being preachy.",
+        "I'm seeing that both Benjamin and William took transit yesterday, and the Apple Watch leaderboard is making those sustainable choices visible to me. Combined with Apple Maps highlighting a faster transit route today, the social proof is meaningful\u2014I respect my colleagues' choices. My moderate green values align with transit, especially since I felt content taking it yesterday, and my moderate fitness level can handle the routine without strain.",
+        "I used transit yesterday and felt content, plus both my closest colleagues did the same\u2014there's a positive momentum here. The Apple Watch leaderboard showing their sustainable commutes and the Maps transit suggestion are nudging me in that direction, and at 11 km, transit is practical for my moderate fitness level.",
+        "I took transit yesterday and felt content, plus both my close colleagues did the same\u2014there's a nice momentum there. Apple Maps is actively suggesting a faster transit route today, and seeing those green badges on the leaderboard appeals to my moderate environmental values. Sticking with transit maintains my health score progress and keeps me aligned with the team."
+      ]
+    },
+    "George": {
+      "history": [
+        "transit",
+        "transit",
+        "transit",
+        "transit",
+        "transit",
+        "transit",
+        "transit",
+        "transit"
+      ],
+      "mood_history": [
+        "neutral",
+        "neutral",
+        "neutral",
+        "neutral",
+        "neutral",
+        "neutral",
+        "neutral",
+        "neutral"
+      ],
+      "health_history": [
+        0.0,
+        0.5,
+        1.0,
+        1.5,
+        2.0,
+        2.5,
+        3.0,
+        3.5
+      ],
+      "co2_history": [
+        0.64,
+        0.64,
+        0.64,
+        0.64,
+        0.64,
+        0.64,
+        0.64,
+        0.64
+      ],
+      "reasoning_history": [
+        "The data shows transit shaved time off my commute yesterday and both Adrian and John used it\u2014I'm not one to follow the crowd just because of a leaderboard, but Apple Maps flagging a faster route is worth considering. My low fitness level and 13 km distance rule out biking or walking, so it's between car and transit; given the objectively faster transit option today and that my health score is bottomed out, I'll take transit again rather than sit in traffic.",
+        "The data shows transit saved me time yesterday and both my colleagues used it\u2014that's a practical pattern worth repeating, especially with Apple Maps flagging a faster route today. My health score is low enough that I should take the win where I can get it, and transit beats sitting in my car for a 13 km commute anyway.",
+        "The data is clear\u2014transit saved me time yesterday and Apple Maps is confirming a faster route today. My health score is concerning at 1.0, so I need the modest fitness benefit transit walking provides. I'm not swayed by leaderboard badges or what Adrian and John are doing, but the objective evidence (faster route, better health metrics, neutral mood yesterday) points to transit as the rational choice.",
+        "I took transit yesterday and felt neutral about it\u2014that's a solid option for a 13 km commute. Apple Maps is pushing a faster transit route, which is concrete and useful rather than vague social pressure. Two colleagues used transit, but I'm not one to follow the crowd just because they did; however, the data here is straightforward\u2014transit is faster today and my health score is low, so biking isn't realistic. I'll stick with transit since it works logically.",
+        "The data is interesting\u2014Apple Maps shows transit is actually faster today, and my health score is concerningly low at 2.0, so I need the movement. Both Adrian and John took transit yesterday, but I'm not one to follow the crowd just because of a leaderboard. However, the combination of a genuinely better transit route, my poor fitness level, and the fact that it aligns with environmental sense makes this a practical choice, not a social one.",
+        "Look, I'm not going to pretend the leaderboard doesn't exist, but I also won't let social pressure dictate my choices. That said, Apple Maps showing a faster transit route is actual data\u2014if it's genuinely quicker today, that's worth considering. My health score is low and my fitness is poor, so I need to be realistic about physical demands. Transit worked fine yesterday and both Adrian and John used it, which suggests the service is reliable. I'll go with transit again since the data supports it.",
+        "The data shows transit was faster today according to Apple Maps, and I took it yesterday without issue. My health score is low, so I should consider that transit involves walking to/from stops, which beats sitting in car traffic. Both Adrian and John used transit, but I'm not going to let a leaderboard guilt me into decisions\u2014however, the objective facts here (faster route, health benefit, low environmental impact) align, so transit makes sense."
+      ]
+    }
+  }
+}

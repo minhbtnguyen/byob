@@ -1,0 +1,1652 @@
+{
+  "config": {
+    "apple_feature_strength": 0.0,
+    "n_agents": 15,
+    "n_days": 7,
+    "model": "claude-haiku-4-5-20251001"
+  },
+  "agent_profiles": [
+    {
+      "name": "Adrian",
+      "age": 38,
+      "occupation": "Marketing Manager",
+      "conformity": "extremely conformist",
+      "env_consciousness": 0.1,
+      "fitness": 0.2,
+      "commute_km": 14.0,
+      "car_owner": true,
+      "social_openness": 5,
+      "co2_per_car_day": 6.2,
+      "backstory": "Drives everywhere and follows whatever the office majority does; comfort is his top priority."
+    },
+    {
+      "name": "Mark",
+      "age": 45,
+      "occupation": "Senior Accountant",
+      "conformity": "highly conformist",
+      "env_consciousness": 0.2,
+      "fitness": 0.3,
+      "commute_km": 10.5,
+      "car_owner": true,
+      "social_openness": 4,
+      "co2_per_car_day": 5.8,
+      "backstory": "Prefers routine and mirrors what respected colleagues do; open to change if peers lead."
+    },
+    {
+      "name": "Greg",
+      "age": 32,
+      "occupation": "Software Engineer",
+      "conformity": "conformist",
+      "env_consciousness": 0.35,
+      "fitness": 0.5,
+      "commute_km": 7.0,
+      "car_owner": true,
+      "social_openness": 3,
+      "co2_per_car_day": 5.5,
+      "backstory": "Knows transit is better for the planet but finds driving more convenient; mildly influenced by peers."
+    },
+    {
+      "name": "John",
+      "age": 29,
+      "occupation": "UX Designer",
+      "conformity": "conformist",
+      "env_consciousness": 0.45,
+      "fitness": 0.55,
+      "commute_km": 5.5,
+      "car_owner": false,
+      "social_openness": 4,
+      "co2_per_car_day": 5.0,
+      "backstory": "Does not own a car but occasionally rents one; fairly open to sustainable options if not too inconvenient."
+    },
+    {
+      "name": "Peter",
+      "age": 52,
+      "occupation": "Operations Director",
+      "conformity": "low conformist",
+      "env_consciousness": 0.3,
+      "fitness": 0.25,
+      "commute_km": 18.0,
+      "car_owner": true,
+      "social_openness": 2,
+      "co2_per_car_day": 4.5,
+      "backstory": "Long commute and busy schedule; makes decisions independently, rarely swayed by office trends."
+    },
+    {
+      "name": "Liz",
+      "age": 27,
+      "occupation": "Climate Policy Analyst",
+      "conformity": "non-conformist",
+      "env_consciousness": 0.95,
+      "fitness": 0.8,
+      "commute_km": 3.5,
+      "car_owner": false,
+      "social_openness": 3,
+      "co2_per_car_day": 3.0,
+      "backstory": "Bikes or walks almost every day regardless of what others do; a quiet sustainability role model."
+    },
+    {
+      "name": "Rosa",
+      "age": 41,
+      "occupation": "Sales Executive",
+      "conformity": "extremely conformist",
+      "env_consciousness": 0.12,
+      "fitness": 0.22,
+      "commute_km": 16.0,
+      "car_owner": true,
+      "social_openness": 5,
+      "co2_per_car_day": 6.0,
+      "backstory": "Heavily influenced by social norms; switches behavior quickly when the group consensus shifts."
+    },
+    {
+      "name": "Patricia",
+      "age": 36,
+      "occupation": "HR Business Partner",
+      "conformity": "highly conformist",
+      "env_consciousness": 0.28,
+      "fitness": 0.4,
+      "commute_km": 9.0,
+      "car_owner": true,
+      "social_openness": 4,
+      "co2_per_car_day": 5.6,
+      "backstory": "Values harmony and tends to align with team behaviour; a community builder at the office."
+    },
+    {
+      "name": "Julia",
+      "age": 31,
+      "occupation": "Data Scientist",
+      "conformity": "conformist",
+      "env_consciousness": 0.5,
+      "fitness": 0.6,
+      "commute_km": 6.0,
+      "car_owner": false,
+      "social_openness": 3,
+      "co2_per_car_day": 4.8,
+      "backstory": "Analytically aware of carbon footprints; uses transit but would bike if more colleagues did."
+    },
+    {
+      "name": "Kathy",
+      "age": 24,
+      "occupation": "Sustainability Intern",
+      "conformity": "non-conformist",
+      "env_consciousness": 0.98,
+      "fitness": 0.9,
+      "commute_km": 2.5,
+      "car_owner": false,
+      "social_openness": 2,
+      "co2_per_car_day": 2.5,
+      "backstory": "Walks to work and tracks her carbon footprint daily; advocates sustainability but does not pressure peers."
+    },
+    {
+      "name": "William",
+      "age": 48,
+      "occupation": "Finance Director",
+      "conformity": "highly conformist",
+      "env_consciousness": 0.15,
+      "fitness": 0.2,
+      "commute_km": 20.0,
+      "car_owner": true,
+      "social_openness": 3,
+      "co2_per_car_day": 6.1,
+      "backstory": "Long commute in a luxury car; status-conscious and influenced by what senior peers do."
+    },
+    {
+      "name": "Benjamin",
+      "age": 34,
+      "occupation": "Product Manager",
+      "conformity": "conformist",
+      "env_consciousness": 0.4,
+      "fitness": 0.45,
+      "commute_km": 8.0,
+      "car_owner": true,
+      "social_openness": 4,
+      "co2_per_car_day": 5.3,
+      "backstory": "Pragmatic thinker who balances convenience and conscience; receptive to nudges that make sustainability easy."
+    },
+    {
+      "name": "Mike",
+      "age": 26,
+      "occupation": "Junior Developer",
+      "conformity": "conformist",
+      "env_consciousness": 0.42,
+      "fitness": 0.65,
+      "commute_km": 4.5,
+      "car_owner": false,
+      "social_openness": 4,
+      "co2_per_car_day": 5.2,
+      "backstory": "Young professional who cycles occasionally; social media-savvy and responsive to digital nudges."
+    },
+    {
+      "name": "David",
+      "age": 43,
+      "occupation": "Supply Chain Manager",
+      "conformity": "low conformist",
+      "env_consciousness": 0.38,
+      "fitness": 0.35,
+      "commute_km": 11.0,
+      "car_owner": true,
+      "social_openness": 2,
+      "co2_per_car_day": 4.2,
+      "backstory": "Independent thinker with moderate green values; changes habits slowly based on personal conviction."
+    },
+    {
+      "name": "George",
+      "age": 55,
+      "occupation": "Senior Engineer",
+      "conformity": "low conformist",
+      "env_consciousness": 0.32,
+      "fitness": 0.3,
+      "commute_km": 13.0,
+      "car_owner": true,
+      "social_openness": 2,
+      "co2_per_car_day": 4.3,
+      "backstory": "Experienced professional set in his ways; open to data-driven arguments but resists social pressure."
+    }
+  ],
+  "network_snapshots": [
+    {
+      "0": {
+        "4": 0.2,
+        "14": 0.2,
+        "9": 0.2,
+        "10": 0.2,
+        "1": 0.2
+      },
+      "1": {
+        "9": 0.25,
+        "4": 0.25,
+        "12": 0.25,
+        "11": 0.25
+      },
+      "2": {
+        "12": 0.3333333333333333,
+        "9": 0.3333333333333333,
+        "7": 0.3333333333333333
+      },
+      "3": {
+        "4": 0.25,
+        "8": 0.25,
+        "10": 0.25,
+        "5": 0.25
+      },
+      "4": {
+        "13": 0.5,
+        "0": 0.5
+      },
+      "5": {
+        "13": 0.3333333333333333,
+        "14": 0.3333333333333333,
+        "2": 0.3333333333333333
+      },
+      "6": {
+        "12": 0.2,
+        "7": 0.2,
+        "5": 0.2,
+        "4": 0.2,
+        "2": 0.2
+      },
+      "7": {
+        "3": 0.25,
+        "13": 0.25,
+        "5": 0.25,
+        "1": 0.25
+      },
+      "8": {
+        "1": 0.3333333333333333,
+        "6": 0.3333333333333333,
+        "14": 0.3333333333333333
+      },
+      "9": {
+        "5": 0.5,
+        "14": 0.5
+      },
+      "10": {
+        "9": 0.3333333333333333,
+        "4": 0.3333333333333333,
+        "0": 0.3333333333333333
+      },
+      "11": {
+        "12": 0.25,
+        "7": 0.25,
+        "8": 0.25,
+        "1": 0.25
+      },
+      "12": {
+        "6": 0.25,
+        "1": 0.25,
+        "8": 0.25,
+        "4": 0.25
+      },
+      "13": {
+        "14": 0.5,
+        "10": 0.5
+      },
+      "14": {
+        "9": 0.5,
+        "5": 0.5
+      }
+    },
+    {
+      "0": {
+        "4": 0.1898,
+        "14": 0.1898,
+        "9": 0.2153,
+        "10": 0.2153,
+        "1": 0.1898
+      },
+      "1": {
+        "9": 0.2657,
+        "4": 0.2343,
+        "12": 0.2657,
+        "11": 0.2343
+      },
+      "2": {
+        "12": 0.347,
+        "9": 0.347,
+        "7": 0.306
+      },
+      "3": {
+        "4": 0.2272,
+        "8": 0.2576,
+        "10": 0.2576,
+        "5": 0.2576
+      },
+      "4": {
+        "13": 0.5,
+        "0": 0.5
+      },
+      "5": {
+        "13": 0.3191,
+        "14": 0.3191,
+        "2": 0.3618
+      },
+      "6": {
+        "12": 0.2099,
+        "7": 0.1851,
+        "5": 0.2099,
+        "4": 0.1851,
+        "2": 0.2099
+      },
+      "7": {
+        "3": 0.2576,
+        "13": 0.2272,
+        "5": 0.2576,
+        "1": 0.2576
+      },
+      "8": {
+        "1": 0.347,
+        "6": 0.347,
+        "14": 0.306
+      },
+      "9": {
+        "5": 0.5314,
+        "14": 0.4686
+      },
+      "10": {
+        "9": 0.3618,
+        "4": 0.3191,
+        "0": 0.3191
+      },
+      "11": {
+        "12": 0.25,
+        "7": 0.25,
+        "8": 0.25,
+        "1": 0.25
+      },
+      "12": {
+        "6": 0.2576,
+        "1": 0.2576,
+        "8": 0.2576,
+        "4": 0.2272
+      },
+      "13": {
+        "14": 0.5,
+        "10": 0.5
+      },
+      "14": {
+        "9": 0.5,
+        "5": 0.5
+      }
+    },
+    {
+      "0": {
+        "4": 0.18,
+        "14": 0.18,
+        "9": 0.2316,
+        "10": 0.2042,
+        "1": 0.2042
+      },
+      "1": {
+        "9": 0.2733,
+        "4": 0.2125,
+        "12": 0.2733,
+        "11": 0.241
+      },
+      "2": {
+        "12": 0.347,
+        "9": 0.347,
+        "7": 0.306
+      },
+      "3": {
+        "4": 0.2125,
+        "8": 0.2733,
+        "10": 0.241,
+        "5": 0.2733
+      },
+      "4": {
+        "13": 0.5314,
+        "0": 0.4686
+      },
+      "5": {
+        "13": 0.3316,
+        "14": 0.2924,
+        "2": 0.376
+      },
+      "6": {
+        "12": 0.2146,
+        "7": 0.1893,
+        "5": 0.2146,
+        "4": 0.1669,
+        "2": 0.2146
+      },
+      "7": {
+        "3": 0.2576,
+        "13": 0.2272,
+        "5": 0.2576,
+        "1": 0.2576
+      },
+      "8": {
+        "1": 0.36,
+        "6": 0.36,
+        "14": 0.28
+      },
+      "9": {
+        "5": 0.5626,
+        "14": 0.4374
+      },
+      "10": {
+        "9": 0.3913,
+        "4": 0.3043,
+        "0": 0.3043
+      },
+      "11": {
+        "12": 0.25,
+        "7": 0.25,
+        "8": 0.25,
+        "1": 0.25
+      },
+      "12": {
+        "6": 0.2647,
+        "1": 0.2647,
+        "8": 0.2647,
+        "4": 0.2059
+      },
+      "13": {
+        "14": 0.5,
+        "10": 0.5
+      },
+      "14": {
+        "9": 0.5,
+        "5": 0.5
+      }
+    },
+    {
+      "0": {
+        "4": 0.1663,
+        "14": 0.1886,
+        "9": 0.2426,
+        "10": 0.1886,
+        "1": 0.2139
+      },
+      "1": {
+        "9": 0.2803,
+        "4": 0.1922,
+        "12": 0.2803,
+        "11": 0.2472
+      },
+      "2": {
+        "12": 0.347,
+        "9": 0.347,
+        "7": 0.306
+      },
+      "3": {
+        "4": 0.198,
+        "8": 0.2887,
+        "10": 0.2245,
+        "5": 0.2887
+      },
+      "4": {
+        "13": 0.5626,
+        "0": 0.4374
+      },
+      "5": {
+        "13": 0.3316,
+        "14": 0.2924,
+        "2": 0.376
+      },
+      "6": {
+        "12": 0.2189,
+        "7": 0.1931,
+        "5": 0.2189,
+        "4": 0.1501,
+        "2": 0.2189
+      },
+      "7": {
+        "3": 0.2576,
+        "13": 0.2272,
+        "5": 0.2576,
+        "1": 0.2576
+      },
+      "8": {
+        "1": 0.36,
+        "6": 0.36,
+        "14": 0.28
+      },
+      "9": {
+        "5": 0.555,
+        "14": 0.445
+      },
+      "10": {
+        "9": 0.4217,
+        "4": 0.2892,
+        "0": 0.2892
+      },
+      "11": {
+        "12": 0.25,
+        "7": 0.25,
+        "8": 0.25,
+        "1": 0.25
+      },
+      "12": {
+        "6": 0.2713,
+        "1": 0.2713,
+        "8": 0.2713,
+        "4": 0.1861
+      },
+      "13": {
+        "14": 0.5314,
+        "10": 0.4686
+      },
+      "14": {
+        "9": 0.5,
+        "5": 0.5
+      }
+    },
+    {
+      "0": {
+        "4": 0.1531,
+        "14": 0.1969,
+        "9": 0.2532,
+        "10": 0.1736,
+        "1": 0.2233
+      },
+      "1": {
+        "9": 0.2868,
+        "4": 0.1734,
+        "12": 0.2868,
+        "11": 0.2529
+      },
+      "2": {
+        "12": 0.347,
+        "9": 0.347,
+        "7": 0.306
+      },
+      "3": {
+        "4": 0.1838,
+        "8": 0.3039,
+        "10": 0.2084,
+        "5": 0.3039
+      },
+      "4": {
+        "13": 0.5858,
+        "0": 0.4142
+      },
+      "5": {
+        "13": 0.3316,
+        "14": 0.2924,
+        "2": 0.376
+      },
+      "6": {
+        "12": 0.2229,
+        "7": 0.1966,
+        "5": 0.2229,
+        "4": 0.1348,
+        "2": 0.2229
+      },
+      "7": {
+        "3": 0.2576,
+        "13": 0.2272,
+        "5": 0.2576,
+        "1": 0.2576
+      },
+      "8": {
+        "1": 0.36,
+        "6": 0.36,
+        "14": 0.28
+      },
+      "9": {
+        "5": 0.5507,
+        "14": 0.4493
+      },
+      "10": {
+        "9": 0.4526,
+        "4": 0.2737,
+        "0": 0.2737
+      },
+      "11": {
+        "12": 0.25,
+        "7": 0.25,
+        "8": 0.25,
+        "1": 0.25
+      },
+      "12": {
+        "6": 0.2774,
+        "1": 0.2774,
+        "8": 0.2774,
+        "4": 0.1678
+      },
+      "13": {
+        "14": 0.5626,
+        "10": 0.4374
+      },
+      "14": {
+        "9": 0.5,
+        "5": 0.5
+      }
+    },
+    {
+      "0": {
+        "4": 0.1404,
+        "14": 0.2048,
+        "9": 0.2633,
+        "10": 0.1592,
+        "1": 0.2322
+      },
+      "1": {
+        "9": 0.2928,
+        "4": 0.1561,
+        "12": 0.2928,
+        "11": 0.2582
+      },
+      "2": {
+        "12": 0.347,
+        "9": 0.347,
+        "7": 0.306
+      },
+      "3": {
+        "4": 0.17,
+        "8": 0.3187,
+        "10": 0.1927,
+        "5": 0.3187
+      },
+      "4": {
+        "13": 0.5989,
+        "0": 0.4011
+      },
+      "5": {
+        "13": 0.3316,
+        "14": 0.2924,
+        "2": 0.376
+      },
+      "6": {
+        "12": 0.2265,
+        "7": 0.1998,
+        "5": 0.2265,
+        "4": 0.1208,
+        "2": 0.2265
+      },
+      "7": {
+        "3": 0.2657,
+        "13": 0.2343,
+        "5": 0.2657,
+        "1": 0.2343
+      },
+      "8": {
+        "1": 0.3316,
+        "6": 0.376,
+        "14": 0.2924
+      },
+      "9": {
+        "5": 0.5483,
+        "14": 0.4517
+      },
+      "10": {
+        "9": 0.4839,
+        "4": 0.258,
+        "0": 0.258
+      },
+      "11": {
+        "12": 0.2576,
+        "7": 0.2576,
+        "8": 0.2576,
+        "1": 0.2272
+      },
+      "12": {
+        "6": 0.2928,
+        "1": 0.2582,
+        "8": 0.2928,
+        "4": 0.1562
+      },
+      "13": {
+        "14": 0.5858,
+        "10": 0.4142
+      },
+      "14": {
+        "9": 0.5,
+        "5": 0.5
+      }
+    },
+    {
+      "0": {
+        "4": 0.1321,
+        "14": 0.2186,
+        "9": 0.281,
+        "10": 0.1498,
+        "1": 0.2185
+      },
+      "1": {
+        "9": 0.2983,
+        "4": 0.1403,
+        "12": 0.2983,
+        "11": 0.2631
+      },
+      "2": {
+        "12": 0.347,
+        "9": 0.347,
+        "7": 0.306
+      },
+      "3": {
+        "4": 0.1566,
+        "8": 0.3329,
+        "10": 0.1775,
+        "5": 0.3329
+      },
+      "4": {
+        "13": 0.6066,
+        "0": 0.3934
+      },
+      "5": {
+        "13": 0.3316,
+        "14": 0.2924,
+        "2": 0.376
+      },
+      "6": {
+        "12": 0.2298,
+        "7": 0.2027,
+        "5": 0.2298,
+        "4": 0.1081,
+        "2": 0.2298
+      },
+      "7": {
+        "3": 0.2657,
+        "13": 0.2343,
+        "5": 0.2657,
+        "1": 0.2343
+      },
+      "8": {
+        "1": 0.3316,
+        "6": 0.376,
+        "14": 0.2924
+      },
+      "9": {
+        "5": 0.547,
+        "14": 0.453
+      },
+      "10": {
+        "9": 0.5154,
+        "4": 0.2423,
+        "0": 0.2423
+      },
+      "11": {
+        "12": 0.2576,
+        "7": 0.2576,
+        "8": 0.2576,
+        "1": 0.2272
+      },
+      "12": {
+        "6": 0.2983,
+        "1": 0.2631,
+        "8": 0.2983,
+        "4": 0.1403
+      },
+      "13": {
+        "14": 0.5989,
+        "10": 0.4011
+      },
+      "14": {
+        "9": 0.5,
+        "5": 0.5
+      }
+    },
+    {
+      "0": {
+        "4": 0.1238,
+        "14": 0.2049,
+        "9": 0.2987,
+        "10": 0.1404,
+        "1": 0.2322
+      },
+      "1": {
+        "9": 0.3033,
+        "4": 0.1258,
+        "12": 0.3033,
+        "11": 0.2675
+      },
+      "2": {
+        "12": 0.347,
+        "9": 0.347,
+        "7": 0.306
+      },
+      "3": {
+        "4": 0.1438,
+        "8": 0.3466,
+        "10": 0.163,
+        "5": 0.3466
+      },
+      "4": {
+        "13": 0.6112,
+        "0": 0.3888
+      },
+      "5": {
+        "13": 0.3435,
+        "14": 0.2671,
+        "2": 0.3895
+      },
+      "6": {
+        "12": 0.2327,
+        "7": 0.2053,
+        "5": 0.2327,
+        "4": 0.0965,
+        "2": 0.2327
+      },
+      "7": {
+        "3": 0.2657,
+        "13": 0.2343,
+        "5": 0.2657,
+        "1": 0.2343
+      },
+      "8": {
+        "1": 0.3435,
+        "6": 0.3895,
+        "14": 0.2671
+      },
+      "9": {
+        "5": 0.5773,
+        "14": 0.4227
+      },
+      "10": {
+        "9": 0.5467,
+        "4": 0.2266,
+        "0": 0.2266
+      },
+      "11": {
+        "12": 0.2576,
+        "7": 0.2576,
+        "8": 0.2576,
+        "1": 0.2272
+      },
+      "12": {
+        "6": 0.3033,
+        "1": 0.2675,
+        "8": 0.3033,
+        "4": 0.1258
+      },
+      "13": {
+        "14": 0.5989,
+        "10": 0.4011
+      },
+      "14": {
+        "9": 0.5,
+        "5": 0.5
+      }
+    }
+  ],
+  "population": {
+    "car_pct_over_time": [
+      60.0,
+      26.7,
+      20.0,
+      20.0,
+      20.0,
+      26.7,
+      26.7,
+      20.0
+    ],
+    "co2_over_time": [
+      51.39,
+      29.03,
+      25.37,
+      25.37,
+      25.37,
+      30.3,
+      29.03,
+      25.37
+    ]
+  },
+  "agents": {
+    "Adrian": {
+      "history": [
+        "car",
+        "car",
+        "car",
+        "car",
+        "car",
+        "car",
+        "car",
+        "car"
+      ],
+      "mood_history": [
+        "neutral",
+        "neutral",
+        "neutral",
+        "neutral",
+        "neutral",
+        "neutral",
+        "neutral",
+        "neutral"
+      ],
+      "health_history": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "co2_history": [
+        6.2,
+        6.2,
+        6.2,
+        6.2,
+        6.2,
+        6.2,
+        6.2,
+        6.2
+      ],
+      "reasoning_history": [
+        "Three out of my five closest colleagues drove yesterday, so I'll stick with the car like the majority does. A 14 km commute is too far for biking given my fitness level, and I need the comfort and convenience of driving.",
+        "Most of my close colleagues drove yesterday, and with a 14 km commute, the car is the most comfortable option. I'm not particularly motivated to change my routine since comfort is my priority.",
+        "Most of my close colleagues drove yesterday (Peter and William), so the car feels like the natural choice for today. With a 14 km commute and my preference for comfort, driving is the obvious option\u2014plus my health score could use improvement, but that's a longer-term thing.",
+        "Most of my close colleagues drove yesterday (Peter and William), which aligns with my preference for comfort and what I'm used to. My 14 km commute is too long for walking or biking given my low fitness level, and I found driving neutral yesterday, so I'll stick with what works for me.",
+        "Most of my close colleagues drove yesterday (Peter and William), so sticking with the car feels like the safe, comfortable choice for my 14 km commute. My low fitness level and preference for comfort make driving the obvious decision.",
+        "I drove yesterday and it was fine, so I'll stick with what I know works best for me. Most of my close colleagues drove too (3 out of 5), so the car is definitely the comfortable choice for my 14 km commute.",
+        "Most of my close colleagues drove yesterday (3 out of 5), and with a 14 km commute, driving is the most comfortable option for me. I'm not particularly motivated by environmental concerns, so I'll stick with what works best for my routine."
+      ]
+    },
+    "Mark": {
+      "history": [
+        "car",
+        "transit",
+        "transit",
+        "bike",
+        "bike",
+        "car",
+        "transit",
+        "bike"
+      ],
+      "mood_history": [
+        "neutral",
+        "neutral",
+        "neutral",
+        "neutral",
+        "neutral",
+        "neutral",
+        "neutral",
+        "neutral"
+      ],
+      "health_history": [
+        0.0,
+        0.5,
+        1.0,
+        3.0,
+        5.0,
+        5.0,
+        5.5,
+        7.5
+      ],
+      "co2_history": [
+        5.8,
+        0.87,
+        0.87,
+        0.87,
+        0.87,
+        5.8,
+        0.87,
+        0.87
+      ],
+      "reasoning_history": [
+        "I see that half my closest colleagues used transit yesterday, which shows it's a viable option in my peer group. Since my health score is critically low at 0.0 points, taking transit today would get me some walking to/from stops and break up my routine in a way my respected colleagues are already doing.",
+        "I notice that 3 out of 4 of my closest colleagues chose sustainable options yesterday, which is a subtle peer influence I respect. Since I used transit yesterday and it left me feeling neutral, I'll stick with transit again today\u2014it's a routine choice that aligns with what most of my respected colleagues are doing, and it requires minimal effort given my low fitness level.",
+        "Three of my four closest colleagues chose sustainable options yesterday, which signals a shift in what's respected around here. My health score is critically low at 1.0, and transit yesterday left me neutral\u2014biking could improve my fitness while aligning with what most peers are doing.",
+        "I notice that 3 of my 4 closest colleagues used sustainable options yesterday, including Mike and Benjamin who both biked like I did. Since my respected peers are clearly leaning toward biking and walking, and I'm open to following their lead, I'll stick with the bike again today despite my low fitness level\u2014the peer influence is strong enough to encourage consistency.",
+        "I notice that 3 of my 4 closest colleagues chose sustainable options yesterday, including two who biked like I did. Since I prefer mirroring what respected peers do and my low fitness level makes the 10.5 km bike commute challenging, I'll follow Peter's example and take the car today\u2014a reliable routine choice that most of my team uses.",
+        "I notice that 3 of my 4 closest colleagues chose sustainable options yesterday, which suggests this is becoming the norm in our group. While my low fitness level makes biking daunting, transit feels like a reasonable middle ground that aligns with what peers are doing without requiring me to drastically change my routine.",
+        "I notice that 3 of my 4 closest colleagues chose sustainable options yesterday, and Mike and Benjamin both biked\u2014that's a respected peer behavior I could mirror. My health score is low at 5.5, so biking would help improve that, and it seems to be the trend among people I work with."
+      ]
+    },
+    "Greg": {
+      "history": [
+        "car",
+        "transit",
+        "bike",
+        "bike",
+        "bike",
+        "bike",
+        "bike",
+        "bike"
+      ],
+      "mood_history": [
+        "neutral",
+        "neutral",
+        "content",
+        "energized",
+        "energized",
+        "energized",
+        "energized",
+        "energized"
+      ],
+      "health_history": [
+        0.0,
+        0.5,
+        2.5,
+        4.5,
+        6.5,
+        8.5,
+        10.5,
+        12.5
+      ],
+      "co2_history": [
+        5.5,
+        0.82,
+        0.82,
+        0.82,
+        0.82,
+        0.82,
+        0.82,
+        0.82
+      ],
+      "reasoning_history": [
+        "I drove yesterday and my health score is at zero, so I should probably make a healthier choice today. Plus, two of my three closest colleagues took transit yesterday, which gives me a little social nudge in that direction\u2014and I do know it's better for the planet, even if driving feels more convenient.",
+        "I took transit yesterday and felt neutral about it, so I'm open to mixing it up. Seeing that all three of my closest colleagues chose sustainable options yesterday (Mike biking, Kathy walking, Patricia on transit) makes me want to keep up with that momentum\u2014plus my health score is low at 0.5, so I could use the activity boost. I'll bike today since it checks both the peer influence box and gets me some exercise.",
+        "I felt great on the bike yesterday and all three of my closest colleagues went sustainable routes, which makes me want to keep up that momentum. My health score could use the boost, and biking again today seems like the natural choice.",
+        "I'm feeling energized from yesterday's bike ride and my health score could use a boost. Plus, all three of my closest colleagues went sustainable yesterday\u2014that's hard to ignore, and biking again would keep that momentum going.",
+        "I felt energized after biking yesterday and noticed all three of my closest colleagues chose sustainable options, which makes me want to keep that momentum going. My health score could use a boost, and biking again would be good for both my fitness and the planet.",
+        "I'm still feeling energized from yesterday's bike ride, and all three of my closest colleagues went sustainable yesterday\u2014that's pretty motivating. Plus my health score is solid at 8.5, so biking again today feels like a natural choice that keeps the momentum going.",
+        "I felt great biking yesterday and all three of my closest colleagues chose sustainable options, which makes me want to keep the momentum going. My health score is solid, so I can handle another active commute without overdoing it."
+      ]
+    },
+    "John": {
+      "history": [
+        "transit",
+        "bike",
+        "bike",
+        "bike",
+        "bike",
+        "bike",
+        "bike",
+        "bike"
+      ],
+      "mood_history": [
+        "neutral",
+        "energized",
+        "energized",
+        "energized",
+        "energized",
+        "energized",
+        "energized",
+        "energized"
+      ],
+      "health_history": [
+        0.0,
+        2.0,
+        4.0,
+        6.0,
+        8.0,
+        10.0,
+        12.0,
+        14.0
+      ],
+      "co2_history": [
+        0.75,
+        0.75,
+        0.75,
+        0.75,
+        0.75,
+        0.75,
+        0.75,
+        0.75
+      ],
+      "reasoning_history": [
+        "Transit worked fine yesterday and three of my four closest colleagues used it, so there's no social pressure to deviate. My health score is at zero, so I could use some activity boost\u2014biking 5.5 km is doable for moderate fitness and aligns with my environmental leanings without being inconvenient.",
+        "I'm feeling energized from yesterday's bike ride, and with a moderate health score, biking again would be a great way to maintain that momentum and boost my fitness. Plus, seeing that half my colleagues chose sustainable options yesterday gives me confidence that this is a normal choice in my team.",
+        "I felt energized biking yesterday and two of my closest colleagues also chose bikes, which gives me positive social reinforcement. My 5.5 km commute is very bikeable, and maintaining momentum on sustainable commuting aligns with my moderate environmental values while boosting my health score.",
+        "I'm feeling energized from yesterday's bike ride and want to build momentum on that positive feeling. My health score could use a boost, and with 50% of my close colleagues choosing sustainable options, biking again feels like a natural continuation without being inconvenient for my 5.5 km commute.",
+        "I'm feeling energized from yesterday's bike ride and my health score is strong at 8.0, so biking again makes sense. Half my colleagues chose sustainable options yesterday, which reinforces that it's a viable choice in my peer group, and biking aligns with my moderate environmental consciousness without being inconvenient for a 5.5 km commute.",
+        "Yesterday's bike commute left me feeling energized and boosted my health score to a perfect 10.0, so I want to maintain that momentum. Half my colleagues chose sustainable options, and with a 5.5 km commute that's very bikeable, I'll stick with what's working.",
+        "I felt energized after yesterday's bike ride and my health score is solid, so I want to build on that momentum. Since half my colleagues chose sustainable options yesterday and my 5.5 km commute is very bikeable, I'll stick with what's working for both my fitness and my environmental goals."
+      ]
+    },
+    "Peter": {
+      "history": [
+        "car",
+        "car",
+        "car",
+        "car",
+        "car",
+        "car",
+        "car",
+        "car"
+      ],
+      "mood_history": [
+        "neutral",
+        "neutral",
+        "neutral",
+        "neutral",
+        "neutral",
+        "neutral",
+        "neutral",
+        "neutral"
+      ],
+      "health_history": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "co2_history": [
+        4.5,
+        4.5,
+        4.5,
+        4.5,
+        4.5,
+        4.5,
+        4.5,
+        4.5
+      ],
+      "reasoning_history": [
+        "With an 18 km commute and low fitness level, the car is the practical choice for getting to work efficiently. My colleagues both drove yesterday, and I'm not one to follow trends anyway\u2014I make decisions based on what works for my schedule.",
+        "With an 18 km commute and low fitness level, the car is the practical choice for my busy schedule. I've got too much on my plate to experiment with other options today.",
+        "With an 18 km commute and low fitness level, the car remains my practical choice for getting to work efficiently. I'm not particularly influenced by what others do, and my schedule is too packed to experiment with alternatives today.",
+        "With an 18 km commute and a low fitness level, the car remains the practical choice for getting to work efficiently on my schedule. I'm not influenced by David's transit choice\u2014I make decisions based on what works for me, not office trends.",
+        "With an 18 km commute and low fitness level, car is the practical choice for my schedule. I'm not swayed by office trends, and my neutral mood from yesterday's drive suggests it works fine for me.",
+        "With an 18 km commute and low fitness level, biking and walking aren't practical options. I've got a busy schedule ahead and need reliability\u2014the car is the most efficient choice for my operational responsibilities. Transit would add unnecessary time to my day.",
+        "At 52 with low fitness and an 18km commute, the car remains the practical choice for my schedule\u2014I'm not one to follow trends anyway. My health score needs attention, but that's a separate issue from today's commute logistics."
+      ]
+    },
+    "Liz": {
+      "history": [
+        "transit",
+        "bike",
+        "bike",
+        "bike",
+        "bike",
+        "bike",
+        "bike",
+        "bike"
+      ],
+      "mood_history": [
+        "neutral",
+        "energized",
+        "energized",
+        "energized",
+        "energized",
+        "energized",
+        "energized",
+        "energized"
+      ],
+      "health_history": [
+        0.0,
+        2.0,
+        4.0,
+        6.0,
+        8.0,
+        10.0,
+        12.0,
+        14.0
+      ],
+      "co2_history": [
+        0.45,
+        0.45,
+        0.45,
+        0.45,
+        0.45,
+        0.45,
+        0.45,
+        0.45
+      ],
+      "reasoning_history": [
+        "I biked or walked almost every day regardless of what others do\u2014that's who I am. My health score is at zero, so getting active is important. The weather and distance (3.5 km) are perfect for biking today.",
+        "I'm feeling energized from yesterday's bike ride and my health score is low, so I need to prioritize movement today. Since two of my three colleagues chose sustainable options yesterday, I'm motivated to maintain that momentum and bike again\u2014it aligns with my values and my body needs the activity.",
+        "I felt energized biking yesterday and my health score is strong, so I'm continuing what works for me. Greg biked too, which reinforces that this is my natural choice regardless of what others do.",
+        "I felt energized on the bike yesterday and my health score could use a boost, so I'll stick with what works for me. All my colleagues chose sustainable options too, which reinforces that this is the right call.",
+        "I felt energized yesterday on my bike and my health score is strong, so I'm riding again today. All my colleagues chose sustainable options yesterday, which reinforces what I naturally do anyway\u2014it's just who I am.",
+        "I felt energized yesterday on my bike and my health score is perfect, so I'll maintain that momentum. All my colleagues chose sustainable options yesterday, which reinforces what I already do naturally\u2014bike commuting is just who I am.",
+        "I felt energized yesterday on the bike and my health score is strong, so I'm keen to maintain that momentum. Two of my three colleagues chose sustainable options, which reinforces my commitment to staying consistent with my values regardless of what others do."
+      ]
+    },
+    "Rosa": {
+      "history": [
+        "car",
+        "transit",
+        "transit",
+        "transit",
+        "transit",
+        "transit",
+        "transit",
+        "transit"
+      ],
+      "mood_history": [
+        "neutral",
+        "neutral",
+        "neutral",
+        "neutral",
+        "neutral",
+        "neutral",
+        "neutral",
+        "neutral"
+      ],
+      "health_history": [
+        0.0,
+        0.5,
+        1.0,
+        1.5,
+        2.0,
+        2.5,
+        3.0,
+        3.5
+      ],
+      "co2_history": [
+        6.0,
+        0.9,
+        0.9,
+        0.9,
+        0.9,
+        0.9,
+        0.9,
+        0.9
+      ],
+      "reasoning_history": [
+        "I notice that 3 out of my 5 closest colleagues chose sustainable options yesterday (transit and bike), which is creating a subtle social pressure. Given my tendency to follow group consensus and the fact that transit is a practical middle ground that doesn't require the physical exertion I'm not fit for, I'll switch from my car to transit today to align with what appears to be the emerging norm among my peers.",
+        "I notice that 4 out of my 5 closest colleagues chose sustainable options yesterday (bike or transit), which makes me feel like I should follow suit to fit in with the group consensus. Even though my fitness level is low and I'm not particularly environmentally conscious, the social pressure from my peer group is strong enough to push me toward transit again rather than defaulting to my car.",
+        "I notice that 4 out of my 5 closest colleagues chose sustainable options yesterday (bike or transit), which creates social pressure to follow suit. Despite my low fitness level and the 16 km distance making biking impractical, taking transit again aligns with what the group is doing and seems to be the emerging norm in my circle.",
+        "I notice that 4 out of my 5 closest colleagues chose sustainable options yesterday (bike or transit), which creates a strong social pressure to follow suit. Even though my environmental consciousness is low and fitness level is low, the group consensus is clearly shifting toward bikes and transit, and I'm someone who adapts quickly to what others around me are doing.",
+        "I notice that 4 out of my 5 closest colleagues chose sustainable options yesterday (bike or transit), which creates a strong social pressure to align with the group norm. Even though my fitness level is low and environmental consciousness isn't my priority, I'm heavily influenced by what others do, so I should follow the consensus rather than stand out as the only one driving.",
+        "I notice that 4 out of my 5 closest colleagues chose sustainable options yesterday (bike or transit), which makes me want to fit in with the group norm. Even though my fitness level is low and my environmental consciousness is limited, the social pressure from my peer group is strong enough to make me reconsider my usual car habit. I'll take transit again today since it worked fine yesterday and aligns with what most of my colleagues are doing.",
+        "I notice that 4 out of my 5 closest colleagues chose sustainable options yesterday (bike or transit), which makes me feel like I should align with what the group is doing. Since my commute is 16 km, biking isn't realistic for me, but taking transit again seems like the socially conscious choice that matches the group consensus."
+      ]
+    },
+    "Patricia": {
+      "history": [
+        "car",
+        "transit",
+        "transit",
+        "transit",
+        "transit",
+        "transit",
+        "transit",
+        "transit"
+      ],
+      "mood_history": [
+        "neutral",
+        "content",
+        "content",
+        "content",
+        "content",
+        "content",
+        "content",
+        "content"
+      ],
+      "health_history": [
+        0.0,
+        0.5,
+        1.0,
+        1.5,
+        2.0,
+        2.5,
+        3.0,
+        3.5
+      ],
+      "co2_history": [
+        5.6,
+        0.84,
+        0.84,
+        0.84,
+        0.84,
+        0.84,
+        0.84,
+        0.84
+      ],
+      "reasoning_history": [
+        "I notice that 3 of my 4 closest colleagues chose sustainable options yesterday, and as someone who values harmony and team alignment, I feel a subtle pull to join that pattern. My moderate fitness level makes transit or bike feasible, and matching my team's choices would strengthen our community bond while giving my health score a needed boost.",
+        "I had a positive experience with transit yesterday and notice that all four of my closest colleagues chose sustainable options, which aligns with my community-building nature and desire to be in harmony with the team. While my environmental consciousness is low and my health score needs improvement, taking transit again maintains group cohesion and gave me a content mood yesterday.",
+        "I notice all four of my closest colleagues chose sustainable options yesterday, and as someone who values harmony and aligns with team behavior, I feel a subtle pull toward that pattern. My health score is quite low at 1.0, so choosing transit again today would maintain consistency with yesterday's content mood while also keeping me aligned with my team's choices.",
+        "I noticed all four of my closest colleagues chose sustainable options yesterday, and as someone who values harmony and community, I want to align with the team's positive behavior. Taking transit again today feels like a natural choice that keeps me connected to what the group is doing, while my moderate fitness level makes it a comfortable option.",
+        "I felt content on transit yesterday and notice that 3 of my 4 closest colleagues chose sustainable options, which aligns with my community-building nature and desire to harmonize with team behaviour. While my environmental consciousness is low, the social proof of my peers' choices and the positive mood from yesterday's transit commute make it the natural choice today.",
+        "I had a great experience with transit yesterday and noticed all four of my closest colleagues chose sustainable options, which creates a nice team harmony I'd like to be part of. My moderate fitness level and the 9km distance make transit a practical choice that aligns with what the group is doing.",
+        "I had a great experience with transit yesterday and felt content, plus all four of my closest colleagues chose sustainable options\u2014I want to maintain that team harmony and positive vibe by doing the same today. Transit aligns with both my mood and what my peers are modeling."
+      ]
+    },
+    "Julia": {
+      "history": [
+        "transit",
+        "transit",
+        "bike",
+        "bike",
+        "bike",
+        "bike",
+        "bike",
+        "bike"
+      ],
+      "mood_history": [
+        "neutral",
+        "neutral",
+        "energized",
+        "energized",
+        "energized",
+        "energized",
+        "energized",
+        "energized"
+      ],
+      "health_history": [
+        0.0,
+        0.5,
+        2.5,
+        4.5,
+        6.5,
+        8.5,
+        10.5,
+        12.5
+      ],
+      "co2_history": [
+        0.72,
+        0.72,
+        0.72,
+        0.72,
+        0.72,
+        0.72,
+        0.72,
+        0.72
+      ],
+      "reasoning_history": [
+        "My health score is at zero, so I should prioritize movement today\u2014biking would be ideal for fitness and carbon impact. However, with only Mark and Rosa using transit yesterday, I still lack the critical mass of cycling colleagues to make biking feel comfortable. I'll take transit again but feel motivated to advocate for a bike-to-work initiative.",
+        "I took transit yesterday and my health score is low, so biking today would boost my fitness and carbon awareness. With 2 of 3 colleagues choosing sustainable options yesterday, I feel social encouragement to maintain that standard, and 6 km is definitely bikeable for me.",
+        "Yesterday's bike commute left me energized and my health score could use the boost from another active day. Mark biked again today, so I have momentum from my peer group\u2014let's keep this sustainable streak going.",
+        "Yesterday's bike commute left me energized and my health score could use the boost from another active day. Mark biked again today, which reinforces that momentum\u2014if more colleagues are choosing bikes, I'm more motivated to join that shift.",
+        "I felt energized biking yesterday and my health score could use a boost, plus George biked again today which reinforces that sustainable option. Since 2 of my 3 colleagues chose sustainable modes and George is making biking a pattern, I'm motivated to bike again rather than default to transit.",
+        "Yesterday's bike commute left me energized and my health score is strong at 8.5, so I'm motivated to repeat that. Seeing George bike again today reinforces that sustainable choice, and maintaining momentum with my colleagues on green commuting feels good.",
+        "Yesterday's bike commute left me energized and boosted my health score, plus Mark also biked today which reinforces that sustainable option. I'm feeling the momentum from that choice and want to maintain it while keeping my moderate fitness level engaged."
+      ]
+    },
+    "Kathy": {
+      "history": [
+        "transit",
+        "walk",
+        "walk",
+        "walk",
+        "walk",
+        "walk",
+        "walk",
+        "walk"
+      ],
+      "mood_history": [
+        "neutral",
+        "energized",
+        "energized",
+        "energized",
+        "energized",
+        "energized",
+        "energized",
+        "energized"
+      ],
+      "health_history": [
+        0.0,
+        2.0,
+        4.0,
+        6.0,
+        8.0,
+        10.0,
+        12.0,
+        14.0
+      ],
+      "co2_history": [
+        0.38,
+        0.38,
+        0.38,
+        0.38,
+        0.38,
+        0.38,
+        0.38,
+        0.38
+      ],
+      "reasoning_history": [
+        "I'm feeling good about getting back to walking today\u2014it's my favorite commute that lets me clear my head, plus my health score is at zero so I need to rebuild that. I noticed Liz biked yesterday which is awesome, and I want to keep the sustainable momentum going in our team.",
+        "I'm feeling energized from yesterday's walk and want to maintain that positive momentum for my health and carbon footprint. My 2.5 km commute is perfect for walking, and I'd like to continue leading by example\u2014especially since only one of my colleagues chose a sustainable option yesterday.",
+        "I felt energized from yesterday's walk and want to maintain that momentum\u2014plus both Liz and George chose sustainable options, which reinforces my commitment to the lifestyle I care about. Walking again will keep my health score strong and my carbon footprint minimal.",
+        "I felt energized yesterday from my walk, and both Liz and George chose sustainable options, which reinforces my commitment to the same. Walking 2.5 km aligns perfectly with my values and fitness level, plus it'll give me a good mood boost to start the day.",
+        "I felt energized walking yesterday and my health score is strong, so I'd love to maintain that momentum. Since Liz and George both biked, I'll switch it up with a walk today to diversify my sustainable routine while staying true to my car-free lifestyle.",
+        "I'm feeling energized from yesterday's walk and my health score is perfect, so I want to maintain that momentum. Walking again fits my values and keeps me connected to my sustainable routine\u2014plus my colleagues are inspiring with their bike commutes, so I'll stay committed to active transportation.",
+        "I'm feeling energized from yesterday's walk and want to maintain that positive momentum while staying true to my values. Walking again will keep my fitness up and carbon footprint minimal\u2014it's what feels most authentic to me."
+      ]
+    },
+    "William": {
+      "history": [
+        "transit",
+        "car",
+        "car",
+        "car",
+        "car",
+        "car",
+        "car",
+        "car"
+      ],
+      "mood_history": [
+        "neutral",
+        "neutral",
+        "neutral",
+        "neutral",
+        "neutral",
+        "neutral",
+        "neutral",
+        "neutral"
+      ],
+      "health_history": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "co2_history": [
+        0.91,
+        6.1,
+        6.1,
+        6.1,
+        6.1,
+        6.1,
+        6.1,
+        6.1
+      ],
+      "reasoning_history": [
+        "Peter and Adrian both drove yesterday, and as a Finance Director concerned with status, I'm inclined to follow their lead in my luxury car rather than take transit again. My health score is at zero, but that's not an immediate priority compared to maintaining my professional image during the commute.",
+        "As Finance Director, I need to maintain my professional image and status\u2014Peter and Adrian both drove yesterday, which aligns with my position. My low fitness level and long 20 km commute make car travel the practical choice, and I'm not particularly motivated by environmental concerns.",
+        "Peter and Adrian both drove yesterday, which aligns with my status and preferences\u2014a luxury car commute reinforces my professional image. My health score is low, but a 20 km commute makes walking or biking impractical, and transit feels beneath my position as Finance Director.",
+        "Peter and Adrian both drove yesterday, which aligns with my preferences and status, so I'll stick with the car for today. My health score is low, but a 20km commute isn't practical for walking or biking, and transit feels beneath my position as Finance Director.",
+        "Peter and Adrian both drove yesterday, which aligns with my status and preferences, so I'll stick with the car for today. My low fitness level and long 20 km commute make driving the most practical choice anyway.",
+        "Peter and Adrian both took the car yesterday, which aligns with my professional status, and my low fitness level makes the car the most comfortable option for my 20 km commute. I'm not particularly motivated to change my routine since driving maintains the image I want to project.",
+        "Peter and Adrian both took the car yesterday, which aligns with my status and convenience preferences for my 20 km commute. My health score is low, but I'm not particularly motivated to change that\u2014the car is reliable and fits my lifestyle."
+      ]
+    },
+    "Benjamin": {
+      "history": [
+        "car",
+        "transit",
+        "transit",
+        "bike",
+        "bike",
+        "bike",
+        "bike",
+        "bike"
+      ],
+      "mood_history": [
+        "neutral",
+        "content",
+        "content",
+        "energized",
+        "energized",
+        "energized",
+        "energized",
+        "energized"
+      ],
+      "health_history": [
+        0.0,
+        0.5,
+        1.0,
+        3.0,
+        5.0,
+        7.0,
+        9.0,
+        11.0
+      ],
+      "co2_history": [
+        5.3,
+        0.79,
+        0.79,
+        0.79,
+        0.79,
+        0.79,
+        0.79,
+        0.79
+      ],
+      "reasoning_history": [
+        "I notice all four of my closest colleagues took transit yesterday, which is a subtle social signal I can't ignore. Since my health score is at zero and I'm a pragmatic person who responds to easy sustainability nudges, transit aligns with both my fitness goals and environmental values without requiring major lifestyle disruption.",
+        "I had a good experience with transit yesterday and notice all four of my closest colleagues chose sustainable options\u2014that's a meaningful social signal. Transit again fits my pragmatic approach: it's convenient, supports my moderate environmental consciousness, and I can use the commute time productively rather than driving solo.",
+        "I'm feeling the social pull from my colleagues\u2014all four chose sustainable options yesterday, and that's a subtle but real nudge for me as a pragmatist who values what works. My health score is low, so biking would be a genuine boost, and since yesterday's transit commute left me content, I'm open to mixing it up with something more active today.",
+        "I'm feeling energized from yesterday's bike ride and noticed all four of my closest colleagues chose sustainable options\u2014that social proof is hard to ignore. My 8 km commute is bikeable, and I'm in a good position to build momentum on my moderate fitness level while doing the right thing.",
+        "I felt energized biking yesterday and three of my four closest colleagues chose sustainable options, which reinforces that choice. My 8 km commute is bikeable, and another bike day will boost my health score while maintaining the positive momentum.",
+        "Yesterday's bike ride left me energized and boosted my health score\u2014I'm feeling the momentum. All four of my closest colleagues chose sustainable options, which creates a natural social pull, and with an 8 km commute, biking is still very doable on a day I'm already in the right mindset.",
+        "Yesterday's bike commute left me energized and boosted my health score to 9.0\u2014I'm riding that momentum. With all four colleagues choosing sustainable options and my moderate fitness level, biking again feels natural and social, plus the weather conditions haven't changed since yesterday."
+      ]
+    },
+    "Mike": {
+      "history": [
+        "transit",
+        "bike",
+        "bike",
+        "bike",
+        "bike",
+        "bike",
+        "bike",
+        "bike"
+      ],
+      "mood_history": [
+        "neutral",
+        "energized",
+        "energized",
+        "energized",
+        "energized",
+        "energized",
+        "energized",
+        "energized"
+      ],
+      "health_history": [
+        0.0,
+        2.0,
+        4.0,
+        6.0,
+        8.0,
+        10.0,
+        12.0,
+        14.0
+      ],
+      "co2_history": [
+        0.78,
+        0.78,
+        0.78,
+        0.78,
+        0.78,
+        0.78,
+        0.78,
+        0.78
+      ],
+      "reasoning_history": [
+        "I've got a high fitness level and only a 4.5 km commute, so biking today would boost my health score and align with the sustainable choice most of my colleagues made yesterday. Plus, a bit of physical activity will shake off the neutral mood from transit.",
+        "I felt energized biking yesterday and my health score is low, so another active commute would help. Julia also biked, and with 3 of 4 colleagues choosing sustainable options, there's good peer momentum\u2014plus my fitness level is high enough to handle back-to-back bike days on a 4.5 km commute.",
+        "I'm feeling energized from yesterday's bike ride and want to keep that momentum going. With 3 out of 4 colleagues choosing sustainable options and my high fitness level, biking again feels natural and keeps me aligned with my peer group while boosting my health score.",
+        "I felt energized biking yesterday and 3 of my 4 closest colleagues chose sustainable options\u2014that social proof is motivating. My 4.5 km commute is perfect for cycling, and keeping up the momentum will boost my health score and fitness level.",
+        "I'm still riding high from yesterday's energized bike commute, and with a solid 8.0 health score, I want to keep that momentum going. Plus, seeing Julia also chose the bike yesterday makes it feel like a natural choice for today\u2014two out of four colleagues choosing sustainable options is a good vibe to match.",
+        "I'm riding high from yesterday's bike commute and my perfect health score - biking again feels natural and keeps that momentum going. Plus, Julia biked yesterday too, so I'd be joining her in the sustainable crew that most of my team is on.",
+        "I felt energized biking yesterday and my health score is solid, so I want to keep that momentum going. Three of my four closest colleagues chose sustainable options, which makes me want to stick with that group norm\u2014plus biking fits my high fitness level and moderate environmental consciousness."
+      ]
+    },
+    "David": {
+      "history": [
+        "car",
+        "transit",
+        "transit",
+        "transit",
+        "transit",
+        "transit",
+        "transit",
+        "transit"
+      ],
+      "mood_history": [
+        "neutral",
+        "content",
+        "content",
+        "content",
+        "content",
+        "content",
+        "content",
+        "content"
+      ],
+      "health_history": [
+        0.0,
+        0.5,
+        1.0,
+        1.5,
+        2.0,
+        2.5,
+        3.0,
+        3.5
+      ],
+      "co2_history": [
+        4.2,
+        0.63,
+        0.63,
+        0.63,
+        0.63,
+        0.63,
+        0.63,
+        0.63
+      ],
+      "reasoning_history": [
+        "At 11 km, biking isn't practical for my commute, but I notice my health score is at zero and both colleagues drove yesterday\u2014this is a good reminder that small changes matter. I'll take transit today as a middle-ground choice that aligns with my moderate green values without requiring a major habit shift, and it might give me a small mood boost knowing I'm making a healthier choice.",
+        "I had a good experience with transit yesterday and my health score is low, so I should prioritize that. While George and William both drove, I'm an independent thinker who makes choices based on personal conviction rather than peer pressure, and transit aligns with my moderate green values and need to improve fitness through active commuting segments.",
+        "I had a good experience with transit yesterday and it aligns with my moderate green values, plus George took transit too which reinforces that choice. My health score is quite low at 1.0, so I should consider something more active, but given my moderate fitness level and the 11 km distance, transit remains practical while biking feels like a stretch today.",
+        "I had a good experience with transit yesterday and it aligns with my moderate green values, plus George also chose transit which reinforces that it's a practical option. My health score is low, so I should avoid the car today to maintain some fitness benefit, and transit is the most realistic choice for an 11 km commute.",
+        "I had a good experience with transit yesterday and my health score is low, so I should consider something more active. George biking yesterday shows it's doable, and at 11 km a bike commute is challenging but could work\u2014though I'll be realistic about my moderate fitness level and go with transit again since it worked well and gives me time to think.",
+        "I had a good experience with transit yesterday and it's a reasonable option for my 11 km commute, plus George's bike choice shows sustainable commuting is doable among my peers. I'll stick with transit today since it aligns with my moderate green values without requiring a dramatic shift in habits, and my moderate fitness level means I'm not ready to bike that distance regularly.",
+        "I had a positive experience with transit yesterday and my moderate green values support continuing that choice. At 11 km, transit is practical and gives me time to relax, which should help maintain my content mood from yesterday."
+      ]
+    },
+    "George": {
+      "history": [
+        "car",
+        "car",
+        "transit",
+        "transit",
+        "bike",
+        "bike",
+        "car",
+        "transit"
+      ],
+      "mood_history": [
+        "neutral",
+        "neutral",
+        "neutral",
+        "neutral",
+        "neutral",
+        "neutral",
+        "neutral",
+        "neutral"
+      ],
+      "health_history": [
+        0.0,
+        0.0,
+        0.5,
+        1.0,
+        3.0,
+        5.0,
+        5.0,
+        5.5
+      ],
+      "co2_history": [
+        4.3,
+        4.3,
+        0.64,
+        0.64,
+        0.64,
+        0.64,
+        4.3,
+        0.64
+      ],
+      "reasoning_history": [
+        "Look, I'm not going to change my commute just because Kathy and Liz made different choices\u2014that's social pressure, and I don't respond well to that. My health score is zero and my fitness is low, so I need to think practically about what my body can handle. The data would have to show me a compelling reason to bike or walk 13 km, and frankly, it doesn't. I'll stick with the car.",
+        "I'm a car owner with low fitness and a 13 km commute\u2014biking or walking aren't practical for me. I notice both Kathy and Liz went sustainable yesterday, but peer pressure alone won't sway me without solid reasoning. My health score is at zero, which is concerning, so transit would at least get me moving and improve my wellbeing without the strain of cycling.",
+        "I had a neutral experience with transit yesterday, which is reliable and I'm comfortable with. My health score is low, so I should consider that biking might help, but at 55 with low fitness, transit is the practical choice today without overextending myself. The fact that both Kathy and Liz chose sustainable options is noted, but I'm not going to change my behavior based on social pressure alone\u2014transit is already a reasonable environmental compromise.",
+        "I'm a data-driven engineer, and my health score of 1.0 is objectively poor\u2014that's the real metric that matters here, not peer pressure. A bike commute would meaningfully improve my fitness, and 13 km is manageable. I'll take the bike today.",
+        "I got on the bike yesterday and felt neutral about it\u2014no harm done, and my health score is concerningly low at 3.0 points, so I should consider another active commute. Both Kathy and Liz went sustainable yesterday, which I'll acknowledge, but I'm not going to let peer pressure drive my decision. However, the data is clear: my fitness level is low and my health needs attention. A 13 km bike ride is manageable, and it directly addresses what the numbers tell me.",
+        "I rode the bike yesterday and felt neutral about it, but my low fitness level means I need to be realistic about daily cycling\u2014my health score of 5.0 suggests I should prioritize recovery today. The data shows my commute is 13 km, which is manageable by transit or car, and since I'm set in my ways, I'll go with what's most practical rather than be swayed by peer pressure, even if both colleagues chose sustainable options yesterday.",
+        "At 55 with low fitness, jumping to biking would be unrealistic and likely leave me stressed. Transit is viable at 13 km, but I'm not one to follow social pressure just because Kathy and Liz went sustainable yesterday. However, my health score of 5.0 is concerning\u2014transit would at least get me moving and improve my wellbeing without the strain of cycling. The data supports trying it today."
+      ]
+    }
+  }
+}

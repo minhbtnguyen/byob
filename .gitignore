@@ -46,17 +46,18 @@ __pycache__/
 *.pyc
 *.pyo
 
-# Data — raw and processed Geolife files are large and not versioned
+# Data — raw Geolife files are large and not versioned
 data/raw/
-data/processed/
 
-# Model artifacts
-models/*.pkl
-models/*.joblib
-models/*.json
+# Precomputed EDA cache and processed features are committed (needed for deployment)
+# data/eda/
+# data/processed/
 
-# Generated reports
-reports/
+# Model artifacts are committed (needed for deployment)
+# models/
+
+# Generated reports are committed (needed for deployment)
+# reports/
 
 # Jupyter checkpoints
 .ipynb_checkpoints/

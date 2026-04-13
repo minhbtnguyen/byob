@@ -1,0 +1,120 @@
+{
+  "052": {
+    "stats": {
+      "user": "052",
+      "mode_km": {
+        "bike": 58.58,
+        "bus": 670.52,
+        "car": 636.33,
+        "walk": 214.35
+      },
+      "mode_co2_kg": {
+        "bike": 0.0,
+        "bus": 59.68,
+        "car": 108.18,
+        "walk": 0.0
+      },
+      "total_co2_kg": 167.86,
+      "car_pct_of_co2": 64.4
+    },
+    "report": "User 052 traveled a combined total across all modes, with bus accounting for 670.52 km and car accounting for 636.33 km as the two dominant modes, while walking contributed 214.35 km and cycling 58.58 km at zero emissions. Despite the car being traveled slightly less distance than the bus, it generated 108.18 kg of CO\u2082 compared to only 59.68 kg from the bus, making it responsible for 64.4% of the user's total 167.86 kg CO\u2082 footprint. This disproportionate carbon burden from car travel highlights a clear opportunity for emissions reduction, particularly given that the user already demonstrates a willingness to use lower-carbon modes. **Recommendation:** Shift at least a portion of the 636.33 km currently driven by car to bus travel, which produces roughly half the CO\u2082 per trip based on this data, prioritizing routes where bus coverage already exists in the user's travel pattern."
+  },
+  "068": {
+    "stats": {
+      "user": "068",
+      "mode_km": {
+        "bike": 1449.54,
+        "bus": 1909.57,
+        "car": 893.3,
+        "walk": 467.71
+      },
+      "mode_co2_kg": {
+        "bike": 0.0,
+        "bus": 169.95,
+        "car": 151.86,
+        "walk": 0.0
+      },
+      "total_co2_kg": 321.81,
+      "car_pct_of_co2": 47.2
+    },
+    "report": "User 068 traveled a combined total across all modes of 4,720.12 km, with bus representing the largest share at 1,909.57 km, followed by bike at 1,449.54 km, car at 893.3 km, and walk at 467.71 km. Despite the car accounting for a relatively smaller distance traveled, it contributed 151.86 kg of CO\u2082, representing 47.2% of the user's total emissions of 321.81 kg. The bus segment, while the longest in distance, generated 169.95 kg of CO\u2082, making it the single largest emitting mode in absolute terms. Notably, bike and walk travel \u2014 totaling 1,917.25 km \u2014 produced 0.0 kg of CO\u2082, demonstrating the significant emissions benefit of active mobility already being utilized by this user. To meaningfully reduce total emissions, User 068 should prioritize replacing car trips with bike travel, particularly since the user already logs 1,449.54 km by bike, indicating an established habit that could absorb more of the 893.3 km currently driven by car."
+  },
+  "110": {
+    "stats": {
+      "user": "110",
+      "mode_km": {
+        "bus": 9.0,
+        "car": 6.81,
+        "walk": 0.08
+      },
+      "mode_co2_kg": {
+        "bus": 0.8,
+        "car": 1.16,
+        "walk": 0.0
+      },
+      "total_co2_kg": 1.96,
+      "car_pct_of_co2": 59.2
+    },
+    "report": "**Personal Mobility Report \u2014 User 110**\n\nUser 110 traveled a total of 15.89 km across three modes: 9.0 km by bus, 6.81 km by car, and 0.08 km on foot. Despite the car accounting for less than half of total distance traveled, it was responsible for 59.2% of total CO\u2082 emissions, generating 1.16 kg of CO\u2082 compared to just 0.8 kg from bus travel. Walking produced 0.0 kg of CO\u2082, reinforcing its role as the cleanest option, though its usage at 0.08 km was negligible. Total emissions across all modes reached 1.96 kg of CO\u2082, highlighting the outsized carbon impact of even moderate car use. **Recommendation:** Shift the 6.81 km currently driven by car to bus travel, which would reduce personal CO\u2082 output by 1.16 kg and bring total emissions down to 0.8 kg \u2014 a reduction of more than half."
+  },
+  "112": {
+    "stats": {
+      "user": "112",
+      "mode_km": {
+        "bike": 26.09,
+        "bus": 98.84,
+        "car": 105.39,
+        "walk": 110.02
+      },
+      "mode_co2_kg": {
+        "bike": 0.0,
+        "bus": 8.8,
+        "car": 17.92,
+        "walk": 0.0
+      },
+      "total_co2_kg": 26.72,
+      "car_pct_of_co2": 67.1
+    },
+    "report": "**Personal Mobility Sustainability Report \u2014 User 112**\n\nUser 112 traveled a combined total across all modes, with walking accounting for the highest distance at 110.02 km, followed closely by car at 105.39 km, bus at 98.84 km, and cycling at 26.09 km. Despite car travel not being the dominant mode by distance, it contributed 17.92 kg of CO\u2082 \u2014 representing 67.1% of the user's total emissions of 26.72 kg. Bus travel added a further 8.8 kg of CO\u2082, while both walking and cycling produced 0.0 kg, demonstrating the clear environmental advantage of those modes. Notably, the user already demonstrates a strong active travel habit, with walking and cycling together totaling 136.11 km of zero-emission distance. To meaningfully reduce the carbon footprint, User 112 should prioritize substituting car trips with bus or active travel alternatives, particularly targeting the 105.39 km currently driven by car, which would directly cut the 17.92 kg CO\u2082 that dominates their emissions profile."
+  },
+  "129": {
+    "stats": {
+      "user": "129",
+      "mode_km": {
+        "bike": 3.4,
+        "bus": 10.17,
+        "car": 2.49,
+        "walk": 1.29
+      },
+      "mode_co2_kg": {
+        "bike": 0.0,
+        "bus": 0.91,
+        "car": 0.42,
+        "walk": 0.0
+      },
+      "total_co2_kg": 1.33,
+      "car_pct_of_co2": 31.6
+    },
+    "report": "User 129 traveled a total of 3.4 km by bike, 10.17 km by bus, 2.49 km by car, and 1.29 km on foot during the reporting period. Despite the car being the second-shortest distance traveled, it contributed 0.42 kg of CO\u2082, accounting for 31.6% of the user's total emissions of 1.33 kg CO\u2082. The bus, while the dominant mode of travel at 10.17 km, was responsible for the largest share of emissions at 0.91 kg CO\u2082. Encouragingly, the bike and walking segments \u2014 totaling 4.69 km \u2014 produced zero emissions. To reduce overall carbon output, User 129 should consider substituting the 2.49 km of car trips with cycling, which would eliminate the 0.42 kg CO\u2082 contribution from car use and bring total emissions down to 0.91 kg CO\u2082."
+  },
+  "179": {
+    "stats": {
+      "user": "179",
+      "mode_km": {
+        "bike": 97.95,
+        "bus": 305.81,
+        "car": 80.85,
+        "walk": 98.5
+      },
+      "mode_co2_kg": {
+        "bike": 0.0,
+        "bus": 27.22,
+        "car": 13.74,
+        "walk": 0.0
+      },
+      "total_co2_kg": 40.96,
+      "car_pct_of_co2": 33.5
+    },
+    "report": "User 179 logged a total of 583.11 km across all travel modes, with bus travel accounting for the largest share at 305.81 km, followed by walking at 98.5 km, biking at 97.95 km, and car use at 80.85 km. Despite the car contributing only 80.85 km of travel distance, it was responsible for 13.74 kg of CO\u2082, representing 33.5% of the user's total emissions of 40.96 kg. Encouragingly, zero-emission modes \u2014 walking and cycling \u2014 together accounted for 196.45 km, demonstrating a strong foundation of sustainable travel behavior. Bus travel, while far greener than the car, still generated 27.22 kg of CO\u2082, making it the single largest emissions source in this period. To achieve the most impactful emissions reduction, User 179 should prioritize replacing car trips with cycling or walking, given that the car's 80.85 km produced 13.74 kg of CO\u2082 while those modes produce zero emissions across any distance."
+  }
+}
