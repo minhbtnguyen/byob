@@ -210,55 +210,85 @@ def _compute_emissions(data_root: str) -> pd.DataFrame:
 # -- Section renderers ---------------------------------------------------------
 
 
+@st.cache_data(show_spinner=False)
+def _load_trajectory_samples() -> pd.DataFrame | None:
+    cache = _EDA_CACHE / "trajectory_samples.parquet"
+    if not cache.exists():
+        return None
+    return pd.read_parquet(cache)
+
+
 def _render_map():
     st.markdown("#### Raw Trajectory Viewer")
-    users = sorted([p.name for p in _DATASET_ROOT.iterdir() if p.is_dir()])
+
+    traj_cache = _load_trajectory_samples()
+    use_cache = traj_cache is not None and not _DATASET_ROOT.exists()
+
+    if use_cache:
+        st.caption("Showing precomputed sample trajectories (5 per user).")
+        users = sorted(traj_cache["user"].unique().tolist())
+    else:
+        users = sorted([p.name for p in _DATASET_ROOT.iterdir() if p.is_dir()])
+
     sel_col1, sel_col2 = st.columns(2)
     with sel_col1:
         selected_user = st.selectbox("Select user", users, index=0)
-    plt_files = sorted((_DATASET_ROOT / selected_user / "Trajectory").glob("*.plt"))
-    if not plt_files:
-        st.warning("No trajectory files found for this user.")
+
+    if use_cache:
+        user_files = sorted(traj_cache[traj_cache["user"] == selected_user]["filename"].unique().tolist())
+        if not user_files:
+            st.warning("No trajectory files found for this user.")
+            return
+        with sel_col2:
+            selected_file = st.selectbox("Select trajectory", user_files, index=0)
+        df = traj_cache[
+            (traj_cache["user"] == selected_user) & (traj_cache["filename"] == selected_file)
+        ][["datetime", "lat", "lon", "altitude_ft"]].reset_index(drop=True)
     else:
+        plt_files = sorted((_DATASET_ROOT / selected_user / "Trajectory").glob("*.plt"))
+        if not plt_files:
+            st.warning("No trajectory files found for this user.")
+            return
         with sel_col2:
             selected_file = st.selectbox(
                 "Select trajectory", [f.name for f in plt_files], index=0
             )
         df = _load_plt(_DATASET_ROOT / selected_user / "Trajectory" / selected_file)
-        col_map, col_table = st.columns([3, 2])
-        with col_map:
-            fig = go.Figure(
-                go.Scattermap(
-                    lat=df["lat"].tolist(),
-                    lon=df["lon"].tolist(),
-                    mode="lines+markers",
-                    line=dict(width=3, color="#0071e3"),
-                    marker=dict(size=4, color="#0071e3"),
-                    hovertext=df["datetime"].astype(str).tolist(),
-                )
+
+    col_map, col_table = st.columns([3, 2])
+    with col_map:
+        fig = go.Figure(
+            go.Scattermap(
+                lat=df["lat"].tolist(),
+                lon=df["lon"].tolist(),
+                mode="lines+markers",
+                line=dict(width=3, color="#0071e3"),
+                marker=dict(size=4, color="#0071e3"),
+                hovertext=df["datetime"].astype(str).tolist(),
             )
-            fig.update_layout(
-                map=dict(
-                    style="open-street-map",
-                    center=dict(
-                        lat=float(df["lat"].mean()), lon=float(df["lon"].mean())
-                    ),
-                    zoom=13,
+        )
+        fig.update_layout(
+            map=dict(
+                style="open-street-map",
+                center=dict(
+                    lat=float(df["lat"].mean()), lon=float(df["lon"].mean())
                 ),
-                margin=dict(l=0, r=0, t=0, b=0),
-                height=420,
-                showlegend=False,
-            )
-            st.plotly_chart(fig, config={"displayModeBar": False})
-        with col_table:
-            st.dataframe(
-                df.head(50).rename(
-                    columns={
-                        "datetime": "Datetime",
-                        "lat": "Latitude",
-                        "lon": "Longitude",
-                        "altitude_ft": "Altitude (ft)",
-                    }
+                zoom=13,
+            ),
+            margin=dict(l=0, r=0, t=0, b=0),
+            height=420,
+            showlegend=False,
+        )
+        st.plotly_chart(fig, config={"displayModeBar": False})
+    with col_table:
+        st.dataframe(
+            df.head(50).rename(
+                columns={
+                    "datetime": "Datetime",
+                    "lat": "Latitude",
+                    "lon": "Longitude",
+                    "altitude_ft": "Altitude (ft)",
+                }
                 ),
                 height=420,
             )
@@ -614,31 +644,24 @@ def render() -> None:
         )
         return
 
-    tab_labels = [
+    tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs([
+        "Raw Trajectory Viewer",
         "User Analysis",
         "Commute Mode Analysis",
         "Motion Analysis",
         "Temporal Analysis",
         "Emission Analysis",
-    ]
-    if _has_dataset:
-        tab_labels = ["Raw Trajectory Viewer"] + tab_labels
+    ])
 
-    tabs = st.tabs(tab_labels)
-    offset = 0
-
-    if _has_dataset:
-        with tabs[0]:
-            _render_map()
-        offset = 1
-
-    with tabs[offset]:
+    with tab1:
+        _render_map()
+    with tab2:
         _render_health(_root_str)
-    with tabs[offset + 1]:
+    with tab3:
         _render_mode_distribution(_root_str)
-    with tabs[offset + 2]:
+    with tab4:
         _render_speed_profiles(_root_str)
-    with tabs[offset + 3]:
+    with tab5:
         _render_temporal(_root_str)
-    with tabs[offset + 4]:
+    with tab6:
         _render_emissions(_root_str)
