@@ -1,8 +1,12 @@
+<div align="center">
+
 # BYOB: Bring Your Own Bike
 
 ### Understanding How Apple ESG Features Could Reshape How We Move Using AI Agents
 
-![](https://raw.githubusercontent.com/minhbtnguyen/byob/refs/heads/main/images/home_page.png?token=GHSAT0AAAAAADZSJRHHPNXUQKDMJGLWAZAY2QIR3KA)
+<img src="images/home_page.png" alt="BYOB dashboard home page" />
+
+</div>
 
 ---
 
@@ -37,7 +41,7 @@ geolife-human-psychology/
 │   └── theme.py                  # Apple-style CSS theme
 │
 ├── eda/                          # Notebooks (analysis only - no rerun needed)
-│   ├── analysis.ipynb            # EDA: data quality, mode distribution, emissions
+│   ├── eda.ipynb                 # EDA: data quality, mode distribution, emissions
 │   ├── modeling.ipynb            # Feature engineering + LightGBM classifier
 │   ├── agentic_evaluation.ipynb  # Report generation + Judge+Critic loop
 │   └── agentic_simulation.ipynb  # 5-level Apple nudge simulation (525 Claude calls)
@@ -73,25 +77,25 @@ geolife-human-psychology/
 ## Demo
 
 ### EDA
-![](https://raw.githubusercontent.com/minhbtnguyen/byob/refs/heads/main/images/eda_1.png?token=GHSAT0AAAAAADZSJRHGQK37GE4MJ4NFIUIA2QIR3VQ)
-![](https://raw.githubusercontent.com/minhbtnguyen/byob/refs/heads/main/images/eda_2.png?token=GHSAT0AAAAAADZSJRHGQGCDSSIZKGVKUQAS2QIR4GQ)
-![](https://raw.githubusercontent.com/minhbtnguyen/byob/refs/heads/main/images/eda_3.png?token=GHSAT0AAAAAADZSJRHHIYZUBRDHJWZEISLS2QIR4LA)
-![](https://raw.githubusercontent.com/minhbtnguyen/byob/refs/heads/main/images/eda_4.png?token=GHSAT0AAAAAADZSJRHGAQQPTA5J57N5CAMQ2QIR4PQ)
-![](https://raw.githubusercontent.com/minhbtnguyen/byob/refs/heads/main/images/eda_5.png?token=GHSAT0AAAAAADZSJRHG6GMDPIDLVIVIE7YQ2QIR4TQ)
-![](https://raw.githubusercontent.com/minhbtnguyen/byob/refs/heads/main/images/eda_6.png?token=GHSAT0AAAAAADZSJRHHAFUOE6XIDD6HOJJK2QIR4YA)
+![](images/eda_1.png)
+![](images/eda_2.png)
+![](images/eda_3.png)
+![](images/eda_4.png)
+![](images/eda_5.png)
+![](images/eda_6.png)
 
 ### Commute Mode Predictor
-![](https://raw.githubusercontent.com/minhbtnguyen/byob/refs/heads/main/images/commute_predictor.png?token=GHSAT0AAAAAADZSJRHHJ7ONSSF2P7XMVYQ62QIR46A)
+![](images/commute_predictor.png)
 
 ### Agent Claims Evaluation vs Human Claims Evaluation
-![](https://raw.githubusercontent.com/minhbtnguyen/byob/refs/heads/main/images/agentic_eval.png?token=GHSAT0AAAAAADZSJRHHQORK2KIHJJVF7Q562QIR5JQ)
+![](images/agentic_eval.png)
 
 ### Social Network Simulation via Agents
-![](https://raw.githubusercontent.com/minhbtnguyen/byob/refs/heads/main/images/agentic_sim_1.png?token=GHSAT0AAAAAADZSJRHGANROOENNNA6SWUDE2QIR56A)
+![](images/agentic_sim_1.png)
 
-![](https://raw.githubusercontent.com/minhbtnguyen/byob/refs/heads/main/images/agentic_sim_2.png?token=GHSAT0AAAAAADZSJRHHRKXKOORJDCVLGQUG2QIR6NQ)
+![](images/agentic_sim_2.png)
 
-![](https://raw.githubusercontent.com/minhbtnguyen/byob/refs/heads/main/images/agentic_sim_3.png?token=GHSAT0AAAAAADZSJRHGYWBLQFQXIW2FUEIM2QIR6ZQ)
+![](images/agentic_sim_3.png)
 
 ---
 
@@ -113,14 +117,14 @@ ANTHROPIC_API_KEY=your_key_here
 
 ### 3. Download the dataset
 
-Run the first cell of `eda/analysis.ipynb` - it downloads the Geolife dataset via `kagglehub` automatically.
+Run the first cell of `eda/eda.ipynb` - it downloads the Geolife dataset via `kagglehub` automatically.
 
 ### 4. Run the notebooks (optional - outputs already saved)
 
 The `reports/` and `models/` directories are pre-populated. You only need to rerun notebooks if you want to regenerate results from scratch:
 
 ```
-eda/analysis.ipynb          : EDA (no outputs saved, read-only)
+eda/eda.ipynb               : EDA (no outputs saved, read-only)
 eda/modeling.ipynb          : builds features.parquet + lgbm_mode_classifier.pkl
 eda/agentic_evaluation.ipynb: builds user_reports.json + eval_results.json
 eda/agentic_simulation.ipynb: builds sim_strength_*.json (costs ~$0.08 in API calls)
@@ -179,16 +183,18 @@ Open `http://localhost:8501`.
 ---
 
 ## References
-
-### Dataset
-
 - Zheng et al., Microsoft Research Asia — *Microsoft GeoLife GPS Trajectory Dataset*.
-
-### Papers
-
 - Park, J.S. et al. (2023). Generative agents: Interactive simulacra of human behavior. *Proceedings of the 36th Annual ACM Symposium on User Interface Software and Technology (UIST)*.
 - Dabiri, S. & Heaslip, K. (2018). Inferring transportation modes from GPS trajectories using a convolutional neural network. *Transportation Research Part C*.
 - Xiao, Z. et al. (2012). Inferring social ties between users with human location history. *Journal of Ambient Intelligence and Humanized Computing*.
 - Zheng, Y. et al. (2010). GeoLife: A collaborative social networking service among user, location and trajectory. *ACM Trans. Web*.
 - Zheng, Y. et al. (2008). Understanding mobility based on GPS data. *UbiComp*.
+
+---
+
+## License
+
+Code is released under the **MIT License** — see [LICENSE](LICENSE).
+
+The Microsoft Geolife dataset is the property of Microsoft Research Asia and is redistributed (in derived form) under the terms of its original release. Please cite the Geolife papers above if you use any derived artifact from this repository.
 
