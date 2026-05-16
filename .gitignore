@@ -70,3 +70,11 @@ CLAUDE.md
 BRAINSTORM.md
 PLAN.md
 LOCAL_AWS.md
+tasks/
+
+# IDE
+.idea/
+.vscode/
+
+# Logs
+*.log

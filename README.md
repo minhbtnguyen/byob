@@ -61,10 +61,10 @@ geolife-human-psychology/
 
 | ID | Hypothesis |
 |---|---|
-| **H2** | GPS features alone can classify walk / bike / bus / car |
-| **H3** | Cars produce disproportionate CO₂ and short car trips are bikeable |
-| **H4** | A Judge+Critic loop fact-checks reports more accurately than a single prompt |
-| **H5** | Stronger Apple nudges reduce car usage, CO₂, and improve health and mood |
+| **H2** | Using only GPS data - no phone sensors, no user input - we can train a model to tell apart walking, biking, taking the bus, and driving. |
+| **H3** | Cars produce far more CO₂ than their share of trips would suggest. Swapping short car trips (under 3 km) to bike would eliminate a measurable chunk of each user's carbon footprint. |
+| **H4** | Running a 3-step pipeline - Judge to Critic to Revised Judge - produces fact-check verdicts that match human labels more closely than a simple single-prompt judge, measured on 28 claims hand-labeled across 6 user reports using Cohen's κ. |
+| **H5** | Simulating 15 agentic commuters over 7 days shows that stronger Apple ESG nudges (quiet route suggestion to leaderboard to real-time Watch alert) progressively reduce car usage, lower CO2 emissions, and improve population health and mood - with the effect growing at each feature level. |
 
 ---
 

@@ -43,7 +43,6 @@ with st.sidebar.container(border=True):
     st.markdown(
         "**Researched & Engineered by** [Minh Nguyen](https://minhbtnguyen.com/)"
     )
-    st.markdown("**Apple Coding Assessment: 04/13/2026**")
 
 page = st.sidebar.selectbox(
     "",
