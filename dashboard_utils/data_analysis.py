@@ -235,14 +235,19 @@ def _render_map():
         selected_user = st.selectbox("Select user", users, index=0)
 
     if use_cache:
-        user_files = sorted(traj_cache[traj_cache["user"] == selected_user]["filename"].unique().tolist())
+        user_files = sorted(
+            traj_cache[traj_cache["user"] == selected_user]["filename"]
+            .unique()
+            .tolist()
+        )
         if not user_files:
             st.warning("No trajectory files found for this user.")
             return
         with sel_col2:
             selected_file = st.selectbox("Select trajectory", user_files, index=0)
         df = traj_cache[
-            (traj_cache["user"] == selected_user) & (traj_cache["filename"] == selected_file)
+            (traj_cache["user"] == selected_user)
+            & (traj_cache["filename"] == selected_file)
         ][["datetime", "lat", "lon", "altitude_ft"]].reset_index(drop=True)
     else:
         plt_files = sorted((_DATASET_ROOT / selected_user / "Trajectory").glob("*.plt"))
@@ -270,9 +275,7 @@ def _render_map():
         fig.update_layout(
             map=dict(
                 style="open-street-map",
-                center=dict(
-                    lat=float(df["lat"].mean()), lon=float(df["lon"].mean())
-                ),
+                center=dict(lat=float(df["lat"].mean()), lon=float(df["lon"].mean())),
                 zoom=13,
             ),
             margin=dict(l=0, r=0, t=0, b=0),
@@ -289,9 +292,9 @@ def _render_map():
                     "lon": "Longitude",
                     "altitude_ft": "Altitude (ft)",
                 }
-                ),
-                height=420,
-            )
+            ),
+            height=420,
+        )
 
 
 def _render_health(data_root: str) -> None:
@@ -644,14 +647,16 @@ def render() -> None:
         )
         return
 
-    tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs([
-        "Raw Trajectory Viewer",
-        "User Analysis",
-        "Commute Mode Analysis",
-        "Motion Analysis",
-        "Temporal Analysis",
-        "Emission Analysis",
-    ])
+    tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs(
+        [
+            "Raw Trajectory Viewer",
+            "User Analysis",
+            "Commute Mode Analysis",
+            "Motion Analysis",
+            "Temporal Analysis",
+            "Emission Analysis",
+        ]
+    )
 
     with tab1:
         _render_map()

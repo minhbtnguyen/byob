@@ -217,20 +217,43 @@ def main():
             for plt_file in plts:
                 try:
                     df = pd.read_csv(
-                        plt_file, skiprows=6, header=None,
-                        names=["lat", "lon", "zero", "altitude_ft", "days", "date", "time"],
+                        plt_file,
+                        skiprows=6,
+                        header=None,
+                        names=[
+                            "lat",
+                            "lon",
+                            "zero",
+                            "altitude_ft",
+                            "days",
+                            "date",
+                            "time",
+                        ],
                     )
                     df["datetime"] = pd.to_datetime(
                         df["date"] + " " + df["time"], format="%Y-%m-%d %H:%M:%S"
                     )
                     df["user"] = user_dir.name
                     df["filename"] = plt_file.name
-                    dfs.append(df[["user", "filename", "datetime", "lat", "lon", "altitude_ft"]])
+                    dfs.append(
+                        df[
+                            [
+                                "user",
+                                "filename",
+                                "datetime",
+                                "lat",
+                                "lon",
+                                "altitude_ft",
+                            ]
+                        ]
+                    )
                 except Exception:
                     continue
         traj_df = pd.concat(dfs, ignore_index=True)
         traj_df.to_parquet(_OUT / "trajectory_samples.parquet", index=False)
-        print(f"  Saved {len(traj_df):,} GPS points across {traj_df['user'].nunique()} users")
+        print(
+            f"  Saved {len(traj_df):,} GPS points across {traj_df['user'].nunique()} users"
+        )
 
     print("\n[4/4] Emissions")
     if (_OUT / "emissions.parquet").exists():
