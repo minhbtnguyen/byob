@@ -25,7 +25,7 @@ An end-to-end agentic mobility pipeline built on the Microsoft Geolife GPS datas
 ## Project Structure
 
 ```
-geolife-human-psychology/
+byob/
 │
 ├── dashboard.py                  # Streamlit app entry point
 ├── requirements.txt
