@@ -59,6 +59,7 @@ def render() -> None:
             "- Visible rewards are one of the most well-supported tools for changing travel habits\n"
             "- Points fund impact, not purchases - this is nudging, not greenwashing"
         )
+    st.divider()
 
     # ── Feature 3 ─────────────────────────────────────────────────────────────
     st.markdown("#### 3. Apple Green Impact")
