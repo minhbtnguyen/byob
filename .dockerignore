@@ -5,3 +5,7 @@ __pycache__
 *.ipynb_checkpoints
 eda/__pycache__
 dashboard_utils/__pycache__
+
+# Only used to train the model offline (eda/modeling.ipynb) - no dashboard
+# page reads it at runtime, so keep it out of the deployed image.
+data/processed/

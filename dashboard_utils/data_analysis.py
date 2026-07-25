@@ -222,7 +222,15 @@ def _render_map():
     st.markdown("#### Raw Trajectory Viewer")
 
     traj_cache = _load_trajectory_samples()
-    use_cache = traj_cache is not None and not _DATASET_ROOT.exists()
+    has_dataset = _DATASET_ROOT.exists()
+    use_cache = traj_cache is not None and not has_dataset
+
+    if not use_cache and not has_dataset:
+        st.info(
+            "Raw trajectory viewer needs either the full Geolife dataset or a "
+            "precomputed sample cache, neither of which is bundled in this deployment."
+        )
+        return
 
     if use_cache:
         st.caption("Showing precomputed sample trajectories (5 per user).")

@@ -1,3 +1,14 @@
+---
+title: "BYOB: Bring Your Own Bike"
+emoji: 🚲
+colorFrom: blue
+colorTo: green
+sdk: docker
+app_port: 8501
+pinned: false
+short_description: Apple ESG mobility agents simulated on Geolife GPS data
+---
+
 <div align="center">
 
 # BYOB: Bring Your Own Bike

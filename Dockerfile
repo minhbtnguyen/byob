@@ -9,7 +9,13 @@ WORKDIR /app
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY . .
+# Hugging Face Spaces runs Docker containers as UID 1000 - create a matching
+# non-root user and hand it ownership so runtime writes (e.g. Streamlit's
+# config/cache dir) don't hit permission errors.
+RUN useradd -m -u 1000 user
+COPY --chown=user . .
+USER user
+ENV HOME=/home/user
 
 EXPOSE 8501
 
